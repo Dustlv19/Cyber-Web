@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07060f"><link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><title>Cyber Web</title>
+<style>
+:root{--p:#8b5cf6;--p2:#ff2bd6;--bg:#07060f;--card:#100e1c;--line:#2a2450;--fg:#ece9ff;--mut:#8b86ad;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,Roboto,sans-serif;min-height:100dvh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(420px 420px at 100% 0,color-mix(in srgb,var(--p) 22%,transparent),transparent 70%),linear-gradient(#ffffff08 1px,transparent 1px) 0 0/36px 36px,linear-gradient(90deg,#ffffff08 1px,transparent 1px) 0 0/36px 36px}
+main{padding:calc(14px + env(safe-area-inset-top)) 18px 150px;max-width:640px;margin:0 auto}
+h1{font:900 30px/1 system-ui;letter-spacing:.14em;margin:6px 0;color:var(--p);text-shadow:2px 0 var(--p2),-2px 0 #fcee0a55;animation:gl 5s infinite steps(1)}
+@keyframes gl{0%,94%,100%{transform:none}95%{transform:translate(-3px,1px) skewX(5deg)}97%{transform:translate(3px,0)}}
+h2{margin:14px 0 2px;font-size:22px}.sub{color:var(--mut);font:12px monospace;letter-spacing:.2em;text-transform:uppercase;margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px}
+.stats{display:flex;text-align:center;margin-bottom:16px}.stats div{flex:1;border-left:1px solid var(--line)}.stats div:first-child{border:0}
+.stats b{display:block;font-size:30px;color:var(--p)}.stats span{font:11px monospace;letter-spacing:.25em;color:var(--mut)}
+input,textarea,select{width:100%;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:16px;padding:14px;font:inherit;outline:0}
+input:focus,textarea:focus{border-color:var(--p)}
+.sec{display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px;font:700 14px monospace;letter-spacing:.25em;color:var(--fg)}
+.sec span::before{content:"";display:inline-block;width:4px;height:16px;background:var(--p);border-radius:2px;margin-right:12px;vertical-align:-3px}
+.sec a,.sec b{color:var(--p);font-weight:700;cursor:pointer}
+.fl{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}.fc{flex:none;min-width:130px;border:1px solid var(--line);background:var(--card);border-radius:20px;padding:14px;cursor:pointer}
+.fc.on{border-color:var(--p);box-shadow:0 0 16px color-mix(in srgb,var(--p) 40%,transparent)}.fc b{display:block}.fc small{color:var(--p);font-family:monospace}
+.note{display:block;margin-bottom:10px;cursor:pointer}.note b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.note p{margin:4px 0 0;color:var(--mut);font-size:14px;max-height:42px;overflow:hidden}.note small{color:var(--p);font:11px monospace}
+.empty{text-align:center;color:var(--mut);padding:36px 10px}.empty i{display:grid;place-items:center;width:110px;height:110px;margin:0 auto 14px;border:1px solid var(--line);border-radius:50%;font-size:42px;font-style:normal;background:var(--card)}
+button{font:800 14px system-ui;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border:1px solid var(--p);background:transparent;color:var(--p);border-radius:18px;padding:15px 18px;width:100%}
+button.pri{background:var(--p);color:#0a0714}button.dng{border-color:#ff4d6d;color:#ff4d6d}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:#0b0916f2;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:20}
+nav a{flex:1;text-align:center;padding:10px 0 8px;font:700 11px monospace;letter-spacing:.18em;color:var(--mut);cursor:pointer}nav a i{display:block;font-size:22px;font-style:normal;margin-bottom:2px}nav a.on{color:var(--p)}
+.fab{position:fixed;right:14px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:30;width:62px;height:62px;padding:0;border:0;border-radius:50%;background:#0d0b1acc;filter:drop-shadow(0 0 6px #00f0ff) drop-shadow(0 0 14px #ff2bd6aa)}
+.fab svg{width:100%;height:100%;animation:fg 4.5s infinite steps(1)}
+.fab .eye{transform-box:fill-box;transform-origin:center;animation:eb 5s infinite}.fab .scan{animation:sx 2.6s linear infinite}
+@keyframes fg{0%,90%,100%{transform:none}91%{transform:translate(-2px,1px) skewX(4deg)}93%{transform:translate(2px,-1px)}95%{transform:none}}
+@keyframes eb{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}@keyframes sx{from{transform:translateX(12px)}to{transform:translateX(52px)}}
+.plus{position:fixed;left:18px;right:90px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:25}
+.ov{position:fixed;inset:0;z-index:50;background:var(--bg);padding:calc(14px + env(safe-area-inset-top)) 18px 18px;display:flex;flex-direction:column;gap:10px}
+.ov textarea{flex:1;resize:none}.row{display:flex;gap:10px}.row>*{flex:1}
+.sheet{position:fixed;inset:0;z-index:60;background:#000a;display:flex;align-items:flex-end}.sheet>div{width:100%;background:var(--card);border-radius:24px 24px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));border-top:1px solid var(--p);display:flex;flex-direction:column;gap:12px}
+.dots{display:flex;gap:12px;flex-wrap:wrap}.dots i{width:34px;height:34px;border-radius:50%;border:3px solid transparent;cursor:pointer}.dots i.on{border-color:#fff}
+.sw{display:flex;justify-content:space-between;align-items:center;gap:12px}.sw input{width:50px;height:28px;accent-color:var(--p)}
+.toast{position:fixed;left:50%;bottom:150px;transform:translateX(-50%);background:var(--p);color:#0a0714;padding:8px 16px;border-radius:99px;font-weight:700;z-index:99}
+</style></head><body>
+<main id="m"></main>
+<button class="fab" id="ai" aria-label="Netrunner AI"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="ey"><path d="M12 32Q32 14 52 32Q32 50 12 32Z"/></clipPath></defs>
+  <polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="none" style="stroke:#ff2bd6" stroke-width="2" transform="translate(-1.6,1)" opacity=".8"/>
+  <polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="none" style="stroke:#00f0ff" stroke-width="2" transform="translate(1.6,-1)" opacity=".8"/>
+  <polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="#0b0820" stroke="#fcee0a" stroke-width="2.6"/>
+  <path d="M9 24V19L16 15M55 24V19L48 15M9 40v5l7 4M55 40v5l-7 4" fill="none" stroke="#fcee0a" stroke-width="1.4" opacity=".7"/>
+  <path d="M12 32Q32 14 52 32Q32 50 12 32Z" fill="#05040c" style="stroke:#00f0ff" stroke-width="2"/>
+  <g clip-path="url(#ey)"><rect class="scan" x="0" y="20" width="3" height="24" style="fill:#00f0ff" opacity=".55"/></g>
+  <g class="eye"><circle cx="32" cy="32" r="8.5" fill="none" stroke="#fcee0a" stroke-width="2"/><circle cx="32" cy="32" r="3.6" style="fill:#ff2bd6"/>
+  <path d="M32 21.5v3.2M32 39.3v3.2M21.5 32h3.2M39.3 32h3.2" stroke="#fcee0a" stroke-width="1.5"/></g>
+</svg></button>
+<nav id="nav"><a data-t="note"><i>▤</i>NOTE</a><a data-t="cart"><i>▣</i>CARTELLE</a><a data-t="cerca"><i>⌕</i>CERCA</a><a data-t="altro"><i>⠿</i>ALTRO</a></nav>
+<script>
+const $=s=>document.querySelector(s),esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const KEY="cyberweb.v1";let S={notes:[],folders:[],prefs:{}},tab="note",fsel="",q="";
+try{S=Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
+S.prefs=Object.assign({theme:"viola",slang:true,name:"Runner Locale"},S.prefs);
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast("Memoria piena")}};
+const TH={viola:["#8b5cf6","#ff2bd6"],ciano:["#00f0ff","#ff2bd6"],rosso:["#ff3355","#00f0ff"],verde:["#39ff88","#ff2bd6"],arancio:["#ff8a2b","#00f0ff"],giallo:["#fcee0a","#ff2bd6"],rosa:["#ff4fd8","#00f0ff"],bianco:["#eef4ff","#8aa0ff"]};
+const T=(a,b)=>S.prefs.slang?a:b,uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function theme(){const t=TH[S.prefs.theme]||TH.viola,s=document.documentElement.style;s.setProperty("--p",t[0]);s.setProperty("--p2",t[1])}
+function toast(t){const e=document.createElement("div");e.className="toast";e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2200)}
+const greet=()=>{const h=new Date().getHours();return h<6?"Buonanotte":h<13?"Buongiorno":h<19?"Buon pomeriggio":"Buonasera"};
+const plain=n=>n.text.replace(/\s+/g," ").trim();
+function stats(){return `<div class="card stats"><div><b>${S.notes.length}</b><span>NOTE</span></div><div><b>${S.folders.length}</b><span>CARTELLE</span></div><div><b>0</b><span>ALLEGATI</span></div></div>`}
+function noteList(arr){return arr.length?arr.map(n=>`<div class="card note" data-n="${n.id}"><b>${esc(n.title||"Senza titolo")}</b><p>${esc(plain(n))}</p><small>${new Date(n.updated).toLocaleDateString("it-IT")}</small></div>`).join(""):`<div class="empty"><i>▤</i><h3>${T("Archivio vuoto","Nessuna nota")}</h3><p>${T("Le tue note appariranno qui, choom.","Le tue note appariranno qui.")}</p></div>`}
+function filt(){const k=q.toLowerCase();return S.notes.filter(n=>(!fsel||n.folder===fsel)&&(!k||(n.title+" "+n.text).toLowerCase().includes(k))).sort((a,b)=>b.updated-a.updated)}
+function folderCards(){const c=id=>S.notes.filter(n=>!id||n.folder===id).length;return `<div class="fc ${!fsel?"on":""}" data-f=""><b>Tutte</b><small>${c()} note</small></div>`+S.folders.map(f=>`<div class="fc ${fsel===f.id?"on":""}" data-f="${f.id}"><b>${esc(f.name)}</b><small>${c(f.id)} note</small></div>`).join("")}
+function render(){
+  const m=$("#m");document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.t===tab));
+  if(tab==="note")m.innerHTML=`<h1>CYBER WEB</h1><h2>${greet()}, ${esc(S.prefs.name)}</h2><p class="sub">// ${T("archivio neurale attivo","archivio attivo")}</p>${stats()}<input id="q" placeholder="Filtra le note…" value="${esc(q)}"><div class="sec"><span>CARTELLE</span><a id="nf">+ NUOVA</a></div><div class="fl">${folderCards()}</div><div class="sec"><span>NOTE RECENTI</span><b id="cnt"></b></div><div id="nl"></div><button class="pri plus" id="nn">+ NUOVA NOTA</button>`;
+  else if(tab==="cart")m.innerHTML=`<p class="sub">// struttura dati</p><h1>ARCHIVIO</h1><p>Organizza le note in cartelle tematiche</p>${stats()}<button class="pri" id="nf">+ NUOVA CARTELLA</button><div class="sec"><span>CARTELLE</span><b>${S.folders.length}</b></div><div class="fl" style="flex-direction:column">${folderCards()}</div>${fsel?`<button class="dng" id="df" style="margin-top:14px">Elimina questa cartella</button>`:""}`;
+  else if(tab==="cerca")m.innerHTML=`<p class="sub">// motore di ricerca</p><h1>RICERCA</h1><p>Scansiona note in tutto l’archivio</p><input id="q" placeholder="Cerca un termine…" value="${esc(q)}"><div class="sec"><span>RISULTATI</span><b id="cnt"></b></div><div class="fl">${folderCards()}</div><div id="nl" style="margin-top:12px"></div>`;
+  else m.innerHTML=`<p class="sub">// sistema</p><h1>ALTRO</h1><div class="sec"><span>COLORE PRINCIPALE</span></div><div class="dots">${Object.keys(TH).map(k=>`<i data-th="${k}" class="${S.prefs.theme===k?"on":""}" style="background:${TH[k][0]}"></i>`).join("")}</div><div class="sec"><span>STILE</span></div><div class="card sw"><div><b>Slang di Night City</b><br><small style="color:var(--mut)">choom, preem, netrunner…</small></div><input type="checkbox" id="sl" ${S.prefs.slang?"checked":""}></div><div class="sec"><span>PROFILO</span></div><input id="nm" value="${esc(S.prefs.name)}"><div class="sec"><span>BACKUP</span></div><div class="card" style="color:var(--mut);font-size:14px">I dati stanno solo su questo dispositivo: esporta un backup ogni tanto.</div><div class="row" style="margin-top:10px"><button id="ex">Esporta</button><button id="im">Importa</button></div><input type="file" id="imf" accept=".json" hidden>`;
+  list();
+}
+function list(){const l=$("#nl");if(!l)return;const a=filt();l.innerHTML=noteList(tab==="note"?a.slice(0,30):a);const c=$("#cnt");if(c)c.textContent=a.length}
+function sheet(html,fn){const s=document.createElement("div");s.className="sheet";s.innerHTML="<div>"+html+"</div>";s.onclick=e=>{if(e.target===s)s.remove()};document.body.appendChild(s);fn&&fn(s);return s}
+function ask(title,ph,cb,val){sheet(`<h3 style="margin:0">${title}</h3><input id="ai1" placeholder="${ph}" value="${esc(val||"")}"><button class="pri" id="ok1">Conferma</button>`,s=>{const i=s.querySelector("#ai1");i.focus();s.querySelector("#ok1").onclick=()=>{if(i.value.trim()){cb(i.value.trim());s.remove()}}})}
+function edit(id){
+  let n=S.notes.find(x=>x.id===id),isNew=!n;if(!n)n={id:uid(),title:"",text:"",folder:fsel,created:Date.now(),updated:Date.now()};
+  const o=document.createElement("div");o.className="ov";
+  o.innerHTML=`<div class="row"><button id="bk" style="flex:0 0 56px">←</button><select id="fo"><option value="">Senza cartella</option>${S.folders.map(f=>`<option value="${f.id}" ${n.folder===f.id?"selected":""}>${esc(f.name)}</option>`).join("")}</select></div><input id="ti" placeholder="Titolo" value="${esc(n.title)}"><textarea id="tx" placeholder="Scrivi qui…">${esc(n.text)}</textarea>${isNew?"":`<button class="dng" id="de">Elimina nota</button>`}`;
+  document.body.appendChild(o);const done=()=>{n.title=o.querySelector("#ti").value.trim();n.text=o.querySelector("#tx").value;n.folder=o.querySelector("#fo").value;n.updated=Date.now();if((n.title||n.text.trim())&&(isNew||true)){if(!S.notes.includes(n))S.notes.push(n);save()}o.remove();render()};
+  o.querySelector("#bk").onclick=done;const d=o.querySelector("#de");if(d){let a=0;d.onclick=()=>{if(!a){a=1;d.textContent="Sicuro? Tocca ancora";return}S.notes=S.notes.filter(x=>x!==n);save();o.remove();render()}}
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-n],[data-f],[data-th],#nn,#nf,#df,#ex,#im,nav a,#ai");if(!t)return;
+  if(t.dataset.t){tab=t.dataset.t;render();scrollTo(0,0)}
+  else if(t.dataset.n)edit(t.dataset.n);
+  else if(t.id==="nn")edit();
+  else if(t.dataset.f!==undefined){fsel=t.dataset.f;render()}
+  else if(t.dataset.th){S.prefs.theme=t.dataset.th;save();theme();render()}
+  else if(t.id==="nf")ask("Nuova cartella","Nome della cartella",v=>{const f={id:uid(),name:v};S.folders.push(f);fsel=f.id;save();render()});
+  else if(t.id==="df"){S.notes.forEach(n=>{if(n.folder===fsel)n.folder=""});S.folders=S.folders.filter(f=>f.id!==fsel);fsel="";save();render();toast("Cartella eliminata")}
+  else if(t.id==="ex"){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="cyber-web-backup.json";a.click()}
+  else if(t.id==="im")$("#imf").click();
+  else if(t.id==="ai")sheet(`<h3 style="margin:0">Netrunner AI</h3><p style="color:var(--mut);margin:0">${T("Il collegamento con l’AI arriva alla fase 3, choom: userà il tuo Apps Script e la tua chiave Gemini.","Il collegamento con l’AI arriva nella fase 3: userà il tuo Apps Script e la tua chiave Gemini.")}</p>`);
+});
+document.addEventListener("input",e=>{if(e.target.id==="q"){q=e.target.value;list()}else if(e.target.id==="nm"){S.prefs.name=e.target.value||"Runner Locale";save()}});
+document.addEventListener("change",e=>{
+  if(e.target.id==="sl"){S.prefs.slang=e.target.checked;save()}
+  else if(e.target.id==="imf"){const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);S=Object.assign({notes:[],folders:[],prefs:S.prefs},d);S.prefs=Object.assign({theme:"viola",slang:true,name:"Runner Locale"},S.prefs);save();theme();render();toast("Backup importato")}catch(x){toast("File non valido")}})}
+});
+theme();render();
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script></body></html>
