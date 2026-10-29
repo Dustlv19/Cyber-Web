@@ -78,6 +78,10 @@ nav a{flex:1;text-align:center;padding:10px 0 8px;font:700 11px monospace;letter
 .m.a::before{content:"";position:absolute;left:-48px;top:2px;width:40px;height:40px;border-radius:50%;background:#0d0b1a var(--av) center/78% no-repeat}
 .m.u{border:0;border-radius:24px 24px 6px 24px;background:color-mix(in srgb,var(--p) 38%,#161432);font-size:16px}
 #aidn{position:absolute;right:18px;bottom:150px;display:none}
+.eb .rec i{border-color:#ff4d6d;color:#ff4d6d}.eb .rec{color:#ff4d6d}
+.mr{display:flex;gap:10px;align-items:flex-start;align-self:flex-start;max-width:100%}.mr .m.a{margin-left:0;max-width:calc(100% - 50px)}.m.a::before{display:none}
+.av{width:42px;height:42px;flex:none;border-radius:50%;background:#0d0b1a;padding:4px;object-fit:contain;box-shadow:0 0 10px color-mix(in srgb,var(--p) 50%,transparent)}
+.fab .bd{position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:#ff4d4d;border:2px solid #0d0b1a;display:none}
 .toast{position:fixed;left:50%;bottom:150px;transform:translateX(-50%);background:var(--p);color:#0a0714;padding:8px 16px;border-radius:99px;font-weight:700;z-index:99}
 </style></head><body>
 <main id="m"></main>
@@ -91,23 +95,23 @@ nav a{flex:1;text-align:center;padding:10px 0 8px;font:700 11px monospace;letter
   <g clip-path="url(#ey)"><rect class="scan" x="0" y="20" width="3" height="24" style="fill:#00f0ff" opacity=".55"/></g>
   <g class="eye"><circle cx="32" cy="32" r="8.5" fill="none" stroke="#fcee0a" stroke-width="2"/><circle cx="32" cy="32" r="3.6" style="fill:#ff2bd6"/>
   <path d="M32 21.5v3.2M32 39.3v3.2M21.5 32h3.2M39.3 32h3.2" stroke="#fcee0a" stroke-width="1.5"/></g>
-</svg></button>
+</svg><i class="bd" id="bd"></i></button>
 <nav id="nav"><a data-t="note"><i>▤</i>NOTE</a><a data-t="cart"><i>▣</i>CARTELLE</a><a data-t="cerca"><i>⌕</i>CERCA</a><a data-t="altro"><i>⠿</i>ALTRO</a></nav>
 <script>
 const $=s=>document.querySelector(s),esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const KEY="cyberweb.v1";let S={notes:[],folders:[],prefs:{}},tab="note",fsel="",q="",tf=0,ST="",busy=false,pend=false,kt=0;
+const KEY="cyberweb.v1";let S={notes:[],folders:[],prefs:{}},tab="note",fsel="",q="",tf=0,ff="all",ST="",busy=false,pend=false,kt=0;
 try{S=Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
 S.prefs=Object.assign({theme:"viola",slang:true,name:"Runner Locale",push:false,rem:{on:false,time:"20:00"}},S.prefs);
-S.cloud=Object.assign({url:"",tok:""},S.cloud);S.del=Object.assign({notes:[],folders:[]},S.del);S.ai=Object.assign({msgs:[],files:[]},S.ai);
+S.cloud=Object.assign({url:"",tok:""},S.cloud);S.del=Object.assign({notes:[],folders:[]},S.del);S.ai=Object.assign({msgs:[],files:[]},S.ai);S.files=S.files||[];
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast("Memoria piena")}};
 const save=()=>{persist();kick()};
 const TH={viola:["#8b5cf6","#ff2bd6"],ciano:["#00f0ff","#ff2bd6"],rosso:["#ff3355","#00f0ff"],verde:["#39ff88","#ff2bd6"],arancio:["#ff8a2b","#00f0ff"],giallo:["#fcee0a","#ff2bd6"],rosa:["#ff4fd8","#00f0ff"],bianco:["#eef4ff","#8aa0ff"]};
 const T=(a,b)=>S.prefs.slang?a:b,uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 function theme(){const t=TH[S.prefs.theme]||TH.viola,s=document.documentElement.style;s.setProperty("--p",t[0]);s.setProperty("--p2",t[1])}
-function toast(t){const e=document.createElement("div");e.className="toast";e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2200)}
+function toast(t,ms){const e=document.createElement("div");e.className="toast";e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),ms||2200);return e}
 const greet=()=>{const h=new Date().getHours();return h<6?"Buonanotte":h<13?"Buongiorno":h<19?"Buon pomeriggio":"Buonasera"};
 const plain=n=>n.text.replace(/\s+/g," ").trim();
-function stats(){return `<div class="card stats"><div><b>${S.notes.length}</b><span>NOTE</span></div><div><b>${S.folders.length}</b><span>CARTELLE</span></div><div><b>${S.fcount||0}</b><span>ALLEGATI</span></div></div>`}
+function stats(){return `<div class="card stats"><div><b>${S.notes.length}</b><span>NOTE</span></div><div><b>${S.folders.length}</b><span>CARTELLE</span></div><div data-go="files" style="cursor:pointer"><b>${S.fcount||0}</b><span>ALLEGATI</span></div></div>`}
 function noteList(arr){return arr.length?arr.map(n=>`<div class="card note" data-n="${n.id}"><b>${n.pin?"📌 ":""}${esc(n.title||"Senza titolo")}</b><p>${esc(plain(n))}</p><small>${new Date(n.updated).toLocaleDateString("it-IT")}</small></div>`).join(""):`<div class="empty"><i>▤</i><h3>${T("Archivio vuoto","Nessuna nota")}</h3><p>${T("Le tue note appariranno qui, choom.","Le tue note appariranno qui.")}</p></div>`}
 function filt(){const k=q.toLowerCase();return S.notes.filter(n=>(!fsel||n.folder===fsel)&&(!tf||Date.now()-n.updated<=tf*864e5)&&(!k||(n.title+" "+n.text).toLowerCase().includes(k))).sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||b.updated-a.updated)}
 function folderCards(){const c=id=>S.notes.filter(n=>!id||n.folder===id).length;return `<div class="fc ${!fsel?"on":""}" data-f=""><b>Tutte</b><small>${c()} note</small></div>`+S.folders.map(f=>`<div class="fc ${fsel===f.id?"on":""}" data-f="${f.id}"><b>${esc(f.name)}</b><small>${c(f.id)} note</small></div>`).join("")}
@@ -116,28 +120,32 @@ const chipsF=()=>`<div class="chips"><div class="chip ${!fsel?"on":""}" data-f="
 const chipsT=()=>`<div class="chips">${[[0,"Sempre"],[7,"7 giorni"],[30,"30 giorni"]].map(c=>`<div class="chip ${tf===c[0]?"on":""}" data-tf="${c[0]}">${c[1]}</div>`).join("")}</div>`;
 const TIMES=["07:00","08:00","09:00","12:00","18:00","20:00","21:00"];
 function render(){
-  const m=$("#m");document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.t===(tab==="notif"?"altro":tab)));
+  const m=$("#m");document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.t===(tab==="notif"?"altro":tab==="files"?"note":tab)));
   const R=S.prefs.rem,P=S.prefs.push;
   if(tab==="note")m.innerHTML=`<div class="hd"><h1>CYBER WEB</h1><div class="hb"><div class="ic" id="bell">${BELL}${P?"":'<i class="dot"></i>'}</div><div class="ic a" id="av">${esc((S.prefs.name||"R")[0].toUpperCase())}</div></div></div><h2>${greet()}, ${esc(S.prefs.name)}</h2><p class="sub" id="sbt">// ${T("archivio neurale attivo","archivio attivo")}${ST?" · "+ST:""}</p>${stats()}<input id="q" placeholder="Filtra le note…" value="${esc(q)}"><div class="sec"><span>CARTELLE</span><a id="nf">+ NUOVA</a></div><div class="fl">${folderCards()}</div><div class="sec"><span>NOTE RECENTI</span><b id="cnt"></b></div><div id="nl"></div><button class="pri plus" id="nn">+ NUOVA NOTA</button>`;
   else if(tab==="cart")m.innerHTML=`<p class="sub">// struttura dati</p><h1>ARCHIVIO</h1><p>Organizza le note in cartelle tematiche</p>${stats()}<button class="pri" id="nf">+ NUOVA CARTELLA</button><div class="sec"><span>CARTELLE</span><b>${S.folders.length}</b></div>${S.folders.length?`<div class="fl" style="flex-direction:column">${folderCards()}</div>${fsel?`<button class="dng" id="df" style="margin-top:14px">Elimina questa cartella</button>`:""}`:`<div class="empty"><i>▣</i><h3>Nessuna cartella</h3><p>Crea la prima cartella per separare lezioni, ricerche e appunti${T(" di netrunning","")}.</p></div>`}`;
-  else if(tab==="cerca")m.innerHTML=`<p class="sub">// motore di ricerca</p><h1>RICERCA</h1><p>Scansiona note, file e registrazioni in tutto l’archivio</p><input id="q" placeholder="Cerca un termine, un file, un audio…" value="${esc(q)}"><p class="sub" style="margin:12px 0;color:var(--p)"><span id="cnt">0</span> risultati in archivio</p><div class="chips" style="margin-bottom:10px"><div class="chip on">Tutti</div><div class="chip">Solo testo</div><div class="chip off" data-soon="1">Audio</div><div class="chip off" data-soon="1">File</div></div>${chipsF()}<div style="height:10px"></div>${chipsT()}<div class="sec"><span>TUTTE LE NOTE</span><b id="cnt2"></b></div><div id="nl"></div>`;
+  else if(tab==="cerca")m.innerHTML=`<p class="sub">// motore di ricerca</p><h1>RICERCA</h1><p>Scansiona note, file e registrazioni in tutto l’archivio</p><input id="q" placeholder="Cerca un termine, un file, un audio…" value="${esc(q)}"><p class="sub" style="margin:12px 0;color:var(--p)"><span id="cnt">0</span> risultati in archivio</p><div class="chips" style="margin-bottom:10px"><div class="chip on">Tutti</div><div class="chip">Solo testo</div><div class="chip" data-ff="audio">Audio</div><div class="chip" data-ff="doc">File</div></div>${chipsF()}<div style="height:10px"></div>${chipsT()}<div class="sec"><span>TUTTE LE NOTE</span><b id="cnt2"></b></div><div id="nl"></div>`;
   else if(tab==="notif"){const on=P||R.on;m.innerHTML=`<div style="display:flex;align-items:center;gap:14px"><button id="bk2" style="width:52px;padding:12px">←</button><p class="sub" style="margin:0">// sistema avvisi</p></div><h1 style="margin-top:18px">NOTIFICHE</h1><p>Gestisci promemoria e avvisi da un unico pannello</p><div class="card" style="display:flex;gap:16px;align-items:center"><i class="ring">${on?"🔔":"🔕"}</i><div><div class="lab">CANALE AVVISI</div><b style="font-size:24px;letter-spacing:.12em;color:${on?"var(--p)":"var(--mut)"}">${on?"ATTIVO":"SILENZIOSO"}</b><div style="color:var(--mut);font-size:14px">Push ${P?"accese":"spente"} · Studio ${R.on?"acceso":"spento"}</div></div></div><div class="sec"><span>PUSH</span></div><div class="card sw"><div><b>Notifiche push</b><br><small style="color:var(--mut)">Avvisi del dispositivo</small></div><input type="checkbox" id="pu" ${P?"checked":""}></div><div class="sec"><span>PROMEMORIA DI STUDIO</span><b>${R.time}</b></div><div class="card sw"><div><b>Promemoria giornaliero</b><br><small style="color:var(--mut)">${R.on?"Ogni giorno alle "+R.time:"Spento"}</small></div><input type="checkbox" id="rm" ${R.on?"checked":""}></div><div class="chips" style="margin-top:12px">${TIMES.map(t=>`<div class="chip ${R.time===t?"on":""}" data-tm="${t}">${t}</div>`).join("")}</div><div class="sec"><span>VERIFICA CANALE</span></div><button id="tn">✈ Invia notifica di prova</button><div class="card" style="margin-top:16px;color:var(--mut);font-size:14px">ⓘ I promemoria restano salvati su questo dispositivo e partono quando l’app è aperta o in uso. Attiva solo ciò che ti serve.</div>`}
-  else{const C=S.cloud,drv=`<div class="sec"><span>GOOGLE DRIVE</span></div><div class="card"><b>${C.url?(C.tok?"Collegato":"Da accedere"):"Non collegato"}</b><div style="color:var(--mut);font-size:14px;margin-top:4px">${C.url?(S.lastSync?"Ultima sincronizzazione: "+new Date(S.lastSync).toLocaleString("it-IT"):"Mai sincronizzato"):"Sincronizza note e cartelle con il tuo sito."}</div><div class="row" style="margin-top:12px">${!C.url||!C.tok?`<button class="pri" id="cl">${C.url?"Accedi":"Collega"}</button>`:`<button id="sy">Sincronizza</button>`}${C.url?`<button class="dng" id="dc">Scollega</button>`:""}</div></div>`;m.innerHTML=`<p class="sub">// sistema</p><h1>ALTRO</h1><div class="card go" data-go="notif"><div><b>Notifiche</b><br><small style="color:var(--mut)">Push · promemoria di studio</small></div><b style="color:var(--p)">›</b></div>${drv}<div class="sec"><span>COLORE PRINCIPALE</span></div><div class="dots">${Object.keys(TH).map(k=>`<i data-th="${k}" class="${S.prefs.theme===k?"on":""}" style="background:${TH[k][0]}"></i>`).join("")}</div><div class="sec"><span>STILE</span></div><div class="card sw"><div><b>Slang di Night City</b><br><small style="color:var(--mut)">choom, preem, netrunner…</small></div><input type="checkbox" id="sl" ${S.prefs.slang?"checked":""}></div><div class="card sw" style="margin-top:10px"><div><b>L’AI può agire sull’app</b><br><small style="color:var(--mut)">crea e sposta note, cambia tema…</small></div><input type="checkbox" id="ag" ${S.prefs.agent!==false?"checked":""}></div><div class="sec"><span>PROFILO</span></div><input id="nm" value="${esc(S.prefs.name)}"><div class="sec"><span>BACKUP</span></div><div class="card" style="color:var(--mut);font-size:14px">I dati stanno solo su questo dispositivo: esporta un backup ogni tanto.</div><div class="row" style="margin-top:10px"><button id="ex">Esporta</button><button id="im">Importa</button></div><input type="file" id="imf" accept=".json" hidden>`}
+  else if(tab==="files"){const k=f=>/^audio/.test(f.mime||"")||/\.(webm|mp3|m4a|wav|ogg|aac)$/i.test(f.name)?"audio":/^image/.test(f.mime||"")?"img":"doc",F=S.files.filter(f=>ff==="all"||k(f)===ff).sort((a,b)=>b.created-a.created),E={audio:"🎙",img:"🖼",doc:"📄"};
+    m.innerHTML=`<div style="display:flex;align-items:center;gap:14px"><button id="bk3" style="width:52px;padding:12px">←</button><p class="sub" style="margin:0">// file e registrazioni</p></div><h1 style="margin-top:18px">ALLEGATI</h1><div class="chips" style="margin:12px 0 16px">${[["all","Tutti"],["audio","Audio"],["img","Immagini"],["doc","Documenti"]].map(c=>`<div class="chip ${ff===c[0]?"on":""}" data-ff="${c[0]}">${c[1]}</div>`).join("")}</div>${F.length?F.map(f=>`<div class="card note" data-fr="${f.rid}"><b>${E[k(f)]} ${esc(f.name)}</b><small>${f.size?Math.round(f.size/1024)+" KB · ":""}${new Date(f.created).toLocaleDateString("it-IT")}</small></div>`).join(""):'<div class="empty"><i>📎</i><h3>Nessun allegato</h3><p>Aggiungi file o audio dall’editor di una nota.</p></div>'}`}
+  else{const C=S.cloud,drv=`<div class="sec"><span>GOOGLE DRIVE</span></div><div class="card"><b>${C.url?(C.tok?"Collegato":"Da accedere"):"Non collegato"}</b><div style="color:var(--mut);font-size:14px;margin-top:4px">${C.url?(S.lastSync?"Ultima sincronizzazione: "+new Date(S.lastSync).toLocaleString("it-IT"):"Mai sincronizzato"):"Sincronizza note e cartelle con il tuo sito."}</div>${C.tok&&S.remote?`<div style="color:var(--mut);font-size:13px;margin-top:4px">Su Drive: ${S.remote.notes} note · ${S.remote.files} file · ${S.remote.folders} cartelle</div>`:""}${S.lastErr?`<div style="color:#ff4d6d;font-size:13px;margin-top:6px">Ultimo errore: ${esc(S.lastErr)}</div>`:""}<div class="row" style="margin-top:12px">${!C.url||!C.tok?`<button class="pri" id="cl">${C.url?"Accedi":"Collega"}</button>`:`<button id="sy">Sincronizza</button>`}${C.url?`<button class="dng" id="dc">Scollega</button>`:""}</div></div>`;m.innerHTML=`<p class="sub">// sistema</p><h1>ALTRO</h1><div class="card go" data-go="notif"><div><b>Notifiche</b><br><small style="color:var(--mut)">Push · promemoria di studio</small></div><b style="color:var(--p)">›</b></div>${drv}<div class="sec"><span>COLORE PRINCIPALE</span></div><div class="dots">${Object.keys(TH).map(k=>`<i data-th="${k}" class="${S.prefs.theme===k?"on":""}" style="background:${TH[k][0]}"></i>`).join("")}</div><div class="sec"><span>STILE</span></div><div class="card sw"><div><b>Slang di Night City</b><br><small style="color:var(--mut)">choom, preem, netrunner…</small></div><input type="checkbox" id="sl" ${S.prefs.slang?"checked":""}></div><div class="card sw" style="margin-top:10px"><div><b>L’AI può agire sull’app</b><br><small style="color:var(--mut)">crea e sposta note, cambia tema…</small></div><input type="checkbox" id="ag" ${S.prefs.agent!==false?"checked":""}></div><div class="sec"><span>PROFILO</span></div><input id="nm" value="${esc(S.prefs.name)}"><div class="sec"><span>BACKUP</span></div><div class="card" style="color:var(--mut);font-size:14px">I dati stanno solo su questo dispositivo: esporta un backup ogni tanto.</div><div class="row" style="margin-top:10px"><button id="ex">Esporta</button><button id="im">Importa</button></div><input type="file" id="imf" accept=".json" hidden>`}
   list();
 }
-async function notify(t,b){try{const r=await navigator.serviceWorker.getRegistration();if(r)await r.showNotification(t,{body:b,icon:"icon-192.png",badge:"icon-192.png"});else new Notification(t,{body:b})}catch(e){toast("Notifica non riuscita")}}
+async function notify(t,b,tag){try{const r=await navigator.serviceWorker.getRegistration();if(r)await r.showNotification(t,{body:b,icon:"icon-192.png",badge:"icon-192.png",tag:tag||"cw",renotify:true});else new Notification(t,{body:b})}catch(e){toast("Notifica non riuscita")}}
 async function perm(){if(!("Notification"in window)){toast("Notifiche non supportate qui");return false}if(Notification.permission==="granted")return true;return(await Notification.requestPermission())==="granted"}
 function tick(){const r=S.prefs.rem;if(!r.on||!("Notification"in window)||Notification.permission!=="granted")return;const d=new Date(),day=d.toDateString();if(d.toTimeString().slice(0,5)>=r.time&&S.prefs.lastRem!==day){S.prefs.lastRem=day;save();notify("Cyber Web",T("È ora di studiare, choom.","È ora di studiare."))}}
 setInterval(tick,30000);document.addEventListener("visibilitychange",tick);
 document.addEventListener("click",async e=>{
-  const t=e.target.closest("[data-go],[data-tf],[data-tm],[data-soon],#bell,#av,#bk2,#tn");if(!t)return;
+  const t=e.target.closest("[data-go],[data-tf],[data-tm],[data-ff],[data-fr],#bk3,#bell,#av,#bk2,#tn");if(!t)return;
   if(t.dataset.go){tab=t.dataset.go;render();scrollTo(0,0)}
   else if(t.id==="bell"){tab="notif";render();scrollTo(0,0)}
   else if(t.id==="av"){tab="altro";render();scrollTo(0,0)}
   else if(t.id==="bk2"){tab="altro";render()}
   else if(t.dataset.tf!==undefined){tf=+t.dataset.tf;render()}
   else if(t.dataset.tm){S.prefs.rem.time=t.dataset.tm;save();render()}
-  else if(t.dataset.soon)toast("Arriva con la sincronizzazione Drive");
+  else if(t.dataset.ff){ff=t.dataset.ff;tab="files";render()}
+  else if(t.dataset.fr)openFile(S.files.find(f=>f.rid===t.dataset.fr));
+  else if(t.id==="bk3"){tab="note";render()}
   else if(t.id==="tn"){if(await perm())notify("Cyber Web",T("Canale attivo, choom. Segnale ricevuto.","Canale attivo: notifica di prova ricevuta."));else toast("Permesso notifiche negato")}
 });
 document.addEventListener("change",async e=>{
@@ -149,10 +157,34 @@ function sheet(html,fn){const s=document.createElement("div");s.className="sheet
 function ask(title,ph,cb,val){sheet(`<h3 style="margin:0">${title}</h3><input id="ai1" placeholder="${ph}" value="${esc(val||"")}"><button class="pri" id="ok1">Conferma</button>`,s=>{const i=s.querySelector("#ai1");i.focus();s.querySelector("#ok1").onclick=()=>{if(i.value.trim()){cb(i.value.trim());s.remove()}}})}
 const I={back:'<path d="M19 12H5M11 6l-6 6 6 6"/>',pin:'<path d="M12 3v7M8 10h8l-1 4H9zM12 14v7"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/>',clip:'<path d="M20 11l-8.5 8.5a5 5 0 0 1-7-7L13 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L14 7"/>',mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',folder:'<path d="M3 7h6l2 2h10v10H3z"/>',up:'<path d="M12 19V5M6 11l6-6 6 6"/>',img:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 16l5-5 5 5 3-3 5 5"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/>',x:'<path d="M5 5l14 14M19 5L5 19"/>',plus:'<path d="M12 5v14M5 12h14"/>',down:'<path d="M12 5v14M6 13l6 6 6-6"/>'};
 const ic=k=>`<svg viewBox="0 0 24 24">${I[k]}</svg>`;
+const b64of=blob=>new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(",")[1]);r.onerror=ko;r.readAsDataURL(blob)});
+async function upFile(file,folderLocal){
+  if(!S.cloud.tok){toast("Collega prima il Drive");return null}
+  if(file.size>10e6){toast(file.name+": massimo 10 MB");return null}
+  toast("Carico "+file.name+"…");
+  try{const id=await A("uploadFile",file.name,file.type||"application/octet-stream",await b64of(file),rid(folderLocal));
+    const f={rid:id,name:file.name,mime:file.type,size:file.size,created:Date.now(),folder:folderLocal||""};S.files.push(f);S.fcount=S.files.length;persist();toast("Allegato caricato ✓");return f}
+  catch(e){toast("Caricamento non riuscito");return null}}
+async function openFile(a){
+  if(!a)return;const id=a.rid;let d;
+  const s=sheet(`<h3 style="margin:0;word-break:break-word">${esc(a.name)}</h3><div id="fv" style="color:var(--mut)">Carico…</div><div class="row" id="fb" style="display:none"><button id="fa">Scarica</button><button id="fi2">Chiedi all’AI</button></div><button class="dng" id="fd">Elimina file</button>`);
+  const v=s.querySelector("#fv");
+  try{d=await A("getData",id)}catch(e){v.textContent="Non riesco a leggere il file: sei online e collegato a Drive?"}
+  if(d){const blob=new Blob([Uint8Array.from(atob(d.b64),c=>c.charCodeAt(0))],{type:d.mime}),url=URL.createObjectURL(blob);v.textContent="";
+    if(/^audio/.test(d.mime)||/\.(webm|mp3|m4a|wav|ogg)$/i.test(a.name)){const au=document.createElement("audio");au.controls=true;au.src=url;au.style.width="100%";v.appendChild(au)}
+    else if(/^image/.test(d.mime)){const im=document.createElement("img");im.src=url;im.style.cssText="max-width:100%;border-radius:12px";v.appendChild(im)}
+    else if(/^text|json/.test(d.mime)){const pr=document.createElement("pre");pr.style.cssText="max-height:220px;overflow:auto;white-space:pre-wrap";pr.textContent=await blob.text();v.appendChild(pr)}
+    else v.textContent=Math.round(d.b64.length*.75/1024)+" KB";
+    s.querySelector("#fb").style.display="flex";
+    s.querySelector("#fa").onclick=()=>{const l=document.createElement("a");l.href=url;l.download=a.name;l.click()};
+    s.querySelector("#fi2").onclick=()=>{s.remove();if(!S.ai.files.some(x=>x.id===id))S.ai.files.push({id,name:a.name});persist();openAI()}}
+  let arm=0;const fd=s.querySelector("#fd");
+  fd.onclick=async()=>{if(!arm){arm=1;fd.textContent="Sicuro? Tocca ancora";return}
+    try{await A("remove",id);S.files=S.files.filter(x=>x.rid!==id);S.notes.forEach(n=>{if(n.att)n.att=n.att.filter(x=>x.rid!==id)});S.fcount=S.files.length;persist();s.remove();render()}catch(e){toast("Eliminazione non riuscita")}}}
 function edit(id){
   let n=S.notes.find(x=>x.id===id);const isNew=!n;if(!n)n={id:uid(),title:"",text:"",folder:fsel,created:Date.now(),updated:Date.now()};
   const o=document.createElement("div");o.className="ov ed";const g=s=>o.querySelector(s);
-  o.innerHTML=`<div class="eh"><button class="ib" id="bk">${ic("back")}</button><div class="et"><b>MODULO NOTA</b><span id="est">${isNew?"BOZZA LOCALE":"SALVATA IN LOCALE"}</span></div><button class="ib ${n.pin?"on":""}" id="pn">${ic("pin")}</button>${isNew?"":`<button class="ib red" id="de">${ic("trash")}</button>`}</div><input class="tt" id="ti" placeholder="Titolo della nota…" value="${esc(n.title)}"><div class="fr"><button class="pill" id="fp"><i></i><span id="fn"></span> ⌄</button><small class="lab" id="mt">${isNew?"NUOVA BOZZA":"MODIFICATA "+new Date(n.updated).toLocaleDateString("it-IT")}</small></div><textarea id="tx" placeholder="Scrivi qui i tuoi appunti, collegamenti e idee…">${esc(n.text)}</textarea><div class="hint">${ic("clip")}<span>Allega documenti o registra audio dalla barra in basso.</span></div><div class="eb"><div data-a="f"><i>${ic("clip")}</i>FILE</div><div data-a="a"><i>${ic("mic")}</i>AUDIO</div><div data-a="c"><i>${ic("folder")}</i>CARTELLA</div></div>`;
+  o.innerHTML=`<div class="eh"><button class="ib" id="bk">${ic("back")}</button><div class="et"><b>MODULO NOTA</b><span id="est">${isNew?"BOZZA LOCALE":"SALVATA IN LOCALE"}</span></div><button class="ib ${n.pin?"on":""}" id="pn">${ic("pin")}</button>${isNew?"":`<button class="ib red" id="de">${ic("trash")}</button>`}</div><input class="tt" id="ti" placeholder="Titolo della nota…" value="${esc(n.title)}"><div class="fr"><button class="pill" id="fp"><i></i><span id="fn"></span> ⌄</button><small class="lab" id="mt">${isNew?"NUOVA BOZZA":"MODIFICATA "+new Date(n.updated).toLocaleDateString("it-IT")}</small></div><textarea id="tx" placeholder="Scrivi qui i tuoi appunti, collegamenti e idee…">${esc(n.text)}</textarea><div class="chips" id="at"></div><div class="hint">${ic("clip")}<span>Allega documenti o registra audio dalla barra in basso.</span></div><div class="eb"><div data-a="f"><i>${ic("clip")}</i>FILE</div><div data-a="a"><i>${ic("mic")}</i>AUDIO</div><div data-a="c"><i>${ic("folder")}</i>CARTELLA</div></div>`;
   document.body.appendChild(o);const ti=g("#ti"),tx=g("#tx");let tm=0;
   window.CURN={get title(){return ti.value},get text(){return tx.value}};
   const lab=()=>{const f=S.folders.find(f=>f.id===n.folder);g("#fn").textContent=f?f.name:"Senza cartella";g("#fp i").style.background=f?"var(--p)":"var(--mut)"};lab();
@@ -165,7 +197,16 @@ function edit(id){
   g("#fp").onclick=pick;
   g("#pn").onclick=()=>{if(!(ti.value.trim()||tx.value.trim())){toast("Scrivi qualcosa prima");return}n.pin=!n.pin;g("#pn").classList.toggle("on",n.pin);commit();toast(n.pin?"Nota fissata":"Nota sbloccata")};
   const de=g("#de");if(de)de.onclick=()=>sheet(`<h3 style="margin:0">Eliminare la nota?</h3><button class="dng" id="y1">Elimina</button><button id="n1">Annulla</button>`,s=>{s.querySelector("#n1").onclick=()=>s.remove();s.querySelector("#y1").onclick=()=>{s.remove();clearTimeout(tm);tm=0;if(n.rid)S.del.notes.push(n.rid);S.notes=S.notes.filter(x=>x!==n);save();close()}});
-  o.querySelectorAll(".eb div").forEach(b=>b.onclick=()=>{if(b.dataset.a==="c")pick();else toast("File e audio arrivano con la prossima fase")});
+  n.att=n.att||[];const ra=()=>{const c=g("#at");c.innerHTML="";n.att.forEach(a=>{const e=document.createElement("div");e.className="chip";e.textContent="📎 "+a.name;e.onclick=()=>openFile(a);c.appendChild(e)})};ra();
+  const add=async f=>{const x=await upFile(f,n.folder);if(x){n.att.push({rid:x.rid,name:x.name,mime:x.mime});ra();touch()}};
+  const fi=document.createElement("input");fi.type="file";fi.multiple=true;fi.onchange=async e=>{for(const f of e.target.files)await add(f);e.target.value=""};
+  let rec=null,chunks=[],tt2=0,t0=0;const ab=o.querySelector('[data-a="a"]');
+  ab.onclick=async()=>{if(rec){rec.stop();return}
+    try{const st=await navigator.mediaDevices.getUserMedia({audio:true});rec=new MediaRecorder(st);chunks=[];rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+      rec.onstop=async()=>{clearInterval(tt2);st.getTracks().forEach(t=>t.stop());ab.lastChild.textContent="AUDIO";ab.classList.remove("rec");const blob=new Blob(chunks,{type:rec.mimeType||"audio/webm"});rec=null;
+        const d=new Date(),nm="Registrazione "+d.toLocaleDateString("it-IT").replace(/\//g,"-")+" "+d.toTimeString().slice(0,5).replace(":","-")+(blob.type.includes("mp4")?".m4a":".webm");await add(new File([blob],nm,{type:blob.type}))};
+      rec.start();t0=Date.now();ab.classList.add("rec");tt2=setInterval(()=>{const s=Math.floor((Date.now()-t0)/1000);ab.lastChild.textContent="STOP "+Math.floor(s/60)+":"+String(s%60).padStart(2,"0")},500)}catch(e){toast("Microfono non disponibile")}};
+  o.querySelectorAll(".eb div").forEach(b=>{const a=b.dataset.a;if(a==="c")b.onclick=pick;else if(a==="f")b.onclick=()=>fi.click()});
 }
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-n],[data-f],[data-th],#nn,#nf,#df,#ex,#im,nav a,#ai");if(!t)return;
@@ -189,7 +230,9 @@ const MARK="<!--cw-->",p2h=t=>t.split("\n").map(l=>"<div>"+(esc(l)||"<br>")+"</d
 const h2t=h=>new DOMParser().parseFromString(h.replace(/<br\s*\/?>/gi,"\n").replace(/<\/(div|p|li|h[1-4]|tr)>/gi,"\n"),"text/html").body.textContent.replace(/\n{3,}/g,"\n\n").trim();
 const isRich=h=>/<(h[1-4]|ul|ol|li|b|strong|i|em|u|s|table|input|span|font|a|blockquote|pre)\b/i.test(h);
 const setSt=t=>{ST=t;const e=$("#sbt");if(e)e.textContent="// "+T("archivio neurale attivo","archivio attivo")+(t?" · "+t:"")};
-async function api(fn,args){const r=await fetch(S.cloud.url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({fn,args})}),j=await r.json();if(!j.ok)throw new Error(j.error||"Errore");return j.data}
+async function api(fn,args,ms){const c=new AbortController(),t=ms?setTimeout(()=>c.abort(),ms):0;
+  try{const r=await fetch(S.cloud.url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({fn,args}),signal:c.signal}),j=await r.json();if(!j.ok)throw new Error(j.error||"Errore");return j.data}
+  catch(e){if(e.name==="AbortError")throw new Error("L’AI ci mette troppo. Riprova, oppure usa la modalità Veloce nelle impostazioni (ingranaggio).");throw e}finally{clearTimeout(t)}}
 const A=(fn,...a)=>api(fn,[S.cloud.tok,...a]);
 function kick(){if(!S.cloud.url||!S.cloud.tok)return;clearTimeout(kt);kt=setTimeout(()=>sync(),2500)}
 function openNote(id){const n=S.notes.find(x=>x.id===id);if(n&&n.rich)sheet(`<h3 style="margin:0">Nota formattata</h3><p style="color:var(--mut);margin:0">Questa nota ha titoli, elenchi o altra formattazione. Modificandola qui diventa testo semplice: per non perdere nulla modificala dal sito.</p><button class="pri" id="yy">Modifica comunque</button><button id="nn2">Annulla</button>`,s=>{s.querySelector("#yy").onclick=()=>{s.remove();edit(id)};s.querySelector("#nn2").onclick=()=>s.remove()});else edit(id)}
@@ -210,26 +253,29 @@ async function sync(manual){
     for(const rid of S.del.notes.splice(0))try{await A("remove",rid)}catch(e){if(/autorizzato/i.test(e.message))throw e}
     for(const rid of S.del.folders.splice(0))try{await A("deleteFolder",rid)}catch(e){if(/autorizzato/i.test(e.message))throw e}
     for(const f of S.folders)if(!f.rid)f.rid=await A("createFolder",f.name);
-    let L=await A("list");const pushed=[],seen={};S.fcount=L.items.filter(i=>!i.note).length;
+    let L=await A("list",Math.max(0,(S.since||0)-120000));const pushed=[],seen={};if(L.items.some(i=>i.note&&i.text===null&&!S.notes.find(x=>x.rid===i.id)))L=await A("list");S.fcount=L.items.filter(i=>!i.note).length;
     L.folders.forEach(r=>{if(!S.folders.find(f=>f.rid===r.id))S.folders.push({id:uid(),rid:r.id,name:r.name})});
     S.folders=S.folders.filter(f=>{const r=L.folders.find(x=>x.id===f.rid);if(r){f.name=r.name;return true}S.notes.forEach(n=>{if(n.folder===f.id)n.folder=""});return false});
     const fl=rid=>(S.folders.find(f=>f.rid===rid)||{}).id||"";
-    const mk=r=>{const t=r.text||"",h=t.indexOf(MARK)===0?t.slice(MARK.length):null,rich=h!==null&&isRich(h);return{rid:r.id,title:r.name,text:h===null?t:h2t(h),html:rich?h:"",rich,folder:fl(r.folder),created:r.created,updated:r.updated,synced:r.updated,dirty:false}};
+    S.files=L.items.filter(i=>!i.note).map(i=>({rid:i.id,name:i.name,mime:i.mime,size:i.size,created:i.created,folder:fl(i.folder)}));S.fcount=S.files.length;
+    const mk=r=>{if(r.text===null)return{rid:r.id,title:r.name,folder:fl(r.folder),updated:r.updated,synced:r.updated};const t=r.text||"",h=t.indexOf(MARK)===0?t.slice(MARK.length):null,rich=h!==null&&isRich(h);return{rid:r.id,title:r.name,text:h===null?t:h2t(h),html:rich?h:"",rich,folder:fl(r.folder),created:r.created,updated:r.updated,synced:r.updated,dirty:false}};
     const push=async n=>{const html=n.rich?n.html:p2h(n.text),fr=(S.folders.find(f=>f.id===n.folder)||{}).rid||"";
       if(!n.rid)n.rid=await A("saveNote",n.title||"Nota",MARK+html,fr);else{await A("updateNote",n.rid,n.title||"Nota",MARK+html);await A("moveItem",n.rid,fr)}
       n.dirty=false;pushed.push(n)};
-    for(const r of L.items.filter(i=>i.note)){seen[r.id]=1;const n=S.notes.find(x=>x.rid===r.id);
+    let nerr=0;const rem=L.items.filter(i=>i.note);
+    for(const r of rem){seen[r.id]=1;try{const n=S.notes.find(x=>x.rid===r.id);
       if(!n)S.notes.push(Object.assign({id:uid()},mk(r)));
       else if(n.dirty){if(r.updated>n.synced&&r.updated>n.updated)Object.assign(n,mk(r));else await push(n)}
-      else if(r.updated>n.synced)Object.assign(n,mk(r))}
-    for(const n of S.notes.slice()){
+      else if(r.updated>n.synced)Object.assign(n,mk(r))}catch(e){nerr++;S.lastErr=String(e.message||e)}}
+    for(const n of S.notes.slice()){try{
       if(n.rid&&!seen[n.rid]){if(n.dirty){n.rid="";await push(n)}else S.notes=S.notes.filter(x=>x!==n)}
-      else if(!n.rid&&(n.title||n.text.trim()))await push(n)}
-    if(pushed.length){L=await A("list");L.items.forEach(r=>{const n=pushed.find(x=>x.rid===r.id);if(n)n.synced=r.updated})}
-    S.lastSync=Date.now();persist();setSt("☁ sincronizzato");
+      else if(!n.rid&&(n.title||n.text.trim()))await push(n)}catch(e){nerr++;S.lastErr=String(e.message||e)}}
+    
+if(pushed.length){L=await A("list",9e15);L.items.forEach(r=>{const n=pushed.find(x=>x.rid===r.id);if(n)n.synced=r.updated})}
+    S.since=Math.max(S.since||0,...L.items.map(i=>i.updated||0));S.lastSync=Date.now();S.remote={notes:rem.length,files:S.files.length,folders:L.folders.length};if(!nerr)S.lastErr="";persist();setSt(nerr?"sincronizzato con errori":"☁ sincronizzato");
     const ae=document.activeElement;if(!document.querySelector(".ov")&&!(ae&&/INPUT|TEXTAREA/.test(ae.tagName)))render();else list();
     if(manual)toast("Sincronizzato ✓");
-  }catch(e){const m=String(e.message||e);
+  }catch(e){const m=String(e.message||e);S.lastErr=m;persist();
     if(/autorizzato/i.test(m)){S.cloud.tok="";persist();setSt("accedi di nuovo");loginSheet("Sessione scaduta: inserisci di nuovo la password.")}
     else setSt(/fetch|Network|Load failed/i.test(m)?"offline":"errore di sincronizzazione");
     if(manual)toast(m.slice(0,70))}
@@ -238,13 +284,25 @@ async function sync(manual){
 document.addEventListener("click",e=>{
   const t=e.target.closest("#cl,#sy,#dc");if(!t)return;
   if(t.id==="cl")loginSheet();else if(t.id==="sy")sync(true);
-  else{S.cloud={url:"",tok:""};persist();setSt("");render();toast("Scollegato")}
+  else{S.cloud={url:"",tok:""};S.since=0;persist();setSt("");render();toast("Scollegato")}
 });
 function boot(){if(!S.cloud.url)return;if(S.cloud.tok)sync();else loginSheet("Accedi per sincronizzare con il tuo Drive.");document.addEventListener("visibilitychange",()=>{if(!document.hidden)kick()})}
+const AVSVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">  <defs><clipPath id="ey"><path d="M12 32Q32 14 52 32Q32 50 12 32Z"/></clipPath></defs>  <polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="none" style="stroke:#ff2bd6" stroke-width="2" transform="translate(-1.6,1)" opacity=".8"/>  <polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="none" style="stroke:#00f0ff" stroke-width="2" transform="translate(1.6,-1)" opacity=".8"/>  <polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="#0b0820" stroke="#fcee0a" stroke-width="2.6"/>  <path d="M9 24V19L16 15M55 24V19L48 15M9 40v5l7 4M55 40v5l-7 4" fill="none" stroke="#fcee0a" stroke-width="1.4" opacity=".7"/>  <path d="M12 32Q32 14 52 32Q32 50 12 32Z" fill="#05040c" style="stroke:#00f0ff" stroke-width="2"/>  <g clip-path="url(#ey)"><rect class="scan" x="0" y="20" width="3" height="24" style="fill:#00f0ff" opacity=".55"/></g>  <g class="eye"><circle cx="32" cy="32" r="8.5" fill="none" stroke="#fcee0a" stroke-width="2"/><circle cx="32" cy="32" r="3.6" style="fill:#ff2bd6"/>  <path d="M32 21.5v3.2M32 39.3v3.2M21.5 32h3.2M39.3 32h3.2" stroke="#fcee0a" stroke-width="1.5"/></g></svg>';
 const AI={ctx:"",busy:0},fmt=t=>String(t).split(/```[\w+.-]*\n?/).map((p,i)=>i%2?`<pre>${esc(p.replace(/\n$/,""))}</pre>`:esc(p).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`([^`\n]+)`/g,"<code>$1</code>").replace(/^\s*[-*•]\s+/gm,"• ").replace(/\n/g,"<br>")).join("");
 const rid=id=>(S.folders.find(f=>f.id===id)||{}).rid||"";
 const stateJson=()=>JSON.stringify({cartelle:S.folders.filter(f=>f.rid).map(f=>({id:f.rid,nome:f.name})),elementi:S.notes.filter(n=>n.rid).slice(0,150).map(n=>({id:n.rid,nome:(n.title||"").slice(0,60),tipo:"nota",cartella:rid(n.folder)})),cartella_aperta:rid(fsel),tema:S.prefs.theme,slang:!!S.prefs.slang});
-function aiAdd(role,text){const m=$("#aim"),d=document.createElement("div");d.className="m "+role;if(role==="a")d.innerHTML=fmt(text);else d.textContent=text;m.appendChild(d);m.scrollTop=m.scrollHeight;return d}
+let AVU="";
+function avUrl(){if(!AVU)AVU="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(AVSVG);return AVU}
+function aiAdd(role,text){
+  const m=$("#aim");if(!m)return document.createElement("div");
+  const d=document.createElement("div");d.className="m "+role;if(role==="a")d.innerHTML=fmt(text);else d.textContent=text;
+  if(role==="a"){const r=document.createElement("div"),im=document.createElement("img");r.className="mr";im.className="av";im.src=avUrl();im.alt="";r.append(im,d);m.appendChild(r)}else m.appendChild(d);
+  m.scrollTop=m.scrollHeight;return d}
+function aiPing(t){
+  const short=String(t).replace(/\s+/g," ").slice(0,110),bd=$("#bd");
+  if(!$("#aiov")&&bd)bd.style.display="block";
+  if(document.hidden){if("Notification"in window&&Notification.permission==="granted")notify(T("Netrunner AI","Assistente AI"),short,"ai")}
+  else if(!$("#aiov")){const e=toast(T("Netrunner AI ha risposto →","L’assistente ha risposto →"),6000);e.onclick=()=>{e.remove();openAI()}}}
 function aiDecor(d,a){const b=document.createElement("button");b.textContent="Salva come nota";b.onclick=()=>{S.notes.push({id:uid(),title:"AI: "+a.replace(/\s+/g," ").slice(0,40),text:a,folder:"",created:Date.now(),updated:Date.now(),dirty:true});save();list();b.textContent="Nota salvata ✓";b.disabled=true};d.appendChild(b)}
 function aiCard(p){const d=document.createElement("div");d.className="pc";d.innerHTML=`<div>⚠ ${esc(p.label)}</div>`;const ok=document.createElement("button"),no=document.createElement("button");ok.textContent="Conferma";ok.className="dng";no.textContent="Annulla";
   ok.onclick=async()=>{ok.disabled=no.disabled=true;try{const r=await A("execPending",{name:p.name,args:p.args});d.textContent=(r.ok?"✓ ":"✗ ")+r.message;sync()}catch(e){d.textContent="✗ Operazione non riuscita"}};
@@ -253,24 +311,40 @@ function aiAct(list){list.forEach(a=>{const g=a.args||{};
   if(a.name==="navigate"){const f=S.folders.find(f=>f.rid===g.folder_id);if(g.folder_id!==undefined)fsel=f?f.id:"";if(g.query!==undefined)q=String(g.query);tab=g.query?"cerca":"note"}
   else if(a.name==="set_theme"){const k=({cyan:"ciano"})[g.color]||g.color;if(TH[k]){S.prefs.theme=k;theme()}}
   else if(a.name==="set_slang")S.prefs.slang=!!g.on});persist();if(!document.querySelector(".ov:not(#aiov)"))render()}
+const ACT=/(crea|aggiung|spost|rinom|elimin|cancell|cambi|impost|attiv|disattiv|organizz|mett|salv|apr[ei]|mostr|cerc|trov|modific|aggiorn|ordin|cartell)/i,NOTI=/(not[ae]\b|appunt|archivi|cartell)/i;
+const notesCtx=()=>S.notes.slice(0,40).map(n=>"### "+(n.title||"Nota")+"\n"+n.text.slice(0,600)).join("\n\n").slice(0,12000);
 async function aiAsk(text){
   const f=S.ai.files.map(x=>x.id);if(!S.cloud.tok){aiAdd("s","Collega prima il Drive: Altro → Google Drive.");return}
-  if(AI.busy)return;AI.busy=1;$("#aisend").disabled=true;S.ai.msgs.push({r:"u",t:text});aiAdd("u",text);const w=aiAdd("a",T("Hack in corso…","…"));w.classList.add("w");
-  try{const res=await A("askAgent",S.ai.msgs,AI.ctx,!!S.prefs.slang,f,stateJson(),S.prefs.agent!==false),a=res.text||"Fatto.";
-    S.ai.msgs.push({r:"a",t:a});S.ai.dirty=true;persist();w.classList.remove("w");w.innerHTML=fmt(a);aiDecor(w,a);
-    (res.log||[]).forEach(l=>aiAdd("s","⚙ "+l));(res.pending||[]).forEach(aiCard);aiAct(res.actions||[]);if(res.changed)sync()}
-  catch(e){S.ai.msgs.pop();persist();w.classList.remove("w");w.textContent=String(e.message||e).replace(/^Error:\s*/,"");if(/autorizzato/i.test(w.textContent)){S.cloud.tok="";persist();loginSheet("Sessione scaduta.")}}
-  AI.busy=0;$("#aisend").disabled=false}
+  if(AI.busy)return;AI.busy=1;
+  if("Notification"in window&&Notification.permission==="default")Notification.requestPermission().then(p=>{if(p==="granted"){S.prefs.push=true;persist()}});
+  S.ai.msgs.push({r:"u",t:text});persist();aiAdd("u",text);
+  AI.w=aiAdd("a",T("Hack in corso…","Sto pensando…"));AI.w.classList.add("w");const sb=$("#aisend");if(sb)sb.disabled=true;
+  const act=S.prefs.agent!==false&&ACT.test(text),ctx=AI.ctx||(NOTI.test(text)?notesCtx():"");
+  const t0=Date.now(),iv=setInterval(()=>{const s=Math.round((Date.now()-t0)/1000);if(AI.w&&AI.w.isConnected)AI.w.textContent=(s<25?T("Hack in corso…","Sto pensando…"):T("Ancora al lavoro, choom…","Ancora al lavoro…"))+" "+s+"s"},1000);
+  let res,err="";
+  try{res=await api("askAgent",[S.cloud.tok,S.ai.msgs,ctx,!!S.prefs.slang,f,act?stateJson():"",act,S.prefs.aiMode==="deep"?"deep":"fast"],100000)}catch(e){err=String(e.message||e).replace(/^Error:\s*/,"")}
+  clearInterval(iv);
+  AI.busy=0;const live=$("#aim"),w=AI.w&&live&&live.contains(AI.w)?AI.w:null;AI.w=null;const sb2=$("#aisend");if(sb2)sb2.disabled=false;
+  if(err){S.ai.msgs.pop();persist();
+    if(w){w.classList.remove("w");w.textContent=err;const b=document.createElement("button");b.textContent="Riprova";b.onclick=()=>{b.remove();aiAsk(text)};w.appendChild(b)}else aiPing("Errore: "+err);
+    if(/autorizzato/i.test(err)){S.cloud.tok="";persist();loginSheet("Sessione scaduta.")}return}
+  const a=res.text||"Fatto.";S.ai.msgs.push({r:"a",t:a});S.ai.dirty=true;persist();
+  if(w){w.classList.remove("w");w.innerHTML=fmt(a);aiDecor(w,a);(res.log||[]).forEach(l=>aiAdd("s","⚙ "+l));(res.pending||[]).forEach(aiCard);if(document.hidden)aiPing(a)}
+  else{AI.q={log:res.log||[],pending:res.pending||[]};aiPing(a)}
+  aiAct(res.actions||[]);if(res.changed)sync()}
 function aiFiles(){const b=$("#aif");b.innerHTML="";S.ai.files.forEach((f,i)=>{const c=document.createElement("div");c.className="chip";c.textContent="📎 "+f.name+" ✕";c.onclick=()=>{S.ai.files.splice(i,1);persist();aiFiles()};b.appendChild(c)})}
 const AIQ=[["Riassumi le mie note","Riassumi le mie note e dimmi i punti più importanti."],["Organizza l’archivio","Guarda le mie note, proponi come organizzarle in cartelle e, se ti sembra sensato, fallo tu."],["Spiegami passo passo","Spiegami passo passo questo argomento: "]];
 function openAI(note){
   if(document.querySelector("#aiov"))return;AI.ctx=note?"### "+(note.title||"Nota")+"\n"+note.text:"";
   const o=document.createElement("div");o.className="aiw";o.id="aiov";
-  o.innerHTML=`<div class="aip"><div class="aih"><span>Cyber Web</span><div class="ia"><button class="ib s" id="aisv" title="Chat salvate">${ic("clock")}</button><button class="ib s" id="aigs" title="Impostazioni">${ic("gear")}</button><button class="ib s" id="aihp" title="Aiuto">${ic("help")}</button><button class="ib s" id="aib" title="Chiudi">${ic("x")}</button></div></div><div class="msgs" id="aim"></div><div id="aiv"></div><button class="ib" id="aidn">${ic("down")}</button><div class="chips" id="aif"></div><div class="aib"><button class="ib red" id="ain" title="Nuova chat">${ic("plus")}</button><div class="chips nw" id="aiq"></div></div><div class="aii"><input id="aii" placeholder="${T("Dimmi cosa ti serve, choom…","Chiedimi qualsiasi cosa…")}"><button class="ib s" id="aiat" title="Allega">${ic("img")}</button><button class="ib pu" id="mic" title="Detta">${ic("mic")}</button><button class="ib send" id="aisend" title="Invia">${ic("up")}</button></div><input type="file" id="aifi" multiple hidden></div>`;
+  o.innerHTML=`<div class="aip"><div class="aih"><span>Cyber Web</span><div class="ia"><button class="ib s" id="aisv" title="Chat salvate">${ic("clock")}</button><button class="ib s" id="aigs" title="Impostazioni">${ic("gear")}</button><button class="ib s" id="aitr" title="Cancella la chat e ricomincia">${ic("trash")}</button><button class="ib s" id="aib" title="Chiudi">${ic("x")}</button></div></div><div class="msgs" id="aim"></div><div id="aiv"></div><button class="ib" id="aidn">${ic("down")}</button><div class="chips" id="aif"></div><div class="aib"><button class="ib red" id="ain" title="Nuova chat">${ic("plus")}</button><div class="chips nw" id="aiq"></div></div><div class="aii"><input id="aii" placeholder="${T("Dimmi cosa ti serve, choom…","Chiedimi qualsiasi cosa…")}"><button class="ib s" id="aiat" title="Allega">${ic("img")}</button><button class="ib pu" id="mic" title="Detta">${ic("mic")}</button><button class="ib send" id="aisend" title="Invia">${ic("up")}</button></div><input type="file" id="aifi" multiple hidden></div>`;
   try{o.style.setProperty("--av",'url("data:image/svg+xml;utf8,'+encodeURIComponent(document.querySelector("#ai svg").outerHTML.replace("<svg","<svg xmlns='http://www.w3.org/2000/svg'"))+'")')}catch(e){}
   document.body.appendChild(o);
   const draw=()=>{$("#aim").innerHTML="";aiAdd("s",note?"Contesto: nota «"+(note.title||"senza titolo")+"»":T("Ehi choom! Sono il tuo netrunner: posso ragionare, scrivere, riassumere e gestire note e cartelle al posto tuo.","Ciao! Posso ragionare, scrivere, riassumere e gestire note e cartelle al posto tuo."));S.ai.msgs.forEach(m=>{const d=aiAdd(m.r==="a"?"a":"u",m.t);if(m.r==="a")aiDecor(d,m.t)});
-    const qq=$("#aiq");qq.innerHTML="";if(!S.ai.msgs.length)(note?[["Riassumi","Riassumi questa nota in pochi punti."],["Correggi","Correggi errori e migliora la forma di questa nota."],["Checklist","Trasforma questa nota in una checklist."]]:AIQ).forEach(c=>{const e=document.createElement("div");e.className="chip";e.textContent=c[0];e.onclick=()=>{if(c[1].endsWith(": "))$("#aii").value=c[1];else aiAsk(c[1]);qq.innerHTML=""};qq.appendChild(e)});aiFiles()};
+    const qq=$("#aiq");qq.innerHTML="";if(!S.ai.msgs.length)(note?[["Riassumi","Riassumi questa nota in pochi punti."],["Correggi","Correggi errori e migliora la forma di questa nota."],["Checklist","Trasforma questa nota in una checklist."]]:AIQ).forEach(c=>{const e=document.createElement("div");e.className="chip";e.textContent=c[0];e.onclick=()=>{if(c[1].endsWith(": "))$("#aii").value=c[1];else aiAsk(c[1]);qq.innerHTML=""};qq.appendChild(e)});aiFiles();
+    if(AI.busy){AI.w=aiAdd("a",T("Hack in corso…","…"));AI.w.classList.add("w")}
+    if(AI.q){AI.q.log.forEach(l=>aiAdd("s","⚙ "+l));AI.q.pending.forEach(aiCard);AI.q=null}
+    const bd=$("#bd");if(bd)bd.style.display="none"};
   draw();$("#aib").onclick=()=>o.remove();
   const tt=(b,warn,fn,need)=>{let a=0;const base=b.textContent;b.onclick=()=>{if(need&&!need()){fn();return}const ib=b.classList.contains("ib");if(!a){a=1;if(ib)toast(warn);else b.textContent=warn;setTimeout(()=>{a=0;if(!ib)b.textContent=base},3000);return}a=0;if(!ib)b.textContent=base;fn()}};
   const unsaved=()=>S.ai.dirty&&S.ai.msgs.length;
@@ -298,10 +372,11 @@ function openAI(note){
   o.onclick=e=>{if(e.target===o)o.remove()};
   $("#aii").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();$("#aisend").click()}};
   const ms=$("#aim"),dn=$("#aidn");ms.onscroll=()=>{dn.style.display=ms.scrollHeight-ms.scrollTop-ms.clientHeight>120?"grid":"none"};dn.onclick=()=>ms.scrollTo({top:ms.scrollHeight,behavior:"smooth"});
+  tt($("#aitr"),"Chat non salvata! Tocca ancora per cancellarla",()=>{S.ai={msgs:[],files:[]};AI.ctx="";persist();draw()},unsaved);
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   $("#mic").onclick=()=>{if(!SR){toast("Dettatura non supportata su questo dispositivo");return}const r=new SR();r.lang="it-IT";r.onresult=e=>{const i=$("#aii");i.value+=(i.value?" ":"")+e.results[0][0].transcript;i.focus()};r.onerror=()=>toast("Microfono non disponibile");r.start();toast("Parla pure…")};
-  $("#aigs").onclick=()=>sheet(`<h3 style="margin:0">Impostazioni AI</h3><button id="gs">Salva questa chat su Drive</button><div class="sw"><span>L’AI può agire sull’app</span><input type="checkbox" id="g1" ${S.prefs.agent!==false?"checked":""}></div><div class="sw"><span>Slang di Night City</span><input type="checkbox" id="g2" ${S.prefs.slang?"checked":""}></div>`,s=>{s.querySelector("#gs").onclick=()=>{s.remove();saveCh()};s.querySelector("#g1").onchange=e=>{S.prefs.agent=e.target.checked;save()};s.querySelector("#g2").onchange=e=>{S.prefs.slang=e.target.checked;save()}});
-  $("#aihp").onclick=()=>sheet(`<h3 style="margin:0">Come usare l’assistente</h3><p style="color:var(--mut);margin:0">Scrivi o detta una richiesta. Allega file con l’icona immagine, apri le chat salvate con l’orologio e salva la conversazione dalle impostazioni. L’AI può creare e spostare note, ma chiede conferma prima di eliminare.</p>`);
+  $("#aigs").onclick=()=>sheet(`<h3 style="margin:0">Impostazioni AI</h3><button id="gs">Salva questa chat su Drive</button><button id="gh">Come usare l’assistente</button><button class="dng" id="gc">Cancella la chat e ricomincia</button><div class="sw"><span>L’AI può agire sull’app</span><input type="checkbox" id="g1" ${S.prefs.agent!==false?"checked":""}></div><div class="sw"><span>Slang di Night City</span><input type="checkbox" id="g2" ${S.prefs.slang?"checked":""}></div><div class="sw"><span>Ragiona di più (più lento)</span><input type="checkbox" id="g3" ${S.prefs.aiMode==="deep"?"checked":""}></div>`,s=>{s.querySelector("#gs").onclick=()=>{s.remove();saveCh()};s.querySelector("#gh").onclick=()=>{s.remove();help()};s.querySelector("#gc").onclick=()=>{s.remove();$("#aitr").click()};s.querySelector("#g1").onchange=e=>{S.prefs.agent=e.target.checked;save()};s.querySelector("#g2").onchange=e=>{S.prefs.slang=e.target.checked;save()};s.querySelector("#g3").onchange=e=>{S.prefs.aiMode=e.target.checked?"deep":"fast";save()}});
+  const help=()=>sheet(`<h3 style="margin:0">Come usare l’assistente</h3><p style="color:var(--mut);margin:0">Scrivi o detta una richiesta. Allega file con l’icona immagine, apri le chat salvate con l’orologio e salva la conversazione dalle impostazioni. L’AI può creare e spostare note, ma chiede conferma prima di eliminare.</p>`);
   $("#aisend").onclick=()=>{const v=$("#aii").value.trim();if(v){$("#aii").value="";$("#aiq").innerHTML="";aiAsk(v)}};
   $("#aiat").onclick=()=>$("#aifi").click();
   $("#aifi").onchange=async e=>{for(const f of e.target.files){if(f.size>8e6||/\.(docx?|xlsx?|pptx?|zip|rar|7z|exe)$/i.test(f.name)){toast(f.name+": non supportato (max 8 MB, no Office)");continue}
@@ -310,6 +385,8 @@ function openAI(note){
       S.ai.files.push({id:await A("aiUpload",f.name,f.type,b64),name:f.name});persist();aiFiles()}catch(x){toast("Caricamento non riuscito")}}e.target.value=""};
 }
 document.addEventListener("change",e=>{if(e.target.id==="ag"){S.prefs.agent=e.target.checked;save()}});
+if(navigator.serviceWorker)navigator.serviceWorker.addEventListener("message",e=>{if(e.data&&e.data.type==="open-ai")openAI()});
+if(/[?&]ai=1/.test(location.search))setTimeout(()=>openAI(),500);
 theme();render();tick();boot();
 if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script></body></html>
