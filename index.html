@@ -28,7 +28,7 @@ button{font:800 14px system-ui;letter-spacing:.14em;text-transform:uppercase;cur
 button.pri{background:var(--p);color:#0a0714}button.dng{border-color:#ff4d6d;color:#ff4d6d}
 nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:#0b0916f2;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:20}
 nav a{flex:1;text-align:center;padding:10px 0 8px;font:700 11px monospace;letter-spacing:.18em;color:var(--mut);cursor:pointer}nav a i{display:block;font-size:22px;font-style:normal;margin-bottom:2px}nav a.on{color:var(--p)}
-.fab{position:fixed;right:14px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:30;width:62px;height:62px;padding:0;border:0;border-radius:50%;background:#0d0b1acc;filter:drop-shadow(0 0 6px #00f0ff) drop-shadow(0 0 14px #ff2bd6aa)}
+.fab{position:fixed;right:14px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:55;width:62px;height:62px;padding:0;border:0;border-radius:50%;background:#0d0b1acc;filter:drop-shadow(0 0 6px #00f0ff) drop-shadow(0 0 14px #ff2bd6aa)}
 .fab svg{width:100%;height:100%;animation:fg 4.5s infinite steps(1)}
 .fab .eye{transform-box:fill-box;transform-origin:center;animation:eb 5s infinite}.fab .scan{animation:sx 2.6s linear infinite}
 @keyframes fg{0%,90%,100%{transform:none}91%{transform:translate(-2px,1px) skewX(4deg)}93%{transform:translate(2px,-1px)}95%{transform:none}}
@@ -47,6 +47,37 @@ nav a{flex:1;text-align:center;padding:10px 0 8px;font:700 11px monospace;letter
 .chip.on{border-color:var(--p);color:var(--p);background:color-mix(in srgb,var(--p) 14%,transparent)}.chip.off{opacity:.45}
 .go{display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-top:10px}.lab{font:11px monospace;letter-spacing:.25em;color:var(--mut)}
 .ring{display:grid;place-items:center;flex:none;width:68px;height:68px;border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--p) 14%,transparent);font-style:normal;font-size:28px}
+.msgs{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-bottom:6px}
+.m{max-width:90%;padding:10px 13px;border-radius:16px;font-size:15px;word-break:break-word}.m.u{align-self:flex-end;background:color-mix(in srgb,var(--p2) 18%,transparent);border:1px solid var(--p2)}
+.m.a{align-self:flex-start;background:var(--card);border:1px solid var(--line)}.m.s{align-self:center;color:var(--mut);font-size:12px;text-align:center}.m.w{opacity:.6}
+.m b{color:#fcee0a}.m pre{background:#05040c;padding:8px;border-radius:10px;overflow:auto;color:#fcee0a;font-size:12px;margin:6px 0}.m code{color:#fcee0a}
+.m button,.pc button{width:auto;padding:6px 10px;font-size:10px;letter-spacing:.08em;margin-top:8px;border-radius:12px}.pc{align-self:flex-start;border:1px solid #fcee0a;border-radius:16px;padding:10px 12px;font-size:14px;max-width:92%}
+#aiov{z-index:70}.ab{display:flex;gap:8px;align-items:flex-end}.ab textarea{min-height:48px;max-height:120px}.ab button{width:auto;padding:13px 16px}
+#aiv{display:none;flex:1;overflow:auto}#aiov.lv #aiv{display:flex;flex-direction:column;gap:10px}#aiov.lv #aim,#aiov.lv .aib,#aiov.lv #aif,#aiov.lv .aii,#aiov.lv #aidn{display:none!important}
+.ib{width:52px;height:52px;border-radius:50%;padding:0;display:grid;place-items:center;flex:none;border:1px solid var(--line);background:var(--card);color:var(--fg);letter-spacing:0}
+.ib svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ib.s{width:44px;height:44px;border:0;background:transparent}.ib.red{border-color:#7a1f2b;color:#ff6b6b;background:#2a0d14}.ib.on{border-color:var(--p);color:var(--p)}
+.ib.send{background:color-mix(in srgb,var(--p) 40%,#2a2850);border:0;color:#fff}.ib.pu{border:0;background:color-mix(in srgb,var(--p) 35%,#1b1a3a);color:var(--p)}
+.eh{display:flex;gap:12px;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--line)}.et{flex:1;min-width:0}
+.et b{display:block;font:900 22px system-ui;letter-spacing:.08em;color:var(--p);text-shadow:2px 0 var(--p2)}.et span{font:800 12px monospace;letter-spacing:.2em;color:#4ade80}
+.ov .tt{background:transparent;border:0;border-radius:0;padding:10px 0;font:800 30px/1.2 system-ui}.ov .tt::placeholder{color:var(--mut)}
+.fr{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.pill{width:auto;display:flex;gap:10px;align-items:center;border-radius:99px;padding:11px 16px;font:600 16px system-ui;letter-spacing:0;text-transform:none;color:var(--fg);border-color:var(--line);background:var(--card)}
+.pill i{width:12px;height:12px;border-radius:50%;background:var(--mut)}
+.ed textarea{background:transparent;border:0;border-radius:0;padding:10px 0;font-size:19px}
+.hint{border:1px dashed var(--line);border-radius:18px;padding:16px;color:var(--mut);display:flex;gap:12px;align-items:center}.hint svg{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8}
+.eb{display:flex;justify-content:space-around;margin:4px -18px -18px;padding:12px 0 calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#0b0916}
+.eb div{text-align:center;font:800 12px monospace;letter-spacing:.2em;color:var(--mut);cursor:pointer}
+.eb i{display:grid;place-items:center;width:64px;height:64px;border-radius:22px;border:1px solid var(--line);background:var(--card);margin:0 auto 6px;color:var(--p)}.eb svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.aiw{position:fixed;inset:0;z-index:70;background:#000b;display:flex;align-items:flex-end;padding:10px}
+.aip{position:relative;width:100%;max-width:640px;margin:0 auto;height:min(78dvh,760px);display:flex;flex-direction:column;background:linear-gradient(#1b1a3a,#14122b);border:1px solid var(--line);border-radius:36px;padding:14px 14px calc(14px + env(safe-area-inset-bottom));gap:10px;overflow:hidden}
+.aih{display:flex;align-items:center;justify-content:space-between;padding:4px 6px 0}.aih>span{color:var(--mut);font-size:20px}.ia{display:flex;gap:4px}
+.aib{display:flex;gap:10px;align-items:center}.nw{flex-wrap:nowrap;overflow-x:auto;flex:1}.nw .chip{white-space:nowrap;background:#1f1d40;font:600 15px system-ui;letter-spacing:0;text-transform:none}
+.aii{display:flex;gap:8px;align-items:center;background:#201f42;border-radius:99px;padding:6px 6px 6px 18px}.aii input{background:transparent;border:0;padding:8px 0;border-radius:0;font-size:17px}
+.m.a{position:relative;margin-left:48px;background:#1d1b3b;border:0;border-radius:22px;font-size:16px;line-height:1.5;max-width:calc(100% - 48px)}
+.m.a::before{content:"";position:absolute;left:-48px;top:2px;width:40px;height:40px;border-radius:50%;background:#0d0b1a var(--av) center/78% no-repeat}
+.m.u{border:0;border-radius:24px 24px 6px 24px;background:color-mix(in srgb,var(--p) 38%,#161432);font-size:16px}
+#aidn{position:absolute;right:18px;bottom:150px;display:none}
 .toast{position:fixed;left:50%;bottom:150px;transform:translateX(-50%);background:var(--p);color:#0a0714;padding:8px 16px;border-radius:99px;font-weight:700;z-index:99}
 </style></head><body>
 <main id="m"></main>
@@ -64,19 +95,21 @@ nav a{flex:1;text-align:center;padding:10px 0 8px;font:700 11px monospace;letter
 <nav id="nav"><a data-t="note"><i>▤</i>NOTE</a><a data-t="cart"><i>▣</i>CARTELLE</a><a data-t="cerca"><i>⌕</i>CERCA</a><a data-t="altro"><i>⠿</i>ALTRO</a></nav>
 <script>
 const $=s=>document.querySelector(s),esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const KEY="cyberweb.v1";let S={notes:[],folders:[],prefs:{}},tab="note",fsel="",q="",tf=0;
+const KEY="cyberweb.v1";let S={notes:[],folders:[],prefs:{}},tab="note",fsel="",q="",tf=0,ST="",busy=false,pend=false,kt=0;
 try{S=Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
 S.prefs=Object.assign({theme:"viola",slang:true,name:"Runner Locale",push:false,rem:{on:false,time:"20:00"}},S.prefs);
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast("Memoria piena")}};
+S.cloud=Object.assign({url:"",tok:""},S.cloud);S.del=Object.assign({notes:[],folders:[]},S.del);S.ai=Object.assign({msgs:[],files:[]},S.ai);
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast("Memoria piena")}};
+const save=()=>{persist();kick()};
 const TH={viola:["#8b5cf6","#ff2bd6"],ciano:["#00f0ff","#ff2bd6"],rosso:["#ff3355","#00f0ff"],verde:["#39ff88","#ff2bd6"],arancio:["#ff8a2b","#00f0ff"],giallo:["#fcee0a","#ff2bd6"],rosa:["#ff4fd8","#00f0ff"],bianco:["#eef4ff","#8aa0ff"]};
 const T=(a,b)=>S.prefs.slang?a:b,uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 function theme(){const t=TH[S.prefs.theme]||TH.viola,s=document.documentElement.style;s.setProperty("--p",t[0]);s.setProperty("--p2",t[1])}
 function toast(t){const e=document.createElement("div");e.className="toast";e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2200)}
 const greet=()=>{const h=new Date().getHours();return h<6?"Buonanotte":h<13?"Buongiorno":h<19?"Buon pomeriggio":"Buonasera"};
 const plain=n=>n.text.replace(/\s+/g," ").trim();
-function stats(){return `<div class="card stats"><div><b>${S.notes.length}</b><span>NOTE</span></div><div><b>${S.folders.length}</b><span>CARTELLE</span></div><div><b>0</b><span>ALLEGATI</span></div></div>`}
-function noteList(arr){return arr.length?arr.map(n=>`<div class="card note" data-n="${n.id}"><b>${esc(n.title||"Senza titolo")}</b><p>${esc(plain(n))}</p><small>${new Date(n.updated).toLocaleDateString("it-IT")}</small></div>`).join(""):`<div class="empty"><i>▤</i><h3>${T("Archivio vuoto","Nessuna nota")}</h3><p>${T("Le tue note appariranno qui, choom.","Le tue note appariranno qui.")}</p></div>`}
-function filt(){const k=q.toLowerCase();return S.notes.filter(n=>(!fsel||n.folder===fsel)&&(!tf||Date.now()-n.updated<=tf*864e5)&&(!k||(n.title+" "+n.text).toLowerCase().includes(k))).sort((a,b)=>b.updated-a.updated)}
+function stats(){return `<div class="card stats"><div><b>${S.notes.length}</b><span>NOTE</span></div><div><b>${S.folders.length}</b><span>CARTELLE</span></div><div><b>${S.fcount||0}</b><span>ALLEGATI</span></div></div>`}
+function noteList(arr){return arr.length?arr.map(n=>`<div class="card note" data-n="${n.id}"><b>${n.pin?"📌 ":""}${esc(n.title||"Senza titolo")}</b><p>${esc(plain(n))}</p><small>${new Date(n.updated).toLocaleDateString("it-IT")}</small></div>`).join(""):`<div class="empty"><i>▤</i><h3>${T("Archivio vuoto","Nessuna nota")}</h3><p>${T("Le tue note appariranno qui, choom.","Le tue note appariranno qui.")}</p></div>`}
+function filt(){const k=q.toLowerCase();return S.notes.filter(n=>(!fsel||n.folder===fsel)&&(!tf||Date.now()-n.updated<=tf*864e5)&&(!k||(n.title+" "+n.text).toLowerCase().includes(k))).sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||b.updated-a.updated)}
 function folderCards(){const c=id=>S.notes.filter(n=>!id||n.folder===id).length;return `<div class="fc ${!fsel?"on":""}" data-f=""><b>Tutte</b><small>${c()} note</small></div>`+S.folders.map(f=>`<div class="fc ${fsel===f.id?"on":""}" data-f="${f.id}"><b>${esc(f.name)}</b><small>${c(f.id)} note</small></div>`).join("")}
 const BELL='<svg viewBox="0 0 24 24"><path d="M6 17h12l-1.5-2V10a4.5 4.5 0 0 0-9 0v5L6 17zM10 20h4"/></svg>';
 const chipsF=()=>`<div class="chips"><div class="chip ${!fsel?"on":""}" data-f="">Tutte le cartelle</div>${S.folders.map(f=>`<div class="chip ${fsel===f.id?"on":""}" data-f="${f.id}">${esc(f.name)}</div>`).join("")}</div>`;
@@ -85,11 +118,11 @@ const TIMES=["07:00","08:00","09:00","12:00","18:00","20:00","21:00"];
 function render(){
   const m=$("#m");document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.t===(tab==="notif"?"altro":tab)));
   const R=S.prefs.rem,P=S.prefs.push;
-  if(tab==="note")m.innerHTML=`<div class="hd"><h1>CYBER WEB</h1><div class="hb"><div class="ic" id="bell">${BELL}${P?"":'<i class="dot"></i>'}</div><div class="ic a" id="av">${esc((S.prefs.name||"R")[0].toUpperCase())}</div></div></div><h2>${greet()}, ${esc(S.prefs.name)}</h2><p class="sub">// ${T("archivio neurale attivo","archivio attivo")}</p>${stats()}<input id="q" placeholder="Filtra le note…" value="${esc(q)}"><div class="sec"><span>CARTELLE</span><a id="nf">+ NUOVA</a></div><div class="fl">${folderCards()}</div><div class="sec"><span>NOTE RECENTI</span><b id="cnt"></b></div><div id="nl"></div><button class="pri plus" id="nn">+ NUOVA NOTA</button>`;
+  if(tab==="note")m.innerHTML=`<div class="hd"><h1>CYBER WEB</h1><div class="hb"><div class="ic" id="bell">${BELL}${P?"":'<i class="dot"></i>'}</div><div class="ic a" id="av">${esc((S.prefs.name||"R")[0].toUpperCase())}</div></div></div><h2>${greet()}, ${esc(S.prefs.name)}</h2><p class="sub" id="sbt">// ${T("archivio neurale attivo","archivio attivo")}${ST?" · "+ST:""}</p>${stats()}<input id="q" placeholder="Filtra le note…" value="${esc(q)}"><div class="sec"><span>CARTELLE</span><a id="nf">+ NUOVA</a></div><div class="fl">${folderCards()}</div><div class="sec"><span>NOTE RECENTI</span><b id="cnt"></b></div><div id="nl"></div><button class="pri plus" id="nn">+ NUOVA NOTA</button>`;
   else if(tab==="cart")m.innerHTML=`<p class="sub">// struttura dati</p><h1>ARCHIVIO</h1><p>Organizza le note in cartelle tematiche</p>${stats()}<button class="pri" id="nf">+ NUOVA CARTELLA</button><div class="sec"><span>CARTELLE</span><b>${S.folders.length}</b></div>${S.folders.length?`<div class="fl" style="flex-direction:column">${folderCards()}</div>${fsel?`<button class="dng" id="df" style="margin-top:14px">Elimina questa cartella</button>`:""}`:`<div class="empty"><i>▣</i><h3>Nessuna cartella</h3><p>Crea la prima cartella per separare lezioni, ricerche e appunti${T(" di netrunning","")}.</p></div>`}`;
   else if(tab==="cerca")m.innerHTML=`<p class="sub">// motore di ricerca</p><h1>RICERCA</h1><p>Scansiona note, file e registrazioni in tutto l’archivio</p><input id="q" placeholder="Cerca un termine, un file, un audio…" value="${esc(q)}"><p class="sub" style="margin:12px 0;color:var(--p)"><span id="cnt">0</span> risultati in archivio</p><div class="chips" style="margin-bottom:10px"><div class="chip on">Tutti</div><div class="chip">Solo testo</div><div class="chip off" data-soon="1">Audio</div><div class="chip off" data-soon="1">File</div></div>${chipsF()}<div style="height:10px"></div>${chipsT()}<div class="sec"><span>TUTTE LE NOTE</span><b id="cnt2"></b></div><div id="nl"></div>`;
   else if(tab==="notif"){const on=P||R.on;m.innerHTML=`<div style="display:flex;align-items:center;gap:14px"><button id="bk2" style="width:52px;padding:12px">←</button><p class="sub" style="margin:0">// sistema avvisi</p></div><h1 style="margin-top:18px">NOTIFICHE</h1><p>Gestisci promemoria e avvisi da un unico pannello</p><div class="card" style="display:flex;gap:16px;align-items:center"><i class="ring">${on?"🔔":"🔕"}</i><div><div class="lab">CANALE AVVISI</div><b style="font-size:24px;letter-spacing:.12em;color:${on?"var(--p)":"var(--mut)"}">${on?"ATTIVO":"SILENZIOSO"}</b><div style="color:var(--mut);font-size:14px">Push ${P?"accese":"spente"} · Studio ${R.on?"acceso":"spento"}</div></div></div><div class="sec"><span>PUSH</span></div><div class="card sw"><div><b>Notifiche push</b><br><small style="color:var(--mut)">Avvisi del dispositivo</small></div><input type="checkbox" id="pu" ${P?"checked":""}></div><div class="sec"><span>PROMEMORIA DI STUDIO</span><b>${R.time}</b></div><div class="card sw"><div><b>Promemoria giornaliero</b><br><small style="color:var(--mut)">${R.on?"Ogni giorno alle "+R.time:"Spento"}</small></div><input type="checkbox" id="rm" ${R.on?"checked":""}></div><div class="chips" style="margin-top:12px">${TIMES.map(t=>`<div class="chip ${R.time===t?"on":""}" data-tm="${t}">${t}</div>`).join("")}</div><div class="sec"><span>VERIFICA CANALE</span></div><button id="tn">✈ Invia notifica di prova</button><div class="card" style="margin-top:16px;color:var(--mut);font-size:14px">ⓘ I promemoria restano salvati su questo dispositivo e partono quando l’app è aperta o in uso. Attiva solo ciò che ti serve.</div>`}
-  else m.innerHTML=`<p class="sub">// sistema</p><h1>ALTRO</h1><div class="card go" data-go="notif"><div><b>Notifiche</b><br><small style="color:var(--mut)">Push · promemoria di studio</small></div><b style="color:var(--p)">›</b></div><div class="sec"><span>COLORE PRINCIPALE</span></div><div class="dots">${Object.keys(TH).map(k=>`<i data-th="${k}" class="${S.prefs.theme===k?"on":""}" style="background:${TH[k][0]}"></i>`).join("")}</div><div class="sec"><span>STILE</span></div><div class="card sw"><div><b>Slang di Night City</b><br><small style="color:var(--mut)">choom, preem, netrunner…</small></div><input type="checkbox" id="sl" ${S.prefs.slang?"checked":""}></div><div class="sec"><span>PROFILO</span></div><input id="nm" value="${esc(S.prefs.name)}"><div class="sec"><span>BACKUP</span></div><div class="card" style="color:var(--mut);font-size:14px">I dati stanno solo su questo dispositivo: esporta un backup ogni tanto.</div><div class="row" style="margin-top:10px"><button id="ex">Esporta</button><button id="im">Importa</button></div><input type="file" id="imf" accept=".json" hidden>`;
+  else{const C=S.cloud,drv=`<div class="sec"><span>GOOGLE DRIVE</span></div><div class="card"><b>${C.url?(C.tok?"Collegato":"Da accedere"):"Non collegato"}</b><div style="color:var(--mut);font-size:14px;margin-top:4px">${C.url?(S.lastSync?"Ultima sincronizzazione: "+new Date(S.lastSync).toLocaleString("it-IT"):"Mai sincronizzato"):"Sincronizza note e cartelle con il tuo sito."}</div><div class="row" style="margin-top:12px">${!C.url||!C.tok?`<button class="pri" id="cl">${C.url?"Accedi":"Collega"}</button>`:`<button id="sy">Sincronizza</button>`}${C.url?`<button class="dng" id="dc">Scollega</button>`:""}</div></div>`;m.innerHTML=`<p class="sub">// sistema</p><h1>ALTRO</h1><div class="card go" data-go="notif"><div><b>Notifiche</b><br><small style="color:var(--mut)">Push · promemoria di studio</small></div><b style="color:var(--p)">›</b></div>${drv}<div class="sec"><span>COLORE PRINCIPALE</span></div><div class="dots">${Object.keys(TH).map(k=>`<i data-th="${k}" class="${S.prefs.theme===k?"on":""}" style="background:${TH[k][0]}"></i>`).join("")}</div><div class="sec"><span>STILE</span></div><div class="card sw"><div><b>Slang di Night City</b><br><small style="color:var(--mut)">choom, preem, netrunner…</small></div><input type="checkbox" id="sl" ${S.prefs.slang?"checked":""}></div><div class="card sw" style="margin-top:10px"><div><b>L’AI può agire sull’app</b><br><small style="color:var(--mut)">crea e sposta note, cambia tema…</small></div><input type="checkbox" id="ag" ${S.prefs.agent!==false?"checked":""}></div><div class="sec"><span>PROFILO</span></div><input id="nm" value="${esc(S.prefs.name)}"><div class="sec"><span>BACKUP</span></div><div class="card" style="color:var(--mut);font-size:14px">I dati stanno solo su questo dispositivo: esporta un backup ogni tanto.</div><div class="row" style="margin-top:10px"><button id="ex">Esporta</button><button id="im">Importa</button></div><input type="file" id="imf" accept=".json" hidden>`}
   list();
 }
 async function notify(t,b){try{const r=await navigator.serviceWorker.getRegistration();if(r)await r.showNotification(t,{body:b,icon:"icon-192.png",badge:"icon-192.png"});else new Notification(t,{body:b})}catch(e){toast("Notifica non riuscita")}}
@@ -114,31 +147,169 @@ document.addEventListener("change",async e=>{
 function list(){const l=$("#nl");if(!l)return;const a=filt();l.innerHTML=noteList(tab==="note"?a.slice(0,30):a);["#cnt","#cnt2"].forEach(i=>{const c=$(i);if(c)c.textContent=a.length})}
 function sheet(html,fn){const s=document.createElement("div");s.className="sheet";s.innerHTML="<div>"+html+"</div>";s.onclick=e=>{if(e.target===s)s.remove()};document.body.appendChild(s);fn&&fn(s);return s}
 function ask(title,ph,cb,val){sheet(`<h3 style="margin:0">${title}</h3><input id="ai1" placeholder="${ph}" value="${esc(val||"")}"><button class="pri" id="ok1">Conferma</button>`,s=>{const i=s.querySelector("#ai1");i.focus();s.querySelector("#ok1").onclick=()=>{if(i.value.trim()){cb(i.value.trim());s.remove()}}})}
+const I={back:'<path d="M19 12H5M11 6l-6 6 6 6"/>',pin:'<path d="M12 3v7M8 10h8l-1 4H9zM12 14v7"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/>',clip:'<path d="M20 11l-8.5 8.5a5 5 0 0 1-7-7L13 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L14 7"/>',mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',folder:'<path d="M3 7h6l2 2h10v10H3z"/>',up:'<path d="M12 19V5M6 11l6-6 6 6"/>',img:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 16l5-5 5 5 3-3 5 5"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/>',x:'<path d="M5 5l14 14M19 5L5 19"/>',plus:'<path d="M12 5v14M5 12h14"/>',down:'<path d="M12 5v14M6 13l6 6 6-6"/>'};
+const ic=k=>`<svg viewBox="0 0 24 24">${I[k]}</svg>`;
 function edit(id){
-  let n=S.notes.find(x=>x.id===id),isNew=!n;if(!n)n={id:uid(),title:"",text:"",folder:fsel,created:Date.now(),updated:Date.now()};
-  const o=document.createElement("div");o.className="ov";
-  o.innerHTML=`<div class="row"><button id="bk" style="flex:0 0 56px">←</button><select id="fo"><option value="">Senza cartella</option>${S.folders.map(f=>`<option value="${f.id}" ${n.folder===f.id?"selected":""}>${esc(f.name)}</option>`).join("")}</select></div><input id="ti" placeholder="Titolo" value="${esc(n.title)}"><textarea id="tx" placeholder="Scrivi qui…">${esc(n.text)}</textarea>${isNew?"":`<button class="dng" id="de">Elimina nota</button>`}`;
-  document.body.appendChild(o);const done=()=>{n.title=o.querySelector("#ti").value.trim();n.text=o.querySelector("#tx").value;n.folder=o.querySelector("#fo").value;n.updated=Date.now();if((n.title||n.text.trim())&&(isNew||true)){if(!S.notes.includes(n))S.notes.push(n);save()}o.remove();render()};
-  o.querySelector("#bk").onclick=done;const d=o.querySelector("#de");if(d){let a=0;d.onclick=()=>{if(!a){a=1;d.textContent="Sicuro? Tocca ancora";return}S.notes=S.notes.filter(x=>x!==n);save();o.remove();render()}}
+  let n=S.notes.find(x=>x.id===id);const isNew=!n;if(!n)n={id:uid(),title:"",text:"",folder:fsel,created:Date.now(),updated:Date.now()};
+  const o=document.createElement("div");o.className="ov ed";const g=s=>o.querySelector(s);
+  o.innerHTML=`<div class="eh"><button class="ib" id="bk">${ic("back")}</button><div class="et"><b>MODULO NOTA</b><span id="est">${isNew?"BOZZA LOCALE":"SALVATA IN LOCALE"}</span></div><button class="ib ${n.pin?"on":""}" id="pn">${ic("pin")}</button>${isNew?"":`<button class="ib red" id="de">${ic("trash")}</button>`}</div><input class="tt" id="ti" placeholder="Titolo della nota…" value="${esc(n.title)}"><div class="fr"><button class="pill" id="fp"><i></i><span id="fn"></span> ⌄</button><small class="lab" id="mt">${isNew?"NUOVA BOZZA":"MODIFICATA "+new Date(n.updated).toLocaleDateString("it-IT")}</small></div><textarea id="tx" placeholder="Scrivi qui i tuoi appunti, collegamenti e idee…">${esc(n.text)}</textarea><div class="hint">${ic("clip")}<span>Allega documenti o registra audio dalla barra in basso.</span></div><div class="eb"><div data-a="f"><i>${ic("clip")}</i>FILE</div><div data-a="a"><i>${ic("mic")}</i>AUDIO</div><div data-a="c"><i>${ic("folder")}</i>CARTELLA</div></div>`;
+  document.body.appendChild(o);const ti=g("#ti"),tx=g("#tx");let tm=0;
+  window.CURN={get title(){return ti.value},get text(){return tx.value}};
+  const lab=()=>{const f=S.folders.find(f=>f.id===n.folder);g("#fn").textContent=f?f.name:"Senza cartella";g("#fp i").style.background=f?"var(--p)":"var(--mut)"};lab();
+  const commit=()=>{clearTimeout(tm);tm=0;n.title=ti.value.trim();n.text=tx.value;if(!(n.title||n.text.trim()))return;if(!S.notes.includes(n))S.notes.push(n);n.updated=Date.now();n.dirty=true;n.rich=false;n.html="";save();g("#est").textContent=S.cloud.tok?"SALVATA · IN SYNC":"SALVATA IN LOCALE";g("#mt").textContent="MODIFICATA ADESSO"};
+  const touch=()=>{g("#est").textContent="BOZZA LOCALE";clearTimeout(tm);tm=setTimeout(commit,700)};
+  ti.oninput=tx.oninput=touch;
+  const close=()=>{if(tm)commit();window.CURN=null;o.remove();render()};
+  g("#bk").onclick=close;
+  const pick=()=>sheet(`<h3 style="margin:0">Cartella</h3><div class="chips"><div class="chip ${!n.folder?"on":""}" data-i="">Senza cartella</div>${S.folders.map(f=>`<div class="chip ${n.folder===f.id?"on":""}" data-i="${f.id}">${esc(f.name)}</div>`).join("")}</div>`,s=>s.querySelectorAll("[data-i]").forEach(c=>c.onclick=()=>{n.folder=c.dataset.i;lab();s.remove();touch()}));
+  g("#fp").onclick=pick;
+  g("#pn").onclick=()=>{if(!(ti.value.trim()||tx.value.trim())){toast("Scrivi qualcosa prima");return}n.pin=!n.pin;g("#pn").classList.toggle("on",n.pin);commit();toast(n.pin?"Nota fissata":"Nota sbloccata")};
+  const de=g("#de");if(de)de.onclick=()=>sheet(`<h3 style="margin:0">Eliminare la nota?</h3><button class="dng" id="y1">Elimina</button><button id="n1">Annulla</button>`,s=>{s.querySelector("#n1").onclick=()=>s.remove();s.querySelector("#y1").onclick=()=>{s.remove();clearTimeout(tm);tm=0;if(n.rid)S.del.notes.push(n.rid);S.notes=S.notes.filter(x=>x!==n);save();close()}});
+  o.querySelectorAll(".eb div").forEach(b=>b.onclick=()=>{if(b.dataset.a==="c")pick();else toast("File e audio arrivano con la prossima fase")});
 }
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-n],[data-f],[data-th],#nn,#nf,#df,#ex,#im,nav a,#ai");if(!t)return;
   if(t.dataset.t){tab=t.dataset.t;render();scrollTo(0,0)}
-  else if(t.dataset.n)edit(t.dataset.n);
+  else if(t.dataset.n)openNote(t.dataset.n);
   else if(t.id==="nn")edit();
   else if(t.dataset.f!==undefined){fsel=t.dataset.f;render()}
   else if(t.dataset.th){S.prefs.theme=t.dataset.th;save();theme();render()}
   else if(t.id==="nf")ask("Nuova cartella","Nome della cartella",v=>{const f={id:uid(),name:v};S.folders.push(f);fsel=f.id;save();render()});
-  else if(t.id==="df"){S.notes.forEach(n=>{if(n.folder===fsel)n.folder=""});S.folders=S.folders.filter(f=>f.id!==fsel);fsel="";save();render();toast("Cartella eliminata")}
+  else if(t.id==="df"){const fd=S.folders.find(f=>f.id===fsel);if(fd&&fd.rid)S.del.folders.push(fd.rid);S.notes.forEach(n=>{if(n.folder===fsel)n.folder=""});S.folders=S.folders.filter(f=>f.id!==fsel);fsel="";save();render();toast("Cartella eliminata")}
   else if(t.id==="ex"){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="cyber-web-backup.json";a.click()}
   else if(t.id==="im")$("#imf").click();
-  else if(t.id==="ai")sheet(`<h3 style="margin:0">Netrunner AI</h3><p style="color:var(--mut);margin:0">${T("Il collegamento con l’AI arriva alla fase 3, choom: userà il tuo Apps Script e la tua chiave Gemini.","Il collegamento con l’AI arriva nella fase 3: userà il tuo Apps Script e la tua chiave Gemini.")}</p>`);
+  else if(t.id==="ai")openAI(window.CURN||undefined);
 });
 document.addEventListener("input",e=>{if(e.target.id==="q"){q=e.target.value;list()}else if(e.target.id==="nm"){S.prefs.name=e.target.value||"Runner Locale";save()}});
 document.addEventListener("change",e=>{
   if(e.target.id==="sl"){S.prefs.slang=e.target.checked;save()}
   else if(e.target.id==="imf"){const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);S=Object.assign({notes:[],folders:[],prefs:S.prefs},d);S.prefs=Object.assign({theme:"viola",slang:true,name:"Runner Locale"},S.prefs);save();theme();render();toast("Backup importato")}catch(x){toast("File non valido")}})}
 });
-theme();render();tick();
+const MARK="<!--cw-->",p2h=t=>t.split("\n").map(l=>"<div>"+(esc(l)||"<br>")+"</div>").join("");
+const h2t=h=>new DOMParser().parseFromString(h.replace(/<br\s*\/?>/gi,"\n").replace(/<\/(div|p|li|h[1-4]|tr)>/gi,"\n"),"text/html").body.textContent.replace(/\n{3,}/g,"\n\n").trim();
+const isRich=h=>/<(h[1-4]|ul|ol|li|b|strong|i|em|u|s|table|input|span|font|a|blockquote|pre)\b/i.test(h);
+const setSt=t=>{ST=t;const e=$("#sbt");if(e)e.textContent="// "+T("archivio neurale attivo","archivio attivo")+(t?" · "+t:"")};
+async function api(fn,args){const r=await fetch(S.cloud.url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({fn,args})}),j=await r.json();if(!j.ok)throw new Error(j.error||"Errore");return j.data}
+const A=(fn,...a)=>api(fn,[S.cloud.tok,...a]);
+function kick(){if(!S.cloud.url||!S.cloud.tok)return;clearTimeout(kt);kt=setTimeout(()=>sync(),2500)}
+function openNote(id){const n=S.notes.find(x=>x.id===id);if(n&&n.rich)sheet(`<h3 style="margin:0">Nota formattata</h3><p style="color:var(--mut);margin:0">Questa nota ha titoli, elenchi o altra formattazione. Modificandola qui diventa testo semplice: per non perdere nulla modificala dal sito.</p><button class="pri" id="yy">Modifica comunque</button><button id="nn2">Annulla</button>`,s=>{s.querySelector("#yy").onclick=()=>{s.remove();edit(id)};s.querySelector("#nn2").onclick=()=>s.remove()});else edit(id)}
+function loginSheet(msg){
+  const had=!!S.cloud.url,s=sheet(`<h3 style="margin:0">Google Drive</h3><p style="color:var(--mut);margin:0">${msg||"Collega l’app al tuo Drive."}</p>${had?"":'<input id="cu" placeholder="Indirizzo API (…/exec)">'}<input id="cp" type="password" placeholder="Password"><button class="pri" id="cg">Collega</button><div id="ce" style="color:#ff4d6d"></div>`);
+  s.querySelector("#cg").onclick=async()=>{
+    const u=s.querySelector("#cu"),pw=s.querySelector("#cp").value,e=s.querySelector("#ce");
+    if(u){const v=u.value.trim();if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(v)){e.textContent="Indirizzo non valido";return}S.cloud.url=v}
+    if(!pw)return;e.textContent="Accesso…";
+    try{const r=await api("login",[pw]);if(r.ok){S.cloud.tok=r.token;persist();s.remove();toast("Collegato ✓");render();sync(true)}else{if(!had)S.cloud.url="";e.textContent=r.locked?"Troppi tentativi: riprova tra 5 minuti":"Password errata"}}
+    catch(x){if(!had)S.cloud.url="";e.textContent="Non riesco a collegarmi: controlla l’indirizzo"}
+  }
+}
+async function sync(manual){
+  if(!S.cloud.url||!S.cloud.tok)return;if(busy){pend=true;return}
+  busy=true;setSt("sincronizzo…");
+  try{
+    for(const rid of S.del.notes.splice(0))try{await A("remove",rid)}catch(e){if(/autorizzato/i.test(e.message))throw e}
+    for(const rid of S.del.folders.splice(0))try{await A("deleteFolder",rid)}catch(e){if(/autorizzato/i.test(e.message))throw e}
+    for(const f of S.folders)if(!f.rid)f.rid=await A("createFolder",f.name);
+    let L=await A("list");const pushed=[],seen={};S.fcount=L.items.filter(i=>!i.note).length;
+    L.folders.forEach(r=>{if(!S.folders.find(f=>f.rid===r.id))S.folders.push({id:uid(),rid:r.id,name:r.name})});
+    S.folders=S.folders.filter(f=>{const r=L.folders.find(x=>x.id===f.rid);if(r){f.name=r.name;return true}S.notes.forEach(n=>{if(n.folder===f.id)n.folder=""});return false});
+    const fl=rid=>(S.folders.find(f=>f.rid===rid)||{}).id||"";
+    const mk=r=>{const t=r.text||"",h=t.indexOf(MARK)===0?t.slice(MARK.length):null,rich=h!==null&&isRich(h);return{rid:r.id,title:r.name,text:h===null?t:h2t(h),html:rich?h:"",rich,folder:fl(r.folder),created:r.created,updated:r.updated,synced:r.updated,dirty:false}};
+    const push=async n=>{const html=n.rich?n.html:p2h(n.text),fr=(S.folders.find(f=>f.id===n.folder)||{}).rid||"";
+      if(!n.rid)n.rid=await A("saveNote",n.title||"Nota",MARK+html,fr);else{await A("updateNote",n.rid,n.title||"Nota",MARK+html);await A("moveItem",n.rid,fr)}
+      n.dirty=false;pushed.push(n)};
+    for(const r of L.items.filter(i=>i.note)){seen[r.id]=1;const n=S.notes.find(x=>x.rid===r.id);
+      if(!n)S.notes.push(Object.assign({id:uid()},mk(r)));
+      else if(n.dirty){if(r.updated>n.synced&&r.updated>n.updated)Object.assign(n,mk(r));else await push(n)}
+      else if(r.updated>n.synced)Object.assign(n,mk(r))}
+    for(const n of S.notes.slice()){
+      if(n.rid&&!seen[n.rid]){if(n.dirty){n.rid="";await push(n)}else S.notes=S.notes.filter(x=>x!==n)}
+      else if(!n.rid&&(n.title||n.text.trim()))await push(n)}
+    if(pushed.length){L=await A("list");L.items.forEach(r=>{const n=pushed.find(x=>x.rid===r.id);if(n)n.synced=r.updated})}
+    S.lastSync=Date.now();persist();setSt("☁ sincronizzato");
+    const ae=document.activeElement;if(!document.querySelector(".ov")&&!(ae&&/INPUT|TEXTAREA/.test(ae.tagName)))render();else list();
+    if(manual)toast("Sincronizzato ✓");
+  }catch(e){const m=String(e.message||e);
+    if(/autorizzato/i.test(m)){S.cloud.tok="";persist();setSt("accedi di nuovo");loginSheet("Sessione scaduta: inserisci di nuovo la password.")}
+    else setSt(/fetch|Network|Load failed/i.test(m)?"offline":"errore di sincronizzazione");
+    if(manual)toast(m.slice(0,70))}
+  busy=false;if(pend){pend=false;kick()}
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("#cl,#sy,#dc");if(!t)return;
+  if(t.id==="cl")loginSheet();else if(t.id==="sy")sync(true);
+  else{S.cloud={url:"",tok:""};persist();setSt("");render();toast("Scollegato")}
+});
+function boot(){if(!S.cloud.url)return;if(S.cloud.tok)sync();else loginSheet("Accedi per sincronizzare con il tuo Drive.");document.addEventListener("visibilitychange",()=>{if(!document.hidden)kick()})}
+const AI={ctx:"",busy:0},fmt=t=>String(t).split(/```[\w+.-]*\n?/).map((p,i)=>i%2?`<pre>${esc(p.replace(/\n$/,""))}</pre>`:esc(p).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`([^`\n]+)`/g,"<code>$1</code>").replace(/^\s*[-*•]\s+/gm,"• ").replace(/\n/g,"<br>")).join("");
+const rid=id=>(S.folders.find(f=>f.id===id)||{}).rid||"";
+const stateJson=()=>JSON.stringify({cartelle:S.folders.filter(f=>f.rid).map(f=>({id:f.rid,nome:f.name})),elementi:S.notes.filter(n=>n.rid).slice(0,150).map(n=>({id:n.rid,nome:(n.title||"").slice(0,60),tipo:"nota",cartella:rid(n.folder)})),cartella_aperta:rid(fsel),tema:S.prefs.theme,slang:!!S.prefs.slang});
+function aiAdd(role,text){const m=$("#aim"),d=document.createElement("div");d.className="m "+role;if(role==="a")d.innerHTML=fmt(text);else d.textContent=text;m.appendChild(d);m.scrollTop=m.scrollHeight;return d}
+function aiDecor(d,a){const b=document.createElement("button");b.textContent="Salva come nota";b.onclick=()=>{S.notes.push({id:uid(),title:"AI: "+a.replace(/\s+/g," ").slice(0,40),text:a,folder:"",created:Date.now(),updated:Date.now(),dirty:true});save();list();b.textContent="Nota salvata ✓";b.disabled=true};d.appendChild(b)}
+function aiCard(p){const d=document.createElement("div");d.className="pc";d.innerHTML=`<div>⚠ ${esc(p.label)}</div>`;const ok=document.createElement("button"),no=document.createElement("button");ok.textContent="Conferma";ok.className="dng";no.textContent="Annulla";
+  ok.onclick=async()=>{ok.disabled=no.disabled=true;try{const r=await A("execPending",{name:p.name,args:p.args});d.textContent=(r.ok?"✓ ":"✗ ")+r.message;sync()}catch(e){d.textContent="✗ Operazione non riuscita"}};
+  no.onclick=()=>{d.textContent="Annullato."};d.append(ok,no);$("#aim").appendChild(d)}
+function aiAct(list){list.forEach(a=>{const g=a.args||{};
+  if(a.name==="navigate"){const f=S.folders.find(f=>f.rid===g.folder_id);if(g.folder_id!==undefined)fsel=f?f.id:"";if(g.query!==undefined)q=String(g.query);tab=g.query?"cerca":"note"}
+  else if(a.name==="set_theme"){const k=({cyan:"ciano"})[g.color]||g.color;if(TH[k]){S.prefs.theme=k;theme()}}
+  else if(a.name==="set_slang")S.prefs.slang=!!g.on});persist();if(!document.querySelector(".ov:not(#aiov)"))render()}
+async function aiAsk(text){
+  const f=S.ai.files.map(x=>x.id);if(!S.cloud.tok){aiAdd("s","Collega prima il Drive: Altro → Google Drive.");return}
+  if(AI.busy)return;AI.busy=1;$("#aisend").disabled=true;S.ai.msgs.push({r:"u",t:text});aiAdd("u",text);const w=aiAdd("a",T("Hack in corso…","…"));w.classList.add("w");
+  try{const res=await A("askAgent",S.ai.msgs,AI.ctx,!!S.prefs.slang,f,stateJson(),S.prefs.agent!==false),a=res.text||"Fatto.";
+    S.ai.msgs.push({r:"a",t:a});S.ai.dirty=true;persist();w.classList.remove("w");w.innerHTML=fmt(a);aiDecor(w,a);
+    (res.log||[]).forEach(l=>aiAdd("s","⚙ "+l));(res.pending||[]).forEach(aiCard);aiAct(res.actions||[]);if(res.changed)sync()}
+  catch(e){S.ai.msgs.pop();persist();w.classList.remove("w");w.textContent=String(e.message||e).replace(/^Error:\s*/,"");if(/autorizzato/i.test(w.textContent)){S.cloud.tok="";persist();loginSheet("Sessione scaduta.")}}
+  AI.busy=0;$("#aisend").disabled=false}
+function aiFiles(){const b=$("#aif");b.innerHTML="";S.ai.files.forEach((f,i)=>{const c=document.createElement("div");c.className="chip";c.textContent="📎 "+f.name+" ✕";c.onclick=()=>{S.ai.files.splice(i,1);persist();aiFiles()};b.appendChild(c)})}
+const AIQ=[["Riassumi le mie note","Riassumi le mie note e dimmi i punti più importanti."],["Organizza l’archivio","Guarda le mie note, proponi come organizzarle in cartelle e, se ti sembra sensato, fallo tu."],["Spiegami passo passo","Spiegami passo passo questo argomento: "]];
+function openAI(note){
+  if(document.querySelector("#aiov"))return;AI.ctx=note?"### "+(note.title||"Nota")+"\n"+note.text:"";
+  const o=document.createElement("div");o.className="aiw";o.id="aiov";
+  o.innerHTML=`<div class="aip"><div class="aih"><span>Cyber Web</span><div class="ia"><button class="ib s" id="aisv" title="Chat salvate">${ic("clock")}</button><button class="ib s" id="aigs" title="Impostazioni">${ic("gear")}</button><button class="ib s" id="aihp" title="Aiuto">${ic("help")}</button><button class="ib s" id="aib" title="Chiudi">${ic("x")}</button></div></div><div class="msgs" id="aim"></div><div id="aiv"></div><button class="ib" id="aidn">${ic("down")}</button><div class="chips" id="aif"></div><div class="aib"><button class="ib red" id="ain" title="Nuova chat">${ic("plus")}</button><div class="chips nw" id="aiq"></div></div><div class="aii"><input id="aii" placeholder="${T("Dimmi cosa ti serve, choom…","Chiedimi qualsiasi cosa…")}"><button class="ib s" id="aiat" title="Allega">${ic("img")}</button><button class="ib pu" id="mic" title="Detta">${ic("mic")}</button><button class="ib send" id="aisend" title="Invia">${ic("up")}</button></div><input type="file" id="aifi" multiple hidden></div>`;
+  try{o.style.setProperty("--av",'url("data:image/svg+xml;utf8,'+encodeURIComponent(document.querySelector("#ai svg").outerHTML.replace("<svg","<svg xmlns='http://www.w3.org/2000/svg'"))+'")')}catch(e){}
+  document.body.appendChild(o);
+  const draw=()=>{$("#aim").innerHTML="";aiAdd("s",note?"Contesto: nota «"+(note.title||"senza titolo")+"»":T("Ehi choom! Sono il tuo netrunner: posso ragionare, scrivere, riassumere e gestire note e cartelle al posto tuo.","Ciao! Posso ragionare, scrivere, riassumere e gestire note e cartelle al posto tuo."));S.ai.msgs.forEach(m=>{const d=aiAdd(m.r==="a"?"a":"u",m.t);if(m.r==="a")aiDecor(d,m.t)});
+    const qq=$("#aiq");qq.innerHTML="";if(!S.ai.msgs.length)(note?[["Riassumi","Riassumi questa nota in pochi punti."],["Correggi","Correggi errori e migliora la forma di questa nota."],["Checklist","Trasforma questa nota in una checklist."]]:AIQ).forEach(c=>{const e=document.createElement("div");e.className="chip";e.textContent=c[0];e.onclick=()=>{if(c[1].endsWith(": "))$("#aii").value=c[1];else aiAsk(c[1]);qq.innerHTML=""};qq.appendChild(e)});aiFiles()};
+  draw();$("#aib").onclick=()=>o.remove();
+  const tt=(b,warn,fn,need)=>{let a=0;const base=b.textContent;b.onclick=()=>{if(need&&!need()){fn();return}const ib=b.classList.contains("ib");if(!a){a=1;if(ib)toast(warn);else b.textContent=warn;setTimeout(()=>{a=0;if(!ib)b.textContent=base},3000);return}a=0;if(!ib)b.textContent=base;fn()}};
+  const unsaved=()=>S.ai.dirty&&S.ai.msgs.length;
+  tt($("#ain"),"Non salvata! Cancella?",()=>{S.ai={msgs:[],files:[]};AI.ctx="";persist();draw()},unsaved);
+  const saveCh=async()=>{
+    if(!S.cloud.tok){toast("Collega prima il Drive");return}
+    const first=S.ai.msgs.find(m=>m.r==="u");if(!first){toast("Niente da salvare");return}
+    const ti=S.ai.title||first.t.replace(/\s+/g," ").slice(0,45);
+    try{S.ai.sid=await A("saveChat",S.ai.sid||"",ti,S.ai.msgs,AI.ctx,"",S.ai.files);S.ai.title=ti;S.ai.dirty=false;persist();toast("Chat salvata su Drive ✓")}catch(e){toast("Salvataggio non riuscito")}};
+  const back=()=>o.classList.remove("lv");
+  const chats=async()=>{
+    if(!S.cloud.tok){toast("Collega prima il Drive");return}
+    o.classList.add("lv");const v=$("#aiv");v.innerHTML="";
+    const bk=document.createElement("button");bk.textContent="← Torna alla chat";bk.onclick=back;v.appendChild(bk);
+    let L;try{L=await A("listChats")}catch(e){v.insertAdjacentHTML("beforeend",'<div class="empty">Non riesco a leggere le chat salvate.</div>');return}
+    if(!L.length)v.insertAdjacentHTML("beforeend",'<div class="empty">Nessuna chat salvata. Usa <b>Salva</b> per conservare una conversazione.</div>');
+    L.forEach(c=>{
+      const d=document.createElement("div");d.className="card";
+      d.innerHTML=`<b>${esc(c.name)}</b><div style="color:var(--mut);font-size:13px;margin:2px 0 10px">${new Date(c.updated).toLocaleString("it-IT",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</div><div class="row"><button class="op">Apri</button><button class="dng de">Elimina</button></div>`;
+      tt(d.querySelector(".op"),"Non salvata! Apri?",async()=>{
+        try{const x=await A("loadChat",c.id);S.ai={msgs:x.msgs||[],files:x.files||[],sid:x.id,title:x.title||"",dirty:false};AI.ctx=x.ctx||"";persist();back();draw()}catch(e){toast("Non riesco ad aprirla")}},unsaved);
+      tt(d.querySelector(".de"),"Sicuro?",async()=>{try{await A("deleteChat",c.id);if(S.ai.sid===c.id)S.ai.sid="";persist();chats()}catch(e){toast("Eliminazione non riuscita")}});
+      v.appendChild(d)})};
+  $("#aisv").onclick=chats;
+  o.onclick=e=>{if(e.target===o)o.remove()};
+  $("#aii").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();$("#aisend").click()}};
+  const ms=$("#aim"),dn=$("#aidn");ms.onscroll=()=>{dn.style.display=ms.scrollHeight-ms.scrollTop-ms.clientHeight>120?"grid":"none"};dn.onclick=()=>ms.scrollTo({top:ms.scrollHeight,behavior:"smooth"});
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  $("#mic").onclick=()=>{if(!SR){toast("Dettatura non supportata su questo dispositivo");return}const r=new SR();r.lang="it-IT";r.onresult=e=>{const i=$("#aii");i.value+=(i.value?" ":"")+e.results[0][0].transcript;i.focus()};r.onerror=()=>toast("Microfono non disponibile");r.start();toast("Parla pure…")};
+  $("#aigs").onclick=()=>sheet(`<h3 style="margin:0">Impostazioni AI</h3><button id="gs">Salva questa chat su Drive</button><div class="sw"><span>L’AI può agire sull’app</span><input type="checkbox" id="g1" ${S.prefs.agent!==false?"checked":""}></div><div class="sw"><span>Slang di Night City</span><input type="checkbox" id="g2" ${S.prefs.slang?"checked":""}></div>`,s=>{s.querySelector("#gs").onclick=()=>{s.remove();saveCh()};s.querySelector("#g1").onchange=e=>{S.prefs.agent=e.target.checked;save()};s.querySelector("#g2").onchange=e=>{S.prefs.slang=e.target.checked;save()}});
+  $("#aihp").onclick=()=>sheet(`<h3 style="margin:0">Come usare l’assistente</h3><p style="color:var(--mut);margin:0">Scrivi o detta una richiesta. Allega file con l’icona immagine, apri le chat salvate con l’orologio e salva la conversazione dalle impostazioni. L’AI può creare e spostare note, ma chiede conferma prima di eliminare.</p>`);
+  $("#aisend").onclick=()=>{const v=$("#aii").value.trim();if(v){$("#aii").value="";$("#aiq").innerHTML="";aiAsk(v)}};
+  $("#aiat").onclick=()=>$("#aifi").click();
+  $("#aifi").onchange=async e=>{for(const f of e.target.files){if(f.size>8e6||/\.(docx?|xlsx?|pptx?|zip|rar|7z|exe)$/i.test(f.name)){toast(f.name+": non supportato (max 8 MB, no Office)");continue}
+    if(!S.cloud.tok){toast("Collega prima il Drive");break}
+    try{toast("Carico "+f.name+"…");const b64=await new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(",")[1]);r.onerror=ko;r.readAsDataURL(f)});
+      S.ai.files.push({id:await A("aiUpload",f.name,f.type,b64),name:f.name});persist();aiFiles()}catch(x){toast("Caricamento non riuscito")}}e.target.value=""};
+}
+document.addEventListener("change",e=>{if(e.target.id==="ag"){S.prefs.agent=e.target.checked;save()}});
+theme();render();tick();boot();
 if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script></body></html>
