@@ -1,1 +1,619 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07060f"><link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><title>Cyber Web</title>
+<style>
+:root{--p:#8b5cf6;--p2:#ff2bd6;--bg:#07060f;--card:#100e1c;--line:#2a2450;--fg:#ece9ff;--mut:#8b86ad;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,Roboto,sans-serif;min-height:100dvh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(420px 420px at 100% 0,color-mix(in srgb,var(--p) 22%,transparent),transparent 70%),linear-gradient(#ffffff08 1px,transparent 1px) 0 0/36px 36px,linear-gradient(90deg,#ffffff08 1px,transparent 1px) 0 0/36px 36px}
+main{padding:calc(14px + env(safe-area-inset-top)) 18px 150px;max-width:640px;margin:0 auto}
+h1{font:900 30px/1 system-ui;letter-spacing:.14em;margin:6px 0;color:var(--p);text-shadow:2px 0 var(--p2),-2px 0 #fcee0a55;animation:gl 5s infinite steps(1)}
+@keyframes gl{0%,94%,100%{transform:none}95%{transform:translate(-3px,1px) skewX(5deg)}97%{transform:translate(3px,0)}}
+h2{margin:14px 0 2px;font-size:22px}.sub{color:var(--mut);font:12px monospace;letter-spacing:.2em;text-transform:uppercase;margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px}
+.stats{display:flex;text-align:center;margin-bottom:16px}.stats div{flex:1;border-left:1px solid var(--line)}.stats div:first-child{border:0}
+.stats b{display:block;font-size:30px;color:var(--p)}.stats span{font:11px monospace;letter-spacing:.25em;color:var(--mut)}
+input,textarea,select{width:100%;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:16px;padding:14px;font:inherit;outline:0}
+input:focus,textarea:focus{border-color:var(--p)}
+.sec{display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px;font:700 14px monospace;letter-spacing:.25em;color:var(--fg)}
+.sec span::before{content:"";display:inline-block;width:4px;height:16px;background:var(--p);border-radius:2px;margin-right:12px;vertical-align:-3px}
+.sec a,.sec b{color:var(--p);font-weight:700;cursor:pointer}
+.fl{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}.fc{flex:none;min-width:130px;border:1px solid var(--line);background:var(--card);border-radius:20px;padding:14px;cursor:pointer}
+.fc.on{border-color:var(--p);box-shadow:0 0 16px color-mix(in srgb,var(--p) 40%,transparent)}.fc b{display:block}.fc small{color:var(--p);font-family:monospace}
+.note{display:block;margin-bottom:10px;cursor:pointer}.note b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.note p{margin:4px 0 0;color:var(--mut);font-size:14px;max-height:42px;overflow:hidden}.note small{color:var(--p);font:11px monospace}
+.empty{text-align:center;color:var(--mut);padding:36px 10px}.empty i{display:grid;place-items:center;width:110px;height:110px;margin:0 auto 14px;border:1px solid var(--line);border-radius:50%;font-size:42px;font-style:normal;background:var(--card)}
+button{font:800 14px system-ui;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border:1px solid var(--p);background:transparent;color:var(--p);border-radius:18px;padding:15px 18px;width:100%}
+button.pri{background:var(--p);color:#0a0714}button.dng{border-color:#ff4d6d;color:#ff4d6d}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:#0b0916f2;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:20}
+nav a{flex:1;text-align:center;padding:10px 0 8px;font:700 11px monospace;letter-spacing:.18em;color:var(--mut);cursor:pointer}nav a i{display:block;font-size:22px;font-style:normal;margin-bottom:2px}nav a.on{color:var(--p)}
+.fab{position:fixed;right:14px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:55;width:62px;height:62px;padding:0;border:0;border-radius:50%;background:#0d0b1acc;filter:drop-shadow(0 0 6px #00f0ff) drop-shadow(0 0 14px #ff2bd6aa)}
+.fab svg{width:100%;height:100%;animation:fg 4.5s infinite steps(1)}
+.fab .eye{transform-box:fill-box;transform-origin:center;animation:eb 5s infinite}.fab .scan{animation:sx 2.6s linear infinite}
+@keyframes fg{0%,90%,100%{transform:none}91%{transform:translate(-2px,1px) skewX(4deg)}93%{transform:translate(2px,-1px)}95%{transform:none}}
+@keyframes eb{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}@keyframes sx{from{transform:translateX(12px)}to{transform:translateX(52px)}}
+.plus{position:fixed;left:18px;right:96px;width:auto;padding:14px 8px;font-size:13px;letter-spacing:.08em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;bottom:calc(88px + env(safe-area-inset-bottom));z-index:25}
+.ov{position:fixed;inset:0;z-index:50;background:var(--bg);padding:calc(14px + env(safe-area-inset-top)) 18px 18px;display:flex;flex-direction:column;gap:10px}
+.ov textarea{flex:1;resize:none}.row{display:flex;gap:10px}.row>*{flex:1}
+.sheet{position:fixed;inset:0;z-index:60;background:#000a;display:flex;align-items:flex-end}.sheet>div{width:100%;background:var(--card);border-radius:24px 24px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));border-top:1px solid var(--p);display:flex;flex-direction:column;gap:12px}
+.dots{display:flex;gap:12px;flex-wrap:wrap}.dots i{width:34px;height:34px;border-radius:50%;border:3px solid transparent;cursor:pointer}.dots i.on{border-color:#fff}
+.sw{display:flex;justify-content:space-between;align-items:center;gap:12px}.sw input{width:50px;height:28px;accent-color:var(--p)}
+.hd{display:flex;justify-content:space-between;align-items:center}.hd h1{margin:0}.hb{display:flex;gap:10px}
+.ic{position:relative;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;font-weight:800;color:var(--p);cursor:pointer}
+.ic.a{border-color:var(--p);background:color-mix(in srgb,var(--p) 18%,transparent);width:50px;height:50px}.ic svg{width:22px;height:22px;fill:none;stroke:var(--fg);stroke-width:1.8}
+.dot{position:absolute;top:10px;right:11px;width:9px;height:9px;border-radius:50%;background:#ff4d4d}
+.chips{display:flex;gap:10px;flex-wrap:wrap}.chip{border:1px solid var(--line);border-radius:99px;padding:11px 16px;font:800 12px monospace;letter-spacing:.14em;background:var(--card);color:var(--fg);cursor:pointer;text-transform:uppercase}
+.chip.on{border-color:var(--p);color:var(--p);background:color-mix(in srgb,var(--p) 14%,transparent)}.chip.off{opacity:.45}
+.go{display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-top:10px}.lab{font:11px monospace;letter-spacing:.25em;color:var(--mut)}
+.ring{display:grid;place-items:center;flex:none;width:68px;height:68px;border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--p) 14%,transparent);font-style:normal;font-size:28px}
+.msgs{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-bottom:6px}
+.m{max-width:90%;padding:10px 13px;border-radius:16px;font-size:15px;word-break:break-word}.m.u{align-self:flex-end;background:color-mix(in srgb,var(--p2) 18%,transparent);border:1px solid var(--p2)}
+.m.a{align-self:flex-start;background:var(--card);border:1px solid var(--line)}.m.s{align-self:center;color:var(--mut);font-size:12px;text-align:center}.m.w{opacity:.6}
+.m b{color:#fcee0a}.m pre{background:#05040c;padding:8px;border-radius:10px;overflow:auto;color:#fcee0a;font-size:12px;margin:6px 0}.m code{color:#fcee0a}
+.m button,.pc button{width:auto;padding:6px 10px;font-size:10px;letter-spacing:.08em;margin-top:8px;border-radius:12px}.pc{align-self:flex-start;border:1px solid #fcee0a;border-radius:16px;padding:10px 12px;font-size:14px;max-width:92%}
+#aiov{z-index:70}.ab{display:flex;gap:8px;align-items:flex-end}.ab textarea{min-height:48px;max-height:120px}.ab button{width:auto;padding:13px 16px}
+#aiv{display:none;flex:1;overflow:auto}#aiov.lv #aiv{display:flex;flex-direction:column;gap:10px}#aiov.lv #aim,#aiov.lv .aib,#aiov.lv #aif,#aiov.lv .aii,#aiov.lv #aidn{display:none!important}
+.ib{width:52px;height:52px;border-radius:50%;padding:0;display:grid;place-items:center;flex:none;border:1px solid var(--line);background:var(--card);color:var(--fg);letter-spacing:0}
+.ib svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ib.s{width:44px;height:44px;border:0;background:transparent}.ib.red{border-color:#7a1f2b;color:#ff6b6b;background:#2a0d14}.ib.on{border-color:var(--p);color:var(--p)}
+.ib.send{background:color-mix(in srgb,var(--p) 40%,#2a2850);border:0;color:#fff}.ib.pu{border:0;background:color-mix(in srgb,var(--p) 35%,#1b1a3a);color:var(--p)}
+.eh{display:flex;gap:12px;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--line)}.et{flex:1;min-width:0}
+.et b{display:block;font:900 22px system-ui;letter-spacing:.08em;color:var(--p);text-shadow:2px 0 var(--p2)}.et span{font:800 12px monospace;letter-spacing:.2em;color:#4ade80}
+.ov .tt{background:transparent;border:0;border-radius:0;padding:10px 0;font:800 30px/1.2 system-ui}.ov .tt::placeholder{color:var(--mut)}
+.fr{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.pill{width:auto;display:flex;gap:10px;align-items:center;border-radius:99px;padding:11px 16px;font:600 16px system-ui;letter-spacing:0;text-transform:none;color:var(--fg);border-color:var(--line);background:var(--card)}
+.pill i{width:12px;height:12px;border-radius:50%;background:var(--mut)}
+.ed textarea{background:transparent;border:0;border-radius:0;padding:10px 0;font-size:19px}
+.hint{border:1px dashed var(--line);border-radius:18px;padding:16px;color:var(--mut);display:flex;gap:12px;align-items:center}.hint svg{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8}
+.eb{display:flex;justify-content:space-around;margin:4px -18px -18px;padding:12px 0 calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#0b0916}
+.eb div{text-align:center;font:800 12px monospace;letter-spacing:.2em;color:var(--mut);cursor:pointer}
+.eb i{display:grid;place-items:center;width:64px;height:64px;border-radius:22px;border:1px solid var(--line);background:var(--card);margin:0 auto 6px;color:var(--p)}.eb svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.aiw{position:fixed;inset:0;z-index:70;background:#000b;display:flex;align-items:flex-end;padding:10px}
+.aip{position:relative;width:100%;max-width:640px;margin:0 auto;height:min(78dvh,760px);display:flex;flex-direction:column;background:linear-gradient(#1b1a3a,#14122b);border:1px solid var(--line);border-radius:36px;padding:14px 14px calc(14px + env(safe-area-inset-bottom));gap:10px;overflow:hidden}
+.aih{display:flex;align-items:center;justify-content:space-between;padding:4px 6px 0}.aih>span{color:var(--mut);font-size:20px}.ia{display:flex;gap:4px}
+.aib{display:flex;gap:10px;align-items:center}.nw{flex-wrap:nowrap;overflow-x:auto;flex:1}.nw .chip{white-space:nowrap;background:#1f1d40;font:600 15px system-ui;letter-spacing:0;text-transform:none}
+.aii{display:flex;gap:8px;align-items:center;background:#201f42;border-radius:99px;padding:6px 6px 6px 18px}.aii input{background:transparent;border:0;padding:8px 0;border-radius:0;font-size:17px}
+.m.a{position:relative;margin-left:48px;background:#1d1b3b;border:0;border-radius:22px;font-size:16px;line-height:1.5;max-width:calc(100% - 48px)}
+.m.a::before{content:"";position:absolute;left:-48px;top:2px;width:40px;height:40px;border-radius:50%;background:#0d0b1a var(--av) center/78% no-repeat}
+.m.u{border:0;border-radius:24px 24px 6px 24px;background:color-mix(in srgb,var(--p) 38%,#161432);font-size:16px}
+#aidn{position:absolute;right:18px;bottom:150px;display:none}
+.eb .rec i{border-color:#ff4d6d;color:#ff4d6d}.eb .rec{color:#ff4d6d}
+.mr{display:flex;gap:10px;align-items:flex-start;align-self:flex-start;max-width:100%}.mr .m.a{margin-left:0;max-width:calc(100% - 50px)}.m.a::before{display:none}
+.av{width:42px;height:42px;flex:none;border-radius:50%;background:#0d0b1a;padding:4px;object-fit:contain;box-shadow:0 0 10px color-mix(in srgb,var(--p) 50%,transparent)}
+.fab .bd{position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:#ff4d4d;border:2px solid #0d0b1a;display:none}
+.av svg{width:100%;height:100%;display:block}
+#gc{height:min(calc(100dvh - 150px),640px);aspect-ratio:9/16;max-width:100%;margin:0 auto;display:block;touch-action:none;outline:0;border:1px solid var(--line);border-radius:16px;flex:none;align-self:center}
+.toast{position:fixed;left:50%;bottom:150px;transform:translateX(-50%);background:var(--p);color:#0a0714;padding:8px 16px;border-radius:99px;font-weight:700;z-index:99}
+</style></head><body>
+<main id="m"></main>
+<button class="fab" id="ai" aria-label="Netrunner AI"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="ey"><path d="M12 32Q32 14 52 32Q32 50 12 32Z"/></clipPath></defs>
+  <polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="none" style="stroke:#ff2bd6" stroke-width="2" transform="translate(-1.6,1)" opacity=".8"/>
+  <polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="none" style="stroke:#00f0ff" stroke-width="2" transform="translate(1.6,-1)" opacity=".8"/>
+  <polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="#0b0820" stroke="#fcee0a" stroke-width="2.6"/>
+  <path d="M9 24V19L16 15M55 24V19L48 15M9 40v5l7 4M55 40v5l-7 4" fill="none" stroke="#fcee0a" stroke-width="1.4" opacity=".7"/>
+  <path d="M12 32Q32 14 52 32Q32 50 12 32Z" fill="#05040c" style="stroke:#00f0ff" stroke-width="2"/>
+  <g clip-path="url(#ey)"><rect class="scan" x="0" y="20" width="3" height="24" style="fill:#00f0ff" opacity=".55"/></g>
+  <g class="eye"><circle cx="32" cy="32" r="8.5" fill="none" stroke="#fcee0a" stroke-width="2"/><circle cx="32" cy="32" r="3.6" style="fill:#ff2bd6"/>
+  <path d="M32 21.5v3.2M32 39.3v3.2M21.5 32h3.2M39.3 32h3.2" stroke="#fcee0a" stroke-width="1.5"/></g>
+</svg><i class="bd" id="bd"></i></button>
+<nav id="nav"><a data-t="note"><i>▤</i>NOTE</a><a data-t="cart"><i>▣</i>CARTELLE</a><a data-t="cerca"><i>⌕</i>CERCA</a><a data-t="altro"><i>⠿</i>ALTRO</a></nav>
+<script>
+const $=s=>document.querySelector(s),esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const KEY="cyberweb.v1";let S={notes:[],folders:[],prefs:{}},tab="note",fsel="",q="",tf=0,ff="all",ST="",busy=false,pend=false,kt=0;
+try{S=Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
+S.prefs=Object.assign({theme:"viola",slang:true,name:"Runner Locale",push:false,rem:{on:false,time:"20:00"}},S.prefs);
+S.cloud=Object.assign({url:"",tok:""},S.cloud);S.del=Object.assign({notes:[],folders:[]},S.del);S.ai=Object.assign({msgs:[],files:[]},S.ai);S.files=S.files||[];
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast("Memoria piena")}};
+const save=()=>{persist();kick()};
+const TH={viola:["#8b5cf6","#ff2bd6"],ciano:["#00f0ff","#ff2bd6"],rosso:["#ff3355","#00f0ff"],verde:["#39ff88","#ff2bd6"],arancio:["#ff8a2b","#00f0ff"],giallo:["#fcee0a","#ff2bd6"],rosa:["#ff4fd8","#00f0ff"],bianco:["#eef4ff","#8aa0ff"]};
+const T=(a,b)=>S.prefs.slang?a:b,uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function theme(){const t=TH[S.prefs.theme]||TH.viola,s=document.documentElement.style;s.setProperty("--p",t[0]);s.setProperty("--p2",t[1])}
+function toast(t,ms){const e=document.createElement("div");e.className="toast";e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),ms||2200);return e}
+const greet=()=>{const h=new Date().getHours();return h<6?"Buonanotte":h<13?"Buongiorno":h<19?"Buon pomeriggio":"Buonasera"};
+const plain=n=>n.text.replace(/\s+/g," ").trim();
+function stats(){return `<div class="card stats"><div><b>${S.notes.length}</b><span>NOTE</span></div><div><b>${S.folders.length}</b><span>CARTELLE</span></div><div data-go="files" style="cursor:pointer"><b>${S.fcount||0}</b><span>ALLEGATI</span></div></div>`}
+function noteList(arr){return arr.length?arr.map(n=>`<div class="card note" data-n="${n.id}"><b>${n.pin?"📌 ":""}${esc(n.title||"Senza titolo")}</b><p>${esc(plain(n))}</p><small>${new Date(n.updated).toLocaleDateString("it-IT")}</small></div>`).join(""):`<div class="empty"><i>▤</i><h3>${T("Archivio vuoto","Nessuna nota")}</h3><p>${T("Le tue note appariranno qui, choom.","Le tue note appariranno qui.")}</p></div>`}
+function filt(){const k=q.toLowerCase();return S.notes.filter(n=>(!fsel||n.folder===fsel)&&(!tf||Date.now()-n.updated<=tf*864e5)&&(!k||(n.title+" "+n.text).toLowerCase().includes(k))).sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||b.updated-a.updated)}
+function folderCards(){const c=id=>S.notes.filter(n=>!id||n.folder===id).length;return `<div class="fc ${!fsel?"on":""}" data-f=""><b>Tutte</b><small>${c()} note</small></div>`+S.folders.map(f=>`<div class="fc ${fsel===f.id?"on":""}" data-f="${f.id}"><b>${esc(f.name)}</b><small>${c(f.id)} note</small></div>`).join("")}
+const BELL='<svg viewBox="0 0 24 24"><path d="M6 17h12l-1.5-2V10a4.5 4.5 0 0 0-9 0v5L6 17zM10 20h4"/></svg>';
+const chipsF=()=>`<div class="chips"><div class="chip ${!fsel?"on":""}" data-f="">Tutte le cartelle</div>${S.folders.map(f=>`<div class="chip ${fsel===f.id?"on":""}" data-f="${f.id}">${esc(f.name)}</div>`).join("")}</div>`;
+const chipsT=()=>`<div class="chips">${[[0,"Sempre"],[7,"7 giorni"],[30,"30 giorni"]].map(c=>`<div class="chip ${tf===c[0]?"on":""}" data-tf="${c[0]}">${c[1]}</div>`).join("")}</div>`;
+const TIMES=["07:00","08:00","09:00","12:00","18:00","20:00","21:00"];
+function render(){
+  const m=$("#m");document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.t===(tab==="notif"?"altro":tab==="files"?"note":tab)));
+  const R=S.prefs.rem,P=S.prefs.push;
+  if(tab==="note")m.innerHTML=`<div class="hd"><h1>CYBER WEB</h1><div class="hb"><div class="ic" id="bell">${BELL}${P?"":'<i class="dot"></i>'}</div><div class="ic a" id="av">${esc((S.prefs.name||"R")[0].toUpperCase())}</div></div></div><h2>${greet()}, ${esc(S.prefs.name)}</h2><p class="sub" id="sbt">// ${T("archivio neurale attivo","archivio attivo")}${ST?" · "+ST:""}</p>${stats()}<input id="q" placeholder="Filtra le note…" value="${esc(q)}"><div class="sec"><span>CARTELLE</span><a id="nf">+ NUOVA</a></div><div class="fl">${folderCards()}</div><div class="sec"><span>NOTE RECENTI</span><b id="cnt"></b></div><div id="nl"></div><button class="pri plus" id="nn">+ NUOVA NOTA</button>`;
+  else if(tab==="cart")m.innerHTML=`<p class="sub">// struttura dati</p><h1>ARCHIVIO</h1><p>Organizza le note in cartelle tematiche</p>${stats()}<button class="pri" id="nf">+ NUOVA CARTELLA</button><div class="sec"><span>CARTELLE</span><b>${S.folders.length}</b></div>${S.folders.length?`<div class="fl" style="flex-direction:column">${folderCards()}</div>${fsel?`<div class="row" style="margin-top:14px"><button id="rf">Rinomina</button><button class="dng" id="df">Elimina</button></div>`:""}`:`<div class="empty"><i>▣</i><h3>Nessuna cartella</h3><p>Crea la prima cartella per separare lezioni, ricerche e appunti${T(" di netrunning","")}.</p></div>`}`;
+  else if(tab==="cerca")m.innerHTML=`<p class="sub">// motore di ricerca</p><h1>RICERCA</h1><p>Scansiona note, file e registrazioni in tutto l’archivio</p><input id="q" placeholder="Cerca un termine, un file, un audio…" value="${esc(q)}"><p class="sub" style="margin:12px 0;color:var(--p)"><span id="cnt">0</span> risultati in archivio</p><div class="chips" style="margin-bottom:10px"><div class="chip on">Tutti</div><div class="chip">Solo testo</div><div class="chip" data-ff="audio">Audio</div><div class="chip" data-ff="doc">File</div></div>${chipsF()}<div style="height:10px"></div>${chipsT()}<div class="sec"><span>TUTTE LE NOTE</span><b id="cnt2"></b></div><div id="nl"></div>`;
+  else if(tab==="notif"){const on=P||R.on;m.innerHTML=`<div style="display:flex;align-items:center;gap:14px"><button id="bk2" style="width:52px;padding:12px">←</button><p class="sub" style="margin:0">// sistema avvisi</p></div><h1 style="margin-top:18px">NOTIFICHE</h1><p>Gestisci promemoria e avvisi da un unico pannello</p><div class="card" style="display:flex;gap:16px;align-items:center"><i class="ring">${on?"🔔":"🔕"}</i><div><div class="lab">CANALE AVVISI</div><b style="font-size:24px;letter-spacing:.12em;color:${on?"var(--p)":"var(--mut)"}">${on?"ATTIVO":"SILENZIOSO"}</b><div style="color:var(--mut);font-size:14px">Push ${P?"accese":"spente"} · Studio ${R.on?"acceso":"spento"}</div></div></div><div class="sec"><span>PUSH</span></div><div class="card sw"><div><b>Notifiche push</b><br><small style="color:var(--mut)">Avvisi del dispositivo</small></div><input type="checkbox" id="pu" ${P?"checked":""}></div><div class="sec"><span>PROMEMORIA DI STUDIO</span><b>${R.time}</b></div><div class="card sw"><div><b>Promemoria giornaliero</b><br><small style="color:var(--mut)">${R.on?"Ogni giorno alle "+R.time:"Spento"}</small></div><input type="checkbox" id="rm" ${R.on?"checked":""}></div><div class="chips" style="margin-top:12px">${TIMES.map(t=>`<div class="chip ${R.time===t?"on":""}" data-tm="${t}">${t}</div>`).join("")}</div><div class="sec"><span>VERIFICA CANALE</span></div><button id="tn">✈ Invia notifica di prova</button><div class="card" style="margin-top:16px;color:var(--mut);font-size:14px">ⓘ I promemoria restano salvati su questo dispositivo e partono quando l’app è aperta o in uso. Attiva solo ciò che ti serve.</div>`}
+  else if(tab==="files"){const k=f=>/^audio/.test(f.mime||"")||/\.(webm|mp3|m4a|wav|ogg|aac)$/i.test(f.name)?"audio":/^image/.test(f.mime||"")?"img":"doc",F=S.files.filter(f=>ff==="all"||k(f)===ff).sort((a,b)=>b.created-a.created),E={audio:"🎙",img:"🖼",doc:"📄"};
+    m.innerHTML=`<div style="display:flex;align-items:center;gap:14px"><button id="bk3" style="width:52px;padding:12px">←</button><p class="sub" style="margin:0">// file e registrazioni</p></div><h1 style="margin-top:18px">ALLEGATI</h1><div class="chips" style="margin:12px 0 16px">${[["all","Tutti"],["audio","Audio"],["img","Immagini"],["doc","Documenti"]].map(c=>`<div class="chip ${ff===c[0]?"on":""}" data-ff="${c[0]}">${c[1]}</div>`).join("")}</div>${F.length?F.map(f=>`<div class="card note" data-fr="${f.rid}"><b>${E[k(f)]} ${esc(f.name)}</b><small>${f.size?Math.round(f.size/1024)+" KB · ":""}${new Date(f.created).toLocaleDateString("it-IT")}</small></div>`).join(""):'<div class="empty"><i>📎</i><h3>Nessun allegato</h3><p>Aggiungi file o audio dall’editor di una nota.</p></div>'}`}
+  else{const C=S.cloud,drv=`<div class="sec"><span>GOOGLE DRIVE</span></div><div class="card"><b>${C.url?(C.tok?"Collegato":"Da accedere"):"Non collegato"}</b><div style="color:var(--mut);font-size:14px;margin-top:4px">${C.url?(S.lastSync?"Ultima sincronizzazione: "+new Date(S.lastSync).toLocaleString("it-IT"):"Mai sincronizzato"):"Sincronizza note e cartelle con il tuo sito."}</div>${C.tok&&S.remote?`<div style="color:var(--mut);font-size:13px;margin-top:4px">Su Drive: ${S.remote.notes} note · ${S.remote.files} file · ${S.remote.folders} cartelle</div>`:""}${S.lastErr?`<div style="color:#ff4d6d;font-size:13px;margin-top:6px">Ultimo errore: ${esc(S.lastErr)}</div>`:""}<div class="row" style="margin-top:12px">${!C.url||!C.tok?`<button class="pri" id="cl">${C.url?"Accedi":"Collega"}</button>`:`<button id="sy">Sincronizza</button>`}${C.url?`<button class="dng" id="dc">Scollega</button>`:""}</div></div>`;m.innerHTML=`<p class="sub">// sistema</p><h1>ALTRO</h1><div class="card go" data-go="notif"><div><b>Notifiche</b><br><small style="color:var(--mut)">Push · promemoria di studio</small></div><b style="color:var(--p)">›</b></div><div class="card go" id="pg"><div><b>Night Rush 2077</b><br><small style="color:var(--mut)">${T("schiva la NCPD contromano","schiva la polizia contromano")}</small></div><b style="color:var(--p)">▶</b></div>${drv}<div class="sec"><span>COLORE PRINCIPALE</span></div><div class="dots">${Object.keys(TH).map(k=>`<i data-th="${k}" class="${S.prefs.theme===k?"on":""}" style="background:${TH[k][0]}"></i>`).join("")}</div><div class="sec"><span>STILE</span></div><div class="card sw"><div><b>Slang di Night City</b><br><small style="color:var(--mut)">choom, preem, netrunner…</small></div><input type="checkbox" id="sl" ${S.prefs.slang?"checked":""}></div><div class="card sw" style="margin-top:10px"><div><b>L’AI può agire sull’app</b><br><small style="color:var(--mut)">crea e sposta note, cambia tema…</small></div><input type="checkbox" id="ag" ${S.prefs.agent!==false?"checked":""}></div><div class="sec"><span>PROFILO</span></div><input id="nm" value="${esc(S.prefs.name)}"><div class="sec"><span>BACKUP</span></div><div class="card" style="color:var(--mut);font-size:14px">I dati stanno solo su questo dispositivo: esporta un backup ogni tanto.</div><div class="row" style="margin-top:10px"><button id="ex">Esporta</button><button id="im">Importa</button></div><input type="file" id="imf" accept=".json" hidden>`}
+  list();
+}
+async function notify(t,b,tag){try{const r=await navigator.serviceWorker.getRegistration();if(r)await r.showNotification(t,{body:b,icon:"icon-192.png",badge:"icon-192.png",tag:tag||"cw",renotify:true});else new Notification(t,{body:b})}catch(e){toast("Notifica non riuscita")}}
+async function perm(){if(!("Notification"in window)){toast("Notifiche non supportate qui");return false}if(Notification.permission==="granted")return true;return(await Notification.requestPermission())==="granted"}
+function tick(){const r=S.prefs.rem;if(!r.on||!("Notification"in window)||Notification.permission!=="granted")return;const d=new Date(),day=d.toDateString();if(d.toTimeString().slice(0,5)>=r.time&&S.prefs.lastRem!==day){S.prefs.lastRem=day;save();notify("Cyber Web",T("È ora di studiare, choom.","È ora di studiare."))}}
+setInterval(tick,30000);document.addEventListener("visibilitychange",tick);
+document.addEventListener("click",async e=>{
+  const t=e.target.closest("[data-go],[data-tf],[data-tm],[data-ff],[data-fr],#bk3,#bell,#av,#bk2,#tn");if(!t)return;
+  if(t.dataset.go){tab=t.dataset.go;render();scrollTo(0,0)}
+  else if(t.id==="bell"){tab="notif";render();scrollTo(0,0)}
+  else if(t.id==="av"){tab="altro";render();scrollTo(0,0)}
+  else if(t.id==="bk2"){tab="altro";render()}
+  else if(t.dataset.tf!==undefined){tf=+t.dataset.tf;render()}
+  else if(t.dataset.tm){S.prefs.rem.time=t.dataset.tm;save();render()}
+  else if(t.dataset.ff){ff=t.dataset.ff;tab="files";render()}
+  else if(t.dataset.fr)openFile(S.files.find(f=>f.rid===t.dataset.fr));
+  else if(t.id==="bk3"){tab="note";render()}
+  else if(t.id==="tn"){if(await perm())notify("Cyber Web",T("Canale attivo, choom. Segnale ricevuto.","Canale attivo: notifica di prova ricevuta."));else toast("Permesso notifiche negato")}
+});
+document.addEventListener("change",async e=>{
+  if(e.target.id==="pu"){S.prefs.push=e.target.checked&&await perm();save();render()}
+  else if(e.target.id==="rm"){S.prefs.rem.on=e.target.checked&&await perm();save();render()}
+});
+function list(){const l=$("#nl");if(!l)return;const a=filt();l.innerHTML=noteList(tab==="note"?a.slice(0,30):a);["#cnt","#cnt2"].forEach(i=>{const c=$(i);if(c)c.textContent=a.length})}
+function sheet(html,fn){const s=document.createElement("div");s.className="sheet";s.innerHTML="<div>"+html+"</div>";s.onclick=e=>{if(e.target===s)s.remove()};document.body.appendChild(s);fn&&fn(s);return s}
+function ask(title,ph,cb,val){sheet(`<h3 style="margin:0">${title}</h3><input id="ai1" placeholder="${ph}" value="${esc(val||"")}"><button class="pri" id="ok1">Conferma</button>`,s=>{const i=s.querySelector("#ai1");i.focus();s.querySelector("#ok1").onclick=()=>{if(i.value.trim()){cb(i.value.trim());s.remove()}}})}
+const I={back:'<path d="M19 12H5M11 6l-6 6 6 6"/>',pin:'<path d="M12 3v7M8 10h8l-1 4H9zM12 14v7"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/>',clip:'<path d="M20 11l-8.5 8.5a5 5 0 0 1-7-7L13 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L14 7"/>',mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',folder:'<path d="M3 7h6l2 2h10v10H3z"/>',up:'<path d="M12 19V5M6 11l6-6 6 6"/>',img:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 16l5-5 5 5 3-3 5 5"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/>',x:'<path d="M5 5l14 14M19 5L5 19"/>',plus:'<path d="M12 5v14M5 12h14"/>',down:'<path d="M12 5v14M6 13l6 6 6-6"/>'};
+const ic=k=>`<svg viewBox="0 0 24 24">${I[k]}</svg>`;
+const b64of=blob=>new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(",")[1]);r.onerror=ko;r.readAsDataURL(blob)});
+async function upFile(file,folderLocal){
+  if(!S.cloud.tok){toast("Collega prima il Drive");return null}
+  if(file.size>10e6){toast(file.name+": massimo 10 MB");return null}
+  toast("Carico "+file.name+"…");
+  try{const id=await A("uploadFile",file.name,file.type||"application/octet-stream",await b64of(file),rid(folderLocal));
+    const f={rid:id,name:file.name,mime:file.type,size:file.size,created:Date.now(),folder:folderLocal||""};S.files.push(f);S.fcount=S.files.length;persist();toast("Allegato caricato ✓");return f}
+  catch(e){toast("Caricamento non riuscito");return null}}
+async function openFile(a){
+  if(!a)return;const id=a.rid;let d;
+  const s=sheet(`<h3 style="margin:0;word-break:break-word">${esc(a.name)}</h3><div id="fv" style="color:var(--mut)">Carico…</div><div class="row" id="fb" style="display:none"><button id="fa">Scarica</button><button id="fi2">Chiedi all’AI</button></div><button class="dng" id="fd">Elimina file</button>`);
+  const v=s.querySelector("#fv");
+  try{d=await A("getData",id)}catch(e){v.textContent="Non riesco a leggere il file: sei online e collegato a Drive?"}
+  if(d){const blob=new Blob([Uint8Array.from(atob(d.b64),c=>c.charCodeAt(0))],{type:d.mime}),url=URL.createObjectURL(blob);v.textContent="";
+    if(/^audio/.test(d.mime)||/\.(webm|mp3|m4a|wav|ogg)$/i.test(a.name)){const au=document.createElement("audio");au.controls=true;au.src=url;au.style.width="100%";v.appendChild(au)}
+    else if(/^image/.test(d.mime)){const im=document.createElement("img");im.src=url;im.style.cssText="max-width:100%;border-radius:12px";v.appendChild(im)}
+    else if(/^text|json/.test(d.mime)){const pr=document.createElement("pre");pr.style.cssText="max-height:220px;overflow:auto;white-space:pre-wrap";pr.textContent=await blob.text();v.appendChild(pr)}
+    else v.textContent=Math.round(d.b64.length*.75/1024)+" KB";
+    s.querySelector("#fb").style.display="flex";
+    s.querySelector("#fa").onclick=()=>{const l=document.createElement("a");l.href=url;l.download=a.name;l.click()};
+    s.querySelector("#fi2").onclick=()=>{s.remove();if(!S.ai.files.some(x=>x.id===id))S.ai.files.push({id,name:a.name});persist();openAI()}}
+  let arm=0;const fd=s.querySelector("#fd");
+  fd.onclick=async()=>{if(!arm){arm=1;fd.textContent="Sicuro? Tocca ancora";return}
+    try{await A("remove",id);S.files=S.files.filter(x=>x.rid!==id);S.notes.forEach(n=>{if(n.att)n.att=n.att.filter(x=>x.rid!==id)});S.fcount=S.files.length;persist();s.remove();render()}catch(e){toast("Eliminazione non riuscita")}}}
+function edit(id){
+  let n=S.notes.find(x=>x.id===id);const isNew=!n;if(!n)n={id:uid(),title:"",text:"",folder:fsel,created:Date.now(),updated:Date.now()};
+  const o=document.createElement("div");o.className="ov ed";const g=s=>o.querySelector(s);
+  o.innerHTML=`<div class="eh"><button class="ib" id="bk">${ic("back")}</button><div class="et"><b>MODULO NOTA</b><span id="est">${isNew?"BOZZA LOCALE":"SALVATA IN LOCALE"}</span></div><button class="ib ${n.pin?"on":""}" id="pn">${ic("pin")}</button>${isNew?"":`<button class="ib red" id="de">${ic("trash")}</button>`}</div><input class="tt" id="ti" placeholder="Titolo della nota…" value="${esc(n.title)}"><div class="fr"><button class="pill" id="fp"><i></i><span id="fn"></span> ⌄</button><small class="lab" id="mt">${isNew?"NUOVA BOZZA":"MODIFICATA "+new Date(n.updated).toLocaleDateString("it-IT")}</small></div><textarea id="tx" placeholder="Scrivi qui i tuoi appunti, collegamenti e idee…">${esc(n.text)}</textarea><div class="chips" id="at"></div><div class="hint">${ic("clip")}<span>Allega documenti o registra audio dalla barra in basso.</span></div><div class="eb"><div data-a="f"><i>${ic("clip")}</i>FILE</div><div data-a="a"><i>${ic("mic")}</i>AUDIO</div><div data-a="c"><i>${ic("folder")}</i>CARTELLA</div></div>`;
+  document.body.appendChild(o);const ti=g("#ti"),tx=g("#tx");let tm=0;
+  window.CURN={get title(){return ti.value},get text(){return tx.value}};
+  const lab=()=>{const f=S.folders.find(f=>f.id===n.folder);g("#fn").textContent=f?f.name:"Senza cartella";g("#fp i").style.background=f?"var(--p)":"var(--mut)"};lab();
+  const commit=()=>{clearTimeout(tm);tm=0;n.title=ti.value.trim();n.text=tx.value;if(!(n.title||n.text.trim()))return;if(!S.notes.includes(n))S.notes.push(n);n.updated=Date.now();n.dirty=true;n.rich=false;n.html="";save();g("#est").textContent=S.cloud.tok?"SALVATA · IN SYNC":"SALVATA IN LOCALE";g("#mt").textContent="MODIFICATA ADESSO"};
+  const touch=()=>{g("#est").textContent="BOZZA LOCALE";clearTimeout(tm);tm=setTimeout(commit,700)};
+  ti.oninput=tx.oninput=touch;
+  const close=()=>{if(tm)commit();window.CURN=null;o.remove();render()};
+  g("#bk").onclick=close;
+  const pick=()=>sheet(`<h3 style="margin:0">Cartella</h3><div class="chips"><div class="chip ${!n.folder?"on":""}" data-i="">Senza cartella</div>${S.folders.map(f=>`<div class="chip ${n.folder===f.id?"on":""}" data-i="${f.id}">${esc(f.name)}</div>`).join("")}</div>`,s=>s.querySelectorAll("[data-i]").forEach(c=>c.onclick=()=>{n.folder=c.dataset.i;lab();s.remove();touch()}));
+  g("#fp").onclick=pick;
+  g("#pn").onclick=()=>{if(!(ti.value.trim()||tx.value.trim())){toast("Scrivi qualcosa prima");return}n.pin=!n.pin;g("#pn").classList.toggle("on",n.pin);commit();toast(n.pin?"Nota fissata":"Nota sbloccata")};
+  const de=g("#de");if(de)de.onclick=()=>sheet(`<h3 style="margin:0">Eliminare la nota?</h3><button class="dng" id="y1">Elimina</button><button id="n1">Annulla</button>`,s=>{s.querySelector("#n1").onclick=()=>s.remove();s.querySelector("#y1").onclick=()=>{s.remove();clearTimeout(tm);tm=0;if(n.rid)S.del.notes.push(n.rid);S.notes=S.notes.filter(x=>x!==n);save();close()}});
+  n.att=n.att||[];const ra=()=>{const c=g("#at");c.innerHTML="";n.att.forEach(a=>{const e=document.createElement("div");e.className="chip";e.textContent="📎 "+a.name;e.onclick=()=>openFile(a);c.appendChild(e)})};ra();
+  const add=async f=>{const x=await upFile(f,n.folder);if(x){n.att.push({rid:x.rid,name:x.name,mime:x.mime});ra();touch()}};
+  const fi=document.createElement("input");fi.type="file";fi.multiple=true;fi.onchange=async e=>{for(const f of e.target.files)await add(f);e.target.value=""};
+  let rec=null,chunks=[],tt2=0,t0=0;const ab=o.querySelector('[data-a="a"]');
+  ab.onclick=async()=>{if(rec){rec.stop();return}
+    try{const st=await navigator.mediaDevices.getUserMedia({audio:true});rec=new MediaRecorder(st);chunks=[];rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+      rec.onstop=async()=>{clearInterval(tt2);st.getTracks().forEach(t=>t.stop());ab.lastChild.textContent="AUDIO";ab.classList.remove("rec");const blob=new Blob(chunks,{type:rec.mimeType||"audio/webm"});rec=null;
+        const d=new Date(),nm="Registrazione "+d.toLocaleDateString("it-IT").replace(/\//g,"-")+" "+d.toTimeString().slice(0,5).replace(":","-")+(blob.type.includes("mp4")?".m4a":".webm");await add(new File([blob],nm,{type:blob.type}))};
+      rec.start();t0=Date.now();ab.classList.add("rec");tt2=setInterval(()=>{const s=Math.floor((Date.now()-t0)/1000);ab.lastChild.textContent="STOP "+Math.floor(s/60)+":"+String(s%60).padStart(2,"0")},500)}catch(e){toast("Microfono non disponibile")}};
+  o.querySelectorAll(".eb div").forEach(b=>{const a=b.dataset.a;if(a==="c")b.onclick=pick;else if(a==="f")b.onclick=()=>fi.click()});
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-n],[data-f],[data-th],#nn,#nf,#df,#ex,#im,nav a,#ai");if(!t)return;
+  if(t.dataset.t){tab=t.dataset.t;render();scrollTo(0,0)}
+  else if(t.dataset.n)openNote(t.dataset.n);
+  else if(t.id==="nn")edit();
+  else if(t.dataset.f!==undefined){fsel=t.dataset.f;render()}
+  else if(t.dataset.th){S.prefs.theme=t.dataset.th;save();theme();render()}
+  else if(t.id==="nf")ask("Nuova cartella","Nome della cartella",v=>{const f={id:uid(),name:v};S.folders.push(f);fsel=f.id;save();render()});
+  else if(t.id==="df"){const fd=S.folders.find(f=>f.id===fsel);if(fd&&fd.rid)S.del.folders.push(fd.rid);S.notes.forEach(n=>{if(n.folder===fsel)n.folder=""});S.folders=S.folders.filter(f=>f.id!==fsel);fsel="";save();render();toast("Cartella eliminata")}
+  else if(t.id==="ex"){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="cyber-web-backup.json";a.click()}
+  else if(t.id==="im")$("#imf").click();
+  else if(t.id==="ai")openAI(window.CURN||undefined);
+});
+document.addEventListener("input",e=>{if(e.target.id==="q"){q=e.target.value;list()}else if(e.target.id==="nm"){S.prefs.name=e.target.value||"Runner Locale";save()}});
+document.addEventListener("change",e=>{
+  if(e.target.id==="sl"){S.prefs.slang=e.target.checked;save()}
+  else if(e.target.id==="imf"){const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);S=Object.assign({notes:[],folders:[],prefs:S.prefs},d);S.prefs=Object.assign({theme:"viola",slang:true,name:"Runner Locale"},S.prefs);save();theme();render();toast("Backup importato")}catch(x){toast("File non valido")}})}
+});
+const MARK="<!--cw-->",p2h=t=>t.split("\n").map(l=>"<div>"+(esc(l)||"<br>")+"</div>").join("");
+const h2t=h=>new DOMParser().parseFromString(h.replace(/<br\s*\/?>/gi,"\n").replace(/<\/(div|p|li|h[1-4]|tr)>/gi,"\n"),"text/html").body.textContent.replace(/\n{3,}/g,"\n\n").trim();
+const isRich=h=>/<(h[1-4]|ul|ol|li|b|strong|i|em|u|s|table|input|span|font|a|blockquote|pre)\b/i.test(h);
+const setSt=t=>{ST=t;const e=$("#sbt");if(e)e.textContent="// "+T("archivio neurale attivo","archivio attivo")+(t?" · "+t:"")};
+async function api(fn,args,ms){const c=new AbortController(),t=ms?setTimeout(()=>c.abort(),ms):0;
+  try{const r=await fetch(S.cloud.url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({fn,args}),signal:c.signal}),j=await r.json();if(!j.ok)throw new Error(j.error||"Errore");return j.data}
+  catch(e){if(e.name==="AbortError")throw new Error("L’AI ci mette troppo. Riprova, oppure usa la modalità Veloce nelle impostazioni (ingranaggio).");throw e}finally{clearTimeout(t)}}
+const A=(fn,...a)=>api(fn,[S.cloud.tok,...a]);
+function kick(){if(!S.cloud.url||!S.cloud.tok)return;clearTimeout(kt);kt=setTimeout(()=>sync(),2500)}
+function openNote(id){const n=S.notes.find(x=>x.id===id);if(n&&n.rich)sheet(`<h3 style="margin:0">Nota formattata</h3><p style="color:var(--mut);margin:0">Questa nota ha titoli, elenchi o altra formattazione. Modificandola qui diventa testo semplice: per non perdere nulla modificala dal sito.</p><button class="pri" id="yy">Modifica comunque</button><button id="nn2">Annulla</button>`,s=>{s.querySelector("#yy").onclick=()=>{s.remove();edit(id)};s.querySelector("#nn2").onclick=()=>s.remove()});else edit(id)}
+function loginSheet(msg){
+  const had=!!S.cloud.url,s=sheet(`<h3 style="margin:0">Google Drive</h3><p style="color:var(--mut);margin:0">${msg||"Collega l’app al tuo Drive."}</p>${had?"":'<input id="cu" placeholder="Indirizzo API (…/exec)">'}<input id="cp" type="password" placeholder="Password"><button class="pri" id="cg">Collega</button><div id="ce" style="color:#ff4d6d"></div>`);
+  s.querySelector("#cg").onclick=async()=>{
+    const u=s.querySelector("#cu"),pw=s.querySelector("#cp").value,e=s.querySelector("#ce");
+    if(u){const v=u.value.trim();if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(v)){e.textContent="Indirizzo non valido";return}S.cloud.url=v}
+    if(!pw)return;e.textContent="Accesso…";
+    try{const r=await api("login",[pw]);if(r.ok){S.cloud.tok=r.token;persist();s.remove();toast("Collegato ✓");render();sync(true)}else{if(!had)S.cloud.url="";e.textContent=r.locked?"Troppi tentativi: riprova tra 5 minuti":"Password errata"}}
+    catch(x){if(!had)S.cloud.url="";e.textContent="Non riesco a collegarmi: controlla l’indirizzo"}
+  }
+}
+async function sync(manual){
+  if(!S.cloud.url||!S.cloud.tok)return;if(busy){pend=true;return}
+  busy=true;setSt("sincronizzo…");
+  try{
+    for(const rid of S.del.notes.splice(0))try{await A("remove",rid)}catch(e){if(/autorizzato/i.test(e.message))throw e}
+    for(const rid of S.del.folders.splice(0))try{await A("deleteFolder",rid)}catch(e){if(/autorizzato/i.test(e.message))throw e}
+    for(const f of S.folders)if(!f.rid)f.rid=await A("createFolder",f.name);
+    for(const f of S.folders)if(f.rid&&f.dirty){await A("renameFolder",f.rid,f.name);f.dirty=false}
+    let L=await A("list",Math.max(0,(S.since||0)-120000));const pushed=[],seen={};if(L.items.some(i=>i.note&&i.text===null&&!S.notes.find(x=>x.rid===i.id)))L=await A("list");S.fcount=L.items.filter(i=>!i.note).length;
+    L.folders.forEach(r=>{if(!S.folders.find(f=>f.rid===r.id))S.folders.push({id:uid(),rid:r.id,name:r.name})});
+    S.folders=S.folders.filter(f=>{const r=L.folders.find(x=>x.id===f.rid);if(r){f.name=r.name;return true}S.notes.forEach(n=>{if(n.folder===f.id)n.folder=""});return false});
+    const fl=rid=>(S.folders.find(f=>f.rid===rid)||{}).id||"";
+    S.files=L.items.filter(i=>!i.note).map(i=>({rid:i.id,name:i.name,mime:i.mime,size:i.size,created:i.created,folder:fl(i.folder)}));S.fcount=S.files.length;
+    const mk=r=>{if(r.text===null)return{rid:r.id,title:r.name,folder:fl(r.folder),updated:r.updated,synced:r.updated};const t=r.text||"",h=t.indexOf(MARK)===0?t.slice(MARK.length):null,rich=h!==null&&isRich(h);return{rid:r.id,title:r.name,text:h===null?t:h2t(h),html:rich?h:"",rich,folder:fl(r.folder),created:r.created,updated:r.updated,synced:r.updated,dirty:false}};
+    const push=async n=>{const html=n.rich?n.html:p2h(n.text),fr=(S.folders.find(f=>f.id===n.folder)||{}).rid||"";
+      if(!n.rid)n.rid=await A("saveNote",n.title||"Nota",MARK+html,fr);else{await A("updateNote",n.rid,n.title||"Nota",MARK+html);await A("moveItem",n.rid,fr)}
+      n.dirty=false;pushed.push(n)};
+    let nerr=0;const rem=L.items.filter(i=>i.note);
+    for(const r of rem){seen[r.id]=1;try{const n=S.notes.find(x=>x.rid===r.id);
+      if(!n)S.notes.push(Object.assign({id:uid()},mk(r)));
+      else if(n.dirty){if(r.updated>n.synced&&r.updated>n.updated)Object.assign(n,mk(r));else await push(n)}
+      else if(r.updated>n.synced)Object.assign(n,mk(r))}catch(e){nerr++;S.lastErr=String(e.message||e)}}
+    for(const n of S.notes.slice()){try{
+      if(n.rid&&!seen[n.rid]){if(n.dirty){n.rid="";await push(n)}else S.notes=S.notes.filter(x=>x!==n)}
+      else if(!n.rid&&(n.title||n.text.trim()))await push(n)}catch(e){nerr++;S.lastErr=String(e.message||e)}}
+    
+if(pushed.length){L=await A("list",9e15);L.items.forEach(r=>{const n=pushed.find(x=>x.rid===r.id);if(n)n.synced=r.updated})}
+    S.since=Math.max(S.since||0,...L.items.map(i=>i.updated||0));S.lastSync=Date.now();S.remote={notes:rem.length,files:S.files.length,folders:L.folders.length};if(!nerr)S.lastErr="";persist();setSt(nerr?"sincronizzato con errori":"☁ sincronizzato");
+    const ae=document.activeElement;if(!document.querySelector(".ov")&&!(ae&&/INPUT|TEXTAREA/.test(ae.tagName)))render();else list();
+    if(manual)toast("Sincronizzato ✓");
+  }catch(e){const m=String(e.message||e);S.lastErr=m;persist();
+    if(/autorizzato/i.test(m)){S.cloud.tok="";persist();setSt("accedi di nuovo");loginSheet("Sessione scaduta: inserisci di nuovo la password.")}
+    else setSt(/fetch|Network|Load failed/i.test(m)?"offline":"errore di sincronizzazione");
+    if(manual)toast(m.slice(0,70))}
+  busy=false;if(pend){pend=false;kick()}
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("#cl,#sy,#dc,#pg,#rf");if(!t)return;
+  if(t.id==="cl")loginSheet();else if(t.id==="sy")sync(true);else if(t.id==="pg")openGame();
+  else if(t.id==="rf"){const f=S.folders.find(x=>x.id===fsel);if(f)ask("Rinomina cartella","Nuovo nome",v=>{f.name=v;f.dirty=true;save();render()},f.name)}
+  else{S.cloud={url:"",tok:""};S.since=0;persist();setSt("");render();toast("Scollegato")}
+});
+function boot(){if(!S.cloud.url)return;if(S.cloud.tok)sync();else loginSheet("Accedi per sincronizzare con il tuo Drive.");document.addEventListener("visibilitychange",()=>{if(!document.hidden)kick()})}
+const AVSVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false">    <polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="none" style="stroke:#ff2bd6" stroke-width="2" transform="translate(-1.6,1)" opacity=".8"/>  <polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="none" style="stroke:#00f0ff" stroke-width="2" transform="translate(1.6,-1)" opacity=".8"/>  <polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="#0b0820" stroke="#fcee0a" stroke-width="2.6"/>  <path d="M9 24V19L16 15M55 24V19L48 15M9 40v5l7 4M55 40v5l-7 4" fill="none" stroke="#fcee0a" stroke-width="1.4" opacity=".7"/>  <path d="M12 32Q32 14 52 32Q32 50 12 32Z" fill="#05040c" style="stroke:#00f0ff" stroke-width="2"/>    <g class="eye"><circle cx="32" cy="32" r="8.5" fill="none" stroke="#fcee0a" stroke-width="2"/><circle cx="32" cy="32" r="3.6" style="fill:#ff2bd6"/>  <path d="M32 21.5v3.2M32 39.3v3.2M21.5 32h3.2M39.3 32h3.2" stroke="#fcee0a" stroke-width="1.5"/></g></svg>';
+const AI={ctx:"",busy:0},fmt=t=>String(t).split(/```[\w+.-]*\n?/).map((p,i)=>i%2?`<pre>${esc(p.replace(/\n$/,""))}</pre>`:esc(p).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`([^`\n]+)`/g,"<code>$1</code>").replace(/^\s*[-*•]\s+/gm,"• ").replace(/\n/g,"<br>")).join("");
+const rid=id=>(S.folders.find(f=>f.id===id)||{}).rid||"";
+const stateJson=()=>JSON.stringify({cartelle:S.folders.filter(f=>f.rid).map(f=>({id:f.rid,nome:f.name})),elementi:S.notes.filter(n=>n.rid).slice(0,150).map(n=>({id:n.rid,nome:(n.title||"").slice(0,60),tipo:"nota",cartella:rid(n.folder)})),cartella_aperta:rid(fsel),tema:S.prefs.theme,slang:!!S.prefs.slang});
+let AVU="";
+function avUrl(){if(!AVU)AVU="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(AVSVG);return AVU}
+function aiAdd(role,text){
+  const m=$("#aim");if(!m)return document.createElement("div");
+  const d=document.createElement("div");d.className="m "+role;if(role==="a")d.innerHTML=fmt(text);else d.textContent=text;
+  if(role==="a"){const r=document.createElement("div"),im=document.createElement("span");r.className="mr";im.className="av";im.innerHTML=AVSVG;r.append(im,d);m.appendChild(r)}else m.appendChild(d);
+  m.scrollTop=m.scrollHeight;return d}
+function aiPing(t){
+  const short=String(t).replace(/\s+/g," ").slice(0,110),bd=$("#bd");
+  if(!$("#aiov")&&bd)bd.style.display="block";
+  if(document.hidden){if("Notification"in window&&Notification.permission==="granted")notify(T("Netrunner AI","Assistente AI"),short,"ai")}
+  else if(!$("#aiov")){const e=toast(T("Netrunner AI ha risposto →","L’assistente ha risposto →"),6000);e.onclick=()=>{e.remove();openAI()}}}
+function aiDecor(d,a){const b=document.createElement("button");b.textContent="Salva come nota";b.onclick=()=>{S.notes.push({id:uid(),title:"AI: "+a.replace(/\s+/g," ").slice(0,40),text:a,folder:"",created:Date.now(),updated:Date.now(),dirty:true});save();list();b.textContent="Nota salvata ✓";b.disabled=true};d.appendChild(b)}
+function aiCard(p){const d=document.createElement("div");d.className="pc";d.innerHTML=`<div>⚠ ${esc(p.label)}</div>`;const ok=document.createElement("button"),no=document.createElement("button");ok.textContent="Conferma";ok.className="dng";no.textContent="Annulla";
+  ok.onclick=async()=>{ok.disabled=no.disabled=true;try{const r=await A("execPending",{name:p.name,args:p.args});d.textContent=(r.ok?"✓ ":"✗ ")+r.message;sync()}catch(e){d.textContent="✗ Operazione non riuscita"}};
+  no.onclick=()=>{d.textContent="Annullato."};d.append(ok,no);$("#aim").appendChild(d)}
+function aiAct(list){list.forEach(a=>{const g=a.args||{};
+  if(a.name==="navigate"){const f=S.folders.find(f=>f.rid===g.folder_id);if(g.folder_id!==undefined)fsel=f?f.id:"";if(g.query!==undefined)q=String(g.query);tab=g.query?"cerca":"note"}
+  else if(a.name==="set_theme"){const k=({cyan:"ciano"})[g.color]||g.color;if(TH[k]){S.prefs.theme=k;theme()}}
+  else if(a.name==="set_slang")S.prefs.slang=!!g.on;
+  else if(a.name==="set_car"){const k=["quadra","caliburn","thorton","rayfield"].indexOf(String(g.model).toLowerCase());if(k>=0)try{localStorage.setItem("nr2077m",k)}catch(e){}}
+  else if(a.name==="scroll_to"&&g.section==="gioco")setTimeout(openGame,300)});persist();if(!document.querySelector(".ov:not(#aiov)"))render()}
+const ACT=/(crea|aggiung|spost|rinom|elimin|cancell|cambi|impost|attiv|disattiv|organizz|mett|salv|apr[ei]|mostr|cerc|trov|modific|aggiorn|ordin|cartell)/i,NOTI=/(not[ae]\b|appunt|archivi|cartell)/i;
+const notesCtx=()=>S.notes.slice(0,40).map(n=>"### "+(n.title||"Nota")+"\n"+n.text.slice(0,600)).join("\n\n").slice(0,12000);
+async function aiAsk(text){
+  const f=S.ai.files.map(x=>x.id);if(!S.cloud.tok){aiAdd("s","Collega prima il Drive: Altro → Google Drive.");return}
+  if(AI.busy)return;AI.busy=1;
+  if("Notification"in window&&Notification.permission==="default")Notification.requestPermission().then(p=>{if(p==="granted"){S.prefs.push=true;persist()}});
+  S.ai.msgs.push({r:"u",t:text});persist();aiAdd("u",text);
+  AI.w=aiAdd("a",T("Hack in corso…","Sto pensando…"));AI.w.classList.add("w");const sb=$("#aisend");if(sb)sb.disabled=true;
+  const act=S.prefs.agent!==false&&ACT.test(text),ctx=AI.ctx||(NOTI.test(text)?notesCtx():"");
+  const t0=Date.now(),iv=setInterval(()=>{const s=Math.round((Date.now()-t0)/1000);if(AI.w&&AI.w.isConnected)AI.w.textContent=(s<25?T("Hack in corso…","Sto pensando…"):T("Ancora al lavoro, choom…","Ancora al lavoro…"))+" "+s+"s"},1000);
+  let res,err="";
+  try{res=await api("askAgent",[S.cloud.tok,S.ai.msgs,ctx,!!S.prefs.slang,f,act?stateJson():"",act,S.prefs.aiMode==="deep"?"deep":"fast"],100000)}catch(e){err=String(e.message||e).replace(/^Error:\s*/,"")}
+  clearInterval(iv);
+  AI.busy=0;const live=$("#aim"),w=AI.w&&live&&live.contains(AI.w)?AI.w:null;AI.w=null;const sb2=$("#aisend");if(sb2)sb2.disabled=false;
+  if(err){S.ai.msgs.pop();persist();
+    if(w){w.classList.remove("w");w.textContent=err;const b=document.createElement("button");b.textContent="Riprova";b.onclick=()=>{b.remove();aiAsk(text)};w.appendChild(b)}else aiPing("Errore: "+err);
+    if(/autorizzato/i.test(err)){S.cloud.tok="";persist();loginSheet("Sessione scaduta.")}return}
+  const a=res.text||"Fatto.";S.ai.msgs.push({r:"a",t:a});S.ai.dirty=true;persist();
+  if(w){w.classList.remove("w");w.innerHTML=fmt(a);aiDecor(w,a);(res.log||[]).forEach(l=>aiAdd("s","⚙ "+l));(res.pending||[]).forEach(aiCard);if(document.hidden)aiPing(a)}
+  else{AI.q={log:res.log||[],pending:res.pending||[]};aiPing(a)}
+  aiAct(res.actions||[]);if(res.changed)sync()}
+function aiFiles(){const b=$("#aif");b.innerHTML="";S.ai.files.forEach((f,i)=>{const c=document.createElement("div");c.className="chip";c.textContent="📎 "+f.name+" ✕";c.onclick=()=>{S.ai.files.splice(i,1);persist();aiFiles()};b.appendChild(c)})}
+const AIQ=[["Riassumi le mie note","Riassumi le mie note e dimmi i punti più importanti."],["Organizza l’archivio","Guarda le mie note, proponi come organizzarle in cartelle e, se ti sembra sensato, fallo tu."],["Spiegami passo passo","Spiegami passo passo questo argomento: "]];
+function openAI(note){
+  if(document.querySelector("#aiov"))return;AI.ctx=note?"### "+(note.title||"Nota")+"\n"+note.text:"";
+  const o=document.createElement("div");o.className="aiw";o.id="aiov";
+  o.innerHTML=`<div class="aip"><div class="aih"><span>Cyber Web</span><div class="ia"><button class="ib s" id="aisv" title="Chat salvate">${ic("clock")}</button><button class="ib s" id="aigs" title="Impostazioni">${ic("gear")}</button><button class="ib s" id="aitr" title="Cancella la chat e ricomincia">${ic("trash")}</button><button class="ib s" id="aib" title="Chiudi">${ic("x")}</button></div></div><div class="msgs" id="aim"></div><div id="aiv"></div><button class="ib" id="aidn">${ic("down")}</button><div class="chips" id="aif"></div><div class="aib"><button class="ib red" id="ain" title="Nuova chat">${ic("plus")}</button><div class="chips nw" id="aiq"></div></div><div class="aii"><input id="aii" placeholder="${T("Dimmi cosa ti serve, choom…","Chiedimi qualsiasi cosa…")}"><button class="ib s" id="aiat" title="Allega">${ic("img")}</button><button class="ib pu" id="mic" title="Detta">${ic("mic")}</button><button class="ib send" id="aisend" title="Invia">${ic("up")}</button></div><input type="file" id="aifi" multiple hidden></div>`;
+  try{o.style.setProperty("--av",'url("data:image/svg+xml;utf8,'+encodeURIComponent(document.querySelector("#ai svg").outerHTML.replace("<svg","<svg xmlns='http://www.w3.org/2000/svg'"))+'")')}catch(e){}
+  document.body.appendChild(o);
+  const draw=()=>{$("#aim").innerHTML="";aiAdd("s",note?"Contesto: nota «"+(note.title||"senza titolo")+"»":T("Ehi choom! Sono il tuo netrunner: posso ragionare, scrivere, riassumere e gestire note e cartelle al posto tuo.","Ciao! Posso ragionare, scrivere, riassumere e gestire note e cartelle al posto tuo."));S.ai.msgs.forEach(m=>{const d=aiAdd(m.r==="a"?"a":"u",m.t);if(m.r==="a")aiDecor(d,m.t)});
+    const qq=$("#aiq");qq.innerHTML="";if(!S.ai.msgs.length)(note?[["Riassumi","Riassumi questa nota in pochi punti."],["Correggi","Correggi errori e migliora la forma di questa nota."],["Checklist","Trasforma questa nota in una checklist."]]:AIQ).forEach(c=>{const e=document.createElement("div");e.className="chip";e.textContent=c[0];e.onclick=()=>{if(c[1].endsWith(": "))$("#aii").value=c[1];else aiAsk(c[1]);qq.innerHTML=""};qq.appendChild(e)});aiFiles();
+    if(AI.busy){AI.w=aiAdd("a",T("Hack in corso…","…"));AI.w.classList.add("w")}
+    if(AI.q){AI.q.log.forEach(l=>aiAdd("s","⚙ "+l));AI.q.pending.forEach(aiCard);AI.q=null}
+    const bd=$("#bd");if(bd)bd.style.display="none"};
+  draw();$("#aib").onclick=()=>o.remove();
+  const tt=(b,warn,fn,need)=>{let a=0;const base=b.textContent;b.onclick=()=>{if(need&&!need()){fn();return}const ib=b.classList.contains("ib");if(!a){a=1;if(ib)toast(warn);else b.textContent=warn;setTimeout(()=>{a=0;if(!ib)b.textContent=base},3000);return}a=0;if(!ib)b.textContent=base;fn()}};
+  const unsaved=()=>S.ai.dirty&&S.ai.msgs.length;
+  tt($("#ain"),"Non salvata! Cancella?",()=>{S.ai={msgs:[],files:[]};AI.ctx="";persist();draw()},unsaved);
+  const saveCh=async()=>{
+    if(!S.cloud.tok){toast("Collega prima il Drive");return}
+    const first=S.ai.msgs.find(m=>m.r==="u");if(!first){toast("Niente da salvare");return}
+    const ti=S.ai.title||first.t.replace(/\s+/g," ").slice(0,45);
+    try{S.ai.sid=await A("saveChat",S.ai.sid||"",ti,S.ai.msgs,AI.ctx,"",S.ai.files);S.ai.title=ti;S.ai.dirty=false;persist();toast("Chat salvata su Drive ✓")}catch(e){toast("Salvataggio non riuscito")}};
+  const back=()=>o.classList.remove("lv");
+  const chats=async()=>{
+    if(!S.cloud.tok){toast("Collega prima il Drive");return}
+    o.classList.add("lv");const v=$("#aiv");v.innerHTML="";
+    const bk=document.createElement("button");bk.textContent="← Torna alla chat";bk.onclick=back;v.appendChild(bk);
+    let L;try{L=await A("listChats")}catch(e){v.insertAdjacentHTML("beforeend",'<div class="empty">Non riesco a leggere le chat salvate.</div>');return}
+    if(!L.length)v.insertAdjacentHTML("beforeend",'<div class="empty">Nessuna chat salvata. Usa <b>Salva</b> per conservare una conversazione.</div>');
+    L.forEach(c=>{
+      const d=document.createElement("div");d.className="card";
+      d.innerHTML=`<b>${esc(c.name)}</b><div style="color:var(--mut);font-size:13px;margin:2px 0 10px">${new Date(c.updated).toLocaleString("it-IT",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</div><div class="row"><button class="op">Apri</button><button class="dng de">Elimina</button></div>`;
+      tt(d.querySelector(".op"),"Non salvata! Apri?",async()=>{
+        try{const x=await A("loadChat",c.id);S.ai={msgs:x.msgs||[],files:x.files||[],sid:x.id,title:x.title||"",dirty:false};AI.ctx=x.ctx||"";persist();back();draw()}catch(e){toast("Non riesco ad aprirla")}},unsaved);
+      tt(d.querySelector(".de"),"Sicuro?",async()=>{try{await A("deleteChat",c.id);if(S.ai.sid===c.id)S.ai.sid="";persist();chats()}catch(e){toast("Eliminazione non riuscita")}});
+      v.appendChild(d)})};
+  $("#aisv").onclick=chats;
+  o.onclick=e=>{if(e.target===o)o.remove()};
+  $("#aii").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();$("#aisend").click()}};
+  const ms=$("#aim"),dn=$("#aidn");ms.onscroll=()=>{dn.style.display=ms.scrollHeight-ms.scrollTop-ms.clientHeight>120?"grid":"none"};dn.onclick=()=>ms.scrollTo({top:ms.scrollHeight,behavior:"smooth"});
+  tt($("#aitr"),"Chat non salvata! Tocca ancora per cancellarla",()=>{S.ai={msgs:[],files:[]};AI.ctx="";persist();draw()},unsaved);
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  $("#mic").onclick=()=>{if(!SR){toast("Dettatura non supportata su questo dispositivo");return}const r=new SR();r.lang="it-IT";r.onresult=e=>{const i=$("#aii");i.value+=(i.value?" ":"")+e.results[0][0].transcript;i.focus()};r.onerror=()=>toast("Microfono non disponibile");r.start();toast("Parla pure…")};
+  $("#aigs").onclick=()=>sheet(`<h3 style="margin:0">Impostazioni AI</h3><button id="gs">Salva questa chat su Drive</button><button id="gh">Come usare l’assistente</button><button class="dng" id="gc">Cancella la chat e ricomincia</button><div class="sw"><span>L’AI può agire sull’app</span><input type="checkbox" id="g1" ${S.prefs.agent!==false?"checked":""}></div><div class="sw"><span>Slang di Night City</span><input type="checkbox" id="g2" ${S.prefs.slang?"checked":""}></div><div class="sw"><span>Ragiona di più (più lento)</span><input type="checkbox" id="g3" ${S.prefs.aiMode==="deep"?"checked":""}></div>`,s=>{s.querySelector("#gs").onclick=()=>{s.remove();saveCh()};s.querySelector("#gh").onclick=()=>{s.remove();help()};s.querySelector("#gc").onclick=()=>{s.remove();$("#aitr").click()};s.querySelector("#g1").onchange=e=>{S.prefs.agent=e.target.checked;save()};s.querySelector("#g2").onchange=e=>{S.prefs.slang=e.target.checked;save()};s.querySelector("#g3").onchange=e=>{S.prefs.aiMode=e.target.checked?"deep":"fast";save()}});
+  const help=()=>sheet(`<h3 style="margin:0">Come usare l’assistente</h3><p style="color:var(--mut);margin:0">Scrivi o detta una richiesta. Allega file con l’icona immagine, apri le chat salvate con l’orologio e salva la conversazione dalle impostazioni. L’AI può creare e spostare note, ma chiede conferma prima di eliminare.</p>`);
+  $("#aisend").onclick=()=>{const v=$("#aii").value.trim();if(v){$("#aii").value="";$("#aiq").innerHTML="";aiAsk(v)}};
+  $("#aiat").onclick=()=>$("#aifi").click();
+  $("#aifi").onchange=async e=>{for(const f of e.target.files){if(f.size>8e6||/\.(docx?|xlsx?|pptx?|zip|rar|7z|exe)$/i.test(f.name)){toast(f.name+": non supportato (max 8 MB, no Office)");continue}
+    if(!S.cloud.tok){toast("Collega prima il Drive");break}
+    try{toast("Carico "+f.name+"…");const b64=await new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(",")[1]);r.onerror=ko;r.readAsDataURL(f)});
+      S.ai.files.push({id:await A("aiUpload",f.name,f.type,b64),name:f.name});persist();aiFiles()}catch(x){toast("Caricamento non riuscito")}}e.target.value=""};
+}
+document.addEventListener("change",e=>{if(e.target.id==="ag"){S.prefs.agent=e.target.checked;save()}});
+if(navigator.serviceWorker)navigator.serviceWorker.addEventListener("message",e=>{if(e.data&&e.data.type==="open-ai")openAI()});
+if(/[?&]ai=1/.test(location.search))setTimeout(()=>openAI(),500);
+window.initGame=function(){
+var W=360,H=640,RL=40,RW=280,LN=4,LW=RW/LN,PY=520;
+var cv=document.getElementById("gc"),ctx=cv.getContext("2d");
+var FONT="Orbitron,Impact,sans-serif",COLS=["#ff2bd6","#00f0ff","#ff3d5a","#ff9f1a"];
+var state="start",px,tl,dist,speed,cars,spawnD,lastFree,off,shake,parts,deadAt=0,best=0,flash=0;
+try{best=+localStorage.getItem("nr2077")||0}catch(e){}
+var mdl=0;try{mdl=(+localStorage.getItem("nr2077m")||0)%4}catch(e){}
+
+function lx(l){return RL+LW*(l+.5)}
+function rnd(a,b){return a+Math.random()*(b-a)}
+// edifici neon ai lati
+var RING=0;
+function mk(){var a=[],y=0;while(y<760){var h=rnd(70,150);a.push({y:y,h:h,c:COLS[(Math.random()*4)|0]});y+=h+rnd(8,22)}RING=y;return a}
+var BL=mk(),BR=mk();
+
+function reset(){
+  px=lx(1);tl=1;dist=0;speed=5;cars=[];spawnD=0;lastFree=1;off=0;shake=0;parts=[];flash=0;
+}
+function score(){return Math.floor(dist/10)}
+
+function spawnRow(){
+  var s=score(),reach=s>1500?2:1;
+  var f=Math.max(0,Math.min(LN-1,lastFree+Math.round(rnd(-reach,reach))));
+  lastFree=f;
+  var n=1+(Math.random()<Math.min(.9,s/700)?1:0)+(Math.random()<Math.min(.7,(s-500)/1500)?1:0);
+  var pool=[0,1,2,3].filter(function(l){return l!==f}),row=[];
+  while(n-->0&&pool.length){row.push(pool.splice((Math.random()*pool.length)|0,1)[0])}
+  row.forEach(function(l){
+    var c={l:l,x:lx(l),y:-70,v:rnd(1.5,3.5),col:COLS[(Math.random()*4)|0],sw:null,t:0};
+    if(s>800&&Math.random()<Math.min(.4,s/4000)){
+      var nb=[l-1,l+1].filter(function(q){return q>=0&&q<LN&&q!==f&&row.indexOf(q)<0});
+      if(nb.length)c.sw=nb[(Math.random()*nb.length)|0];
+    }
+    cars.push(c);
+  });
+}
+
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+var MODELS=[
+  {n:"QUADRA",c:"#fcee0a",a:"#00f0ff"},
+  {n:"CALIBURN",c:"#0d1a33",a:"#00f0ff"},
+  {n:"THORTON",c:"#ff7a2b",a:"#fcee0a"},
+  {n:"RAYFIELD",c:"#ff2bd6",a:"#ffffff"}
+];
+function poly(p){ctx.beginPath();p.forEach(function(q,i){i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])});ctx.closePath()}
+function glowFill(col,a,blur){ctx.shadowColor=a;ctx.shadowBlur=blur;ctx.fillStyle=col;ctx.fill();ctx.shadowBlur=0}
+// auto del giocatore (vista dall'alto, muso verso l'alto)
+function pcar(m,x,y,sc){
+  var M=MODELS[m],c=M.c,a=M.a;
+  ctx.save();ctx.translate(x,y);
+  if(sc)ctx.scale(sc,sc);
+  else{
+    var g=ctx.createLinearGradient(0,-30,0,-120);g.addColorStop(0,"#fcee0a50");g.addColorStop(1,"#0000");
+    ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(-12,-30);ctx.lineTo(-30,-120);ctx.lineTo(30,-120);ctx.lineTo(12,-30);ctx.fill();
+  }
+  if(m===0){
+    poly([[-11,-31],[11,-31],[17,-15],[17,22],[13,30],[-13,30],[-17,22],[-17,-15]]);glowFill(c,a,18);
+    ctx.fillStyle="#05050c";poly([[-10,-10],[10,-10],[12,6],[-12,6]]);ctx.fill();ctx.fillRect(-2,-31,4,20);
+    ctx.fillStyle=a;ctx.fillRect(-18,-12,2,32);ctx.fillRect(16,-12,2,32);
+    ctx.fillStyle="#fffbb8";ctx.fillRect(-13,-30,9,3);ctx.fillRect(4,-30,9,3);
+    ctx.fillStyle="#ff2040";ctx.fillRect(-14,27,28,3);
+  }else if(m===1){
+    poly([[-5,-33],[5,-33],[13,-8],[15,24],[10,31],[-10,31],[-15,24],[-13,-8]]);glowFill(c,a,20);
+    ctx.strokeStyle=a;ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle="#02040a";poly([[-6,-14],[6,-14],[9,4],[-9,4]]);ctx.fill();
+    ctx.fillStyle=a;ctx.fillRect(-.7,-33,1.4,18);ctx.fillRect(-17,26,34,3);
+    ctx.fillStyle="#bffcff";ctx.fillRect(-10,-30,6,2);ctx.fillRect(4,-30,6,2);
+    ctx.fillStyle="#ff2040";ctx.fillRect(-9,29,18,2);
+  }else if(m===2){
+    poly([[-14,-30],[14,-30],[18,-24],[18,29],[-18,29],[-18,-24]]);glowFill(c,a,16);
+    ctx.fillStyle="#05050c";ctx.fillRect(-12,-24,24,11);
+    ctx.fillStyle="#7a3a14";ctx.fillRect(-14,-3,28,30);
+    ctx.fillStyle=a;ctx.fillRect(-10,-9,20,3);ctx.globalAlpha=.6;ctx.fillRect(-14,6,28,1);ctx.fillRect(-14,14,28,1);ctx.fillRect(-14,22,28,1);ctx.globalAlpha=1;
+    ctx.fillStyle="#fffbb8";ctx.fillRect(-16,-30,7,3);ctx.fillRect(9,-30,7,3);
+    ctx.fillStyle="#ff2040";ctx.fillRect(-17,27,8,3);ctx.fillRect(9,27,8,3);
+  }else{
+    poly([[0,-35],[10,-22],[16,-4],[17,22],[11,31],[-11,31],[-17,22],[-16,-4],[-10,-22]]);glowFill(c,a,20);
+    ctx.fillStyle=a;ctx.fillRect(-1,-34,2,64);
+    ctx.fillStyle="#05050c";ctx.beginPath();ctx.ellipse(0,-2,7,13,0,0,6.3);ctx.fill();
+    ctx.fillStyle=c;poly([[-17,18],[-24,31],[-14,31]]);ctx.fill();poly([[17,18],[24,31],[14,31]]);ctx.fill();
+    ctx.fillStyle="#ffffff";ctx.fillRect(-9,-24,4,2);ctx.fillRect(5,-24,4,2);
+    ctx.fillStyle="#ff2040";ctx.fillRect(-8,30,16,2);
+  }
+  ctx.restore();
+}
+// auto della polizia (arrivano contromano: muso verso il basso)
+function police(x,y,warn){
+  var t=((performance.now()/130)|0)%2,gc=t?"#ff1f3d":"#1f6bff";
+  ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI);
+  var rg=ctx.createRadialGradient(0,0,6,0,0,72);rg.addColorStop(0,gc+"44");rg.addColorStop(1,gc+"00");
+  ctx.fillStyle=rg;ctx.fillRect(-72,-72,144,144);
+  var g=ctx.createLinearGradient(0,-30,0,-120);g.addColorStop(0,"#ffffff38");g.addColorStop(1,"#0000");
+  ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(-12,-30);ctx.lineTo(-30,-120);ctx.lineTo(30,-120);ctx.lineTo(12,-30);ctx.fill();
+  poly([[-12,-31],[12,-31],[17,-16],[17,24],[13,31],[-13,31],[-17,24],[-17,-16]]);glowFill("#0b1224",gc,20);
+  ctx.fillStyle="#dfe8ff";ctx.fillRect(-12,-29,24,12);ctx.fillRect(-13,17,26,12);
+  ctx.fillStyle="#00f0ff";ctx.fillRect(-17,-12,2,28);ctx.fillRect(15,-12,2,28);
+  ctx.fillStyle="#05050c";ctx.fillRect(-11,-14,22,30);
+  ctx.shadowBlur=14;ctx.shadowColor="#ff1f3d";ctx.fillStyle=t?"#ff1f3d":"#5a0a14";ctx.fillRect(-11,-4,11,6);
+  ctx.shadowColor="#1f6bff";ctx.fillStyle=t?"#0a1f55":"#2f7bff";ctx.fillRect(0,-4,11,6);ctx.shadowBlur=0;
+  ctx.fillStyle="#ffffff";ctx.fillRect(-14,-31,8,3);ctx.fillRect(6,-31,8,3);
+  ctx.fillStyle="#ff2040";ctx.fillRect(-14,28,8,3);ctx.fillRect(6,28,8,3);
+  if(warn){ctx.fillStyle="#fcee0a";ctx.shadowColor="#fcee0a";ctx.shadowBlur=12;ctx.fillRect(-19,-26,3,8);ctx.fillRect(16,-26,3,8);ctx.shadowBlur=0}
+  ctx.restore();
+}
+function chg(d){mdl=(mdl+d+MODELS.length)%MODELS.length;try{localStorage.setItem("nr2077m",mdl)}catch(e){}}
+window.setCar=function(i){mdl=((i|0)%MODELS.length+MODELS.length)%MODELS.length;try{localStorage.setItem("nr2077m",mdl)}catch(e){}};
+function steer(d){if(state==="play")move(d);else chg(d)}
+function garage(){
+  ctx.fillStyle="#05040ccc";ctx.fillRect(0,440,W,112);
+  txt("GARAGE",W/2,460,10,"#ff2bd6","center");
+  txt("<",36,512,34,"#00f0ff","center",10);txt(">",W-36,512,34,"#00f0ff","center",10);
+  pcar(mdl,W/2,494,.95);
+  var M=MODELS[mdl];txt(M.n,W/2,541,13,M.a==="#ffffff"?"#ff2bd6":M.a,"center",8);
+  txt((mdl+1)+"/"+MODELS.length,W-14,460,10,"#d6f6ff","right");
+}
+
+function start(){reset();state="play"}
+function die(){
+  state="dead";deadAt=performance.now();shake=18;flash=1;
+  for(var i=0;i<46;i++){var a=rnd(0,6.28),v=rnd(2,9);parts.push({x:px,y:PY,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:rnd(25,55),c:Math.random()<.5?"#fcee0a":"#ff2bd6"})}
+  var s=score();if(s>best){best=s;try{localStorage.setItem("nr2077",best)}catch(e){}}
+}
+
+function update(dt){
+  if(state==="play"){
+    var s=score();speed=Math.min(18,5+s*0.0062);
+    dist+=speed*dt;off+=speed*dt;
+    px+=(lx(tl)-px)*Math.min(1,.3*dt);
+    spawnD-=speed*dt;
+    if(spawnD<=0){spawnRow();spawnD=Math.max(230,speed*(30-Math.min(s/150,10)))}
+    for(var i=cars.length-1;i>=0;i--){
+      var c=cars[i];c.y+=(speed+c.v)*dt;
+      if(c.sw!==null&&c.y>40){c.t+=dt;if(c.t>38)c.x+=(lx(c.sw)-c.x)*Math.min(1,.07*dt)}
+      if(c.y>H+80){cars.splice(i,1);continue}
+      if(Math.abs(c.x-px)<27&&Math.abs(c.y-PY)<52){die();break}
+    }
+  }else{off+=3*dt}
+  for(var j=parts.length-1;j>=0;j--){var p=parts[j];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.97;p.vy*=.97;if(--p.l<=0)parts.splice(j,1)}
+  if(shake>0)shake-=.7*dt;if(flash>0)flash-=.04*dt;
+}
+
+function side(arr,x,w,o){
+  arr.forEach(function(b){
+    var Y=((b.y+o)%RING)-160;if(Y>H)return;
+    ctx.fillStyle="#0a0818";ctx.fillRect(x,Y,w,b.h);
+    ctx.strokeStyle=b.c;ctx.shadowColor=b.c;ctx.shadowBlur=8;ctx.lineWidth=2;ctx.strokeRect(x+2,Y+2,w-4,b.h-4);ctx.shadowBlur=0;
+    ctx.fillStyle=b.c;ctx.globalAlpha=.55;ctx.fillRect(x+w/2-3,Y+10,6,b.h-20);ctx.globalAlpha=1;
+  });
+}
+
+function draw(){
+  ctx.save();
+  if(shake>0)ctx.translate(rnd(-shake,shake)/2,rnd(-shake,shake)/2);
+  ctx.fillStyle="#05040c";ctx.fillRect(-10,-10,W+20,H+20);
+  side(BL,0,RL-6,off);side(BR,W-RL+6,RL-6,off);
+  // strada
+  var rg=ctx.createLinearGradient(0,0,0,H);rg.addColorStop(0,"#0c0a1c");rg.addColorStop(1,"#14102a");
+  ctx.fillStyle=rg;ctx.fillRect(RL,0,RW,H);
+  ctx.shadowBlur=14;ctx.fillStyle="#ff2bd6";ctx.shadowColor="#ff2bd6";ctx.fillRect(RL-3,0,3,H);
+  ctx.fillStyle="#00f0ff";ctx.shadowColor="#00f0ff";ctx.fillRect(RL+RW,0,3,H);ctx.shadowBlur=0;
+  ctx.fillStyle="#fcee0a";
+  for(var i=1;i<LN;i++)for(var y=-100+(off%100);y<H;y+=100)ctx.fillRect(RL+LW*i-2,y,4,42);
+  // oggetti
+  cars.forEach(function(c){police(c.x,c.y,c.sw!==null&&c.y>0&&c.t<38&&((c.t|0)%8<4))});
+  if(state!=="dead")pcar(mdl,px,PY);
+  parts.forEach(function(p){ctx.globalAlpha=Math.min(1,p.l/25);ctx.fillStyle=p.c;ctx.fillRect(p.x,p.y,3,3)});ctx.globalAlpha=1;
+  ctx.restore();
+  if(flash>0){ctx.fillStyle="rgba(255,43,214,"+(flash*.5)+")";ctx.fillRect(0,0,W,H)}
+  hud();
+  if(state!=="play")garage();
+}
+
+function txt(t,x,y,size,col,align,glow){
+  ctx.font="900 "+size+"px "+FONT;ctx.textAlign=align||"center";ctx.fillStyle=col;
+  if(glow){ctx.shadowColor=col;ctx.shadowBlur=glow}ctx.fillText(t,x,y);ctx.shadowBlur=0;
+}
+function hud(){
+  var s=score();
+  txt("SCORE",14,28,11,"#00f0ff","left");txt(String(s),14,54,26,"#fcee0a","left",10);
+  txt("HI "+best,W-14,28,11,"#ff2bd6","right");txt(Math.round(speed*14)+" KM/H",W-14,50,13,"#00f0ff","right",6);
+  if(state==="start"){
+    ctx.fillStyle="#05040ccc";ctx.fillRect(0,170,W,250);
+    txt("NIGHT",W/2,240,46,"#fcee0a","center",20);txt("RUSH 2077",W/2,288,34,"#00f0ff","center",20);
+    txt(T("SCHIVA LA NCPD CONTROMANO","SCHIVA LA POLIZIA CONTROMANO"),W/2,334,11,"#ff2bd6","center");
+    txt("FRECCE / A-D  ·  TOCCA SX / DX",W/2,356,10,"#d6f6ff","center");
+    if((performance.now()/500|0)%2)txt(T("TOCCA PER FARE DELTA","TOCCA PER INIZIARE"),W/2,396,14,"#fcee0a","center",10);
+  }
+  if(state==="dead"){
+    ctx.fillStyle="#05040ccc";ctx.fillRect(0,200,W,230);
+    var g=(performance.now()/90|0)%7===0?3:0;
+    txt("FLATLINED",W/2+g,262,38,"#ff2bd6","center",22);txt("FLATLINED",W/2-g,262,38,"#00f0ff","center",0);
+    txt("SCORE "+s,W/2,316,18,"#fcee0a","center",8);
+    txt(s>=best&&s>0?T("NUOVO RECORD, PREEM!","NUOVO RECORD!"):"RECORD "+best,W/2,344,12,"#00f0ff","center");
+    if(performance.now()-deadAt>600&&(performance.now()/500|0)%2)txt("TOCCA PER RIPROVARE",W/2,394,14,"#fcee0a","center",10);
+  }
+}
+
+function move(d){if(state==="play")tl=Math.max(0,Math.min(LN-1,tl+d))}
+function go(){if(state==="start"||(state==="dead"&&performance.now()-deadAt>600))start()}
+cv.addEventListener("keydown",function(e){
+  if(e.repeat)return;var k=e.key;if(k.indexOf("Arrow")===0)e.preventDefault();
+  if(k==="ArrowLeft"||k==="a"||k==="A")steer(-1);
+  else if(k==="ArrowRight"||k==="d"||k==="D")steer(1);
+  else if(k===" "||k==="Enter"){go();e.preventDefault()}
+});
+cv.addEventListener("pointerdown",function(e){
+  e.preventDefault();cv.focus();
+  if(state!=="play"){var r0=cv.getBoundingClientRect(),gx=(e.clientX-r0.left)*W/r0.width,gy=(e.clientY-r0.top)*H/r0.height;if(gy>440&&gy<552&&(gx<95||gx>W-95)){chg(gx<95?-1:1);return}go();return}
+  var r=cv.getBoundingClientRect();move(e.clientX-r.left<r.width/2?-1:1);
+});
+
+reset();var last=performance.now();
+var vis=true;if("IntersectionObserver" in window)new IntersectionObserver(function(en){vis=en[0].isIntersecting}).observe(cv);
+function loop(now){if(!cv.isConnected)return;var dt=Math.min((now-last)/16.667,3);last=now;if(vis&&!document.hidden){update(dt);draw()}requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+};
+function openGame(){
+  if($("#gov"))return;const o=document.createElement("div");o.className="ov";o.id="gov";
+  o.innerHTML=`<div class="row" style="flex:none;align-items:center"><button class="ib" id="gb">${ic("back")}</button><b style="flex:1;font:900 18px system-ui;letter-spacing:.14em;color:var(--p)">NIGHT RUSH 2077</b></div><canvas id="gc" width="360" height="640" tabindex="0"></canvas><p class="sub" style="text-align:center;margin:0">// tocca sinistra o destra per cambiare corsia</p>`;
+  document.body.appendChild(o);$("#gb").onclick=()=>o.remove();window.initGame();$("#gc").focus()}
+theme();render();tick();boot();
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script></body></html>
 
